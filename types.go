@@ -4,6 +4,10 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+type Numeric interface {
+	constraints.Integer | constraints.Float
+}
+
 // LessFn is a function that returns whether 'a' is less than 'b'.
 type LessFn[T any] func(a, b T) bool
 
