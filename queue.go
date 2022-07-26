@@ -9,6 +9,7 @@ type Queue[T any] struct {
 	list DList[T]
 }
 
+// NewQueue create a new Queue object.
 func NewQueue[T any]() *Queue[T] {
 	q := Queue[T]{}
 	q.list.Clean()
@@ -27,7 +28,7 @@ func (q *Queue[T]) Clean() {
 	q.list.Clean()
 }
 
-func (l *Queue[T]) String() string {
+func (q *Queue[T]) String() string {
 	return fmt.Sprintf("Queue[%v]", nameOfType[T]())
 }
 

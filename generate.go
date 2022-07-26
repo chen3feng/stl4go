@@ -1,6 +1,7 @@
 package contalgo
 
 // Range make a []T filled with values in the `[first, last)` sequence.
+//
 // Complexity: O(last-first).
 func Range[T Numeric](first, last T) []T {
 	a := make([]T, 0, int(last-first))
@@ -11,6 +12,7 @@ func Range[T Numeric](first, last T) []T {
 }
 
 // Generate fill each element of `a`` with `gen()`.
+//
 // Complexity: O(len(a)).
 func Generate[T any](a []T, gen func() T) {
 	for i := range a {

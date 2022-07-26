@@ -1,14 +1,17 @@
 package contalgo
 
 // Copy make a copy of slice a.
+//
 // Complexity: O(len(a)).
 func Copy[T any](a []T) []T {
 	b := append([]T{}, a...)
 	return b
 }
 
-// Transform applies the function op to each element in slice a and fill it to slice b.
+// TransformTo applies the function op to each element in slice a and fill it to slice b.
+//
 // The len(b) must not lesser than len(a).
+//
 // Complexity: O(len(a)).
 func TransformTo[R any, T any](a []T, op func(T) R, b []R) {
 	if len(b) < len(a) {
@@ -20,6 +23,7 @@ func TransformTo[R any, T any](a []T, op func(T) R, b []R) {
 }
 
 // Transform applies the function op to each element in slice a and set it back to the same place in a.
+//
 // Complexity: O(len(a)).
 func Transform[T any](a []T, op func(T) T) {
 	for i, v := range a {
@@ -27,8 +31,10 @@ func Transform[T any](a []T, op func(T) T) {
 	}
 }
 
-// Transform applies the function op to each element in slice a and return all the result as a slice.
+// TransformCopy applies the function op to each element in slice a and return all the result as a slice.
+//
 // Complexity: O(len(a)).
+//
 func TransformCopy[R any, T any](a []T, op func(T) R) []R {
 	r := make([]R, 0, len(a))
 	for _, v := range a {
@@ -38,7 +44,8 @@ func TransformCopy[R any, T any](a []T, op func(T) R) []R {
 }
 
 // Unique remove adjacent repeated elements from the input slice.
-// return the processed slice, andthe origin slice is also changed.
+// return the processed slice, and the content of the input slice is also changed.
+//
 // Complexity: O(len(a)).
 func Unique[T comparable](a []T) []T {
 	if len(a) == 0 {
@@ -56,8 +63,9 @@ func Unique[T comparable](a []T) []T {
 	return a[:i]
 }
 
-// Unique remove adjacent repeated elements from the input slice.
-// return the processed slice, andthe origin slice is kept unchanged.
+// UniqueCopy remove adjacent repeated elements from the input slice.
+// return the result slice, and the input slice is kept unchanged.
+//
 // Complexity: O(len(a)).
 func UniqueCopy[T comparable](a []T) []T {
 	var r []T
@@ -75,6 +83,10 @@ func UniqueCopy[T comparable](a []T) []T {
 	return r
 }
 
+// Remove remove the elements which equals to x from the input slice.
+// return the processed slice, and the content of the input slice is also changed.
+//
+// Complexity: O(len(a)).
 func Remove[T comparable](a []T, x T) []T {
 	j := 0
 	for _, v := range a {
@@ -86,6 +98,10 @@ func Remove[T comparable](a []T, x T) []T {
 	return a[:j]
 }
 
+// RemoveCopy remove all elements which equals to x from the input slice.
+// return the processed slice, and the content of the input slice is also changed.
+//
+// Complexity: O(len(a)).
 func RemoveCopy[T comparable](a []T, x T) []T {
 	r := make([]T, 0, len(a))
 	for _, v := range a {
@@ -96,6 +112,10 @@ func RemoveCopy[T comparable](a []T, x T) []T {
 	return r
 }
 
+// RemoveIf remove each element which make cond(x) returns true from the input slice,
+// copy other elements to a new slice and return it. The input slice is kept unchanged.
+//
+// Complexity: O(len(a)).
 func RemoveIf[T any](a []T, cond func(T) bool) []T {
 	j := 0
 	for _, v := range a {
@@ -107,6 +127,10 @@ func RemoveIf[T any](a []T, cond func(T) bool) []T {
 	return a[:j]
 }
 
+// RemoveIfCopy drops each element which make cond(x) returns true from the input slice,
+// copy other elements to a new slice and return it. The input slice is kept unchanged.
+//
+// Complexity: O(len(a)).
 func RemoveIfCopy[T any](a []T, cond func(T) bool) []T {
 	r := make([]T, 0, len(a))
 	for _, v := range a {

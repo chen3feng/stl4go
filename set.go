@@ -5,14 +5,17 @@ import (
 	"reflect"
 )
 
+// Set is an associative container that contains a unordered set of unique objects of type K.
 type Set[K comparable] struct {
 	m map[K]struct{} // Empty struct takes 0 byte space
 }
 
+// NewSet creates a new Set object.
 func NewSet[K comparable]() *Set[K] {
 	return &Set[K]{m: make(map[K]struct{})}
 }
 
+// NewSetOf creates a new Set object with the initial content from ks.
 func NewSetOf[K comparable](ks ...K) *Set[K] {
 	s := NewSet[K]()
 	s.AddN(ks...)

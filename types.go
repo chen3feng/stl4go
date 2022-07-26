@@ -4,6 +4,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+// Numeric is a constraint that permits any numeric type.
 type Numeric interface {
 	constraints.Integer | constraints.Float
 }

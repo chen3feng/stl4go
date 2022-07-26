@@ -1,14 +1,17 @@
 package contalgo
 
-// Stack is a FILO container
+// Stack s is a container adaptor that provides the functionality of a stack,
+// a LIFO (last-in, first-out) data structure.
 type Stack[T any] struct {
 	ele []T
 }
 
+// NewStack creates a new Stack object.
 func NewStack[T any]() *Stack[T] {
 	return &Stack[T]{nil}
 }
 
+// NewStackCap creates a new Stack object with the specified capicity.
 func NewStackCap[T any](capicity int) *Stack[T] {
 	return &Stack[T]{make([]T, 0, capicity)}
 }
