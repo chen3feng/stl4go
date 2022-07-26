@@ -3,6 +3,7 @@ package contalgo
 import "golang.org/x/exp/constraints"
 
 // Max return the larger value between `a` and `b`.
+//
 // Complexity: O(1).
 func Max[T constraints.Ordered](a, b T) T {
 	if a > b {
@@ -11,7 +12,8 @@ func Max[T constraints.Ordered](a, b T) T {
 	return b
 }
 
-// Max return the smaller value between `a` and `b`.
+// Min return the smaller value between `a` and `b`.
+//
 // Complexity: O(1).
 func Min[T constraints.Ordered](a, b T) T {
 	if a < b {
@@ -21,6 +23,7 @@ func Min[T constraints.Ordered](a, b T) T {
 }
 
 // MaxN return the maximum value in the sequence `a`.
+//
 // Complexity: O(len(a)).
 func MaxN[T constraints.Ordered](a ...T) T {
 	if len(a) == 0 {
@@ -35,7 +38,8 @@ func MaxN[T constraints.Ordered](a ...T) T {
 	return v
 }
 
-// MaxN return the minimum value in the sequence `a`.
+// MinN return the minimum value in the sequence `a`.
+//
 // Complexity: O(len(a)).
 func MinN[T constraints.Ordered](a ...T) T {
 	if len(a) == 0 {
@@ -51,6 +55,7 @@ func MinN[T constraints.Ordered](a ...T) T {
 }
 
 // MinMax returns both min and max between a and b.
+//
 // Complexity: O(1).
 func MinMax[T constraints.Ordered](a, b T) (min, max T) {
 	if a < b {
@@ -59,7 +64,8 @@ func MinMax[T constraints.Ordered](a, b T) (min, max T) {
 	return b, a
 }
 
-// MinMax returns both min and max in slice a.
+// MinMaxN returns both min and max in slice a.
+//
 // Complexity: O(len(a))
 func MinMaxN[T constraints.Ordered](a ...T) (min, max T) {
 	if len(a) == 0 {
@@ -92,8 +98,9 @@ func Find[T comparable](a []T, x T) (index int, ok bool) {
 }
 
 // Index find the value x in the given slice a linearly.
-// return index if found,
-// return -1 if not found.
+//
+// Return index if found, -1 if not found.
+//
 // Complexity: O(len(a)).
 func Index[T comparable](a []T, x T) int {
 	for i, v := range a {
@@ -105,6 +112,7 @@ func Index[T comparable](a []T, x T) int {
 }
 
 // AllOf return true if pred(e) returns true for all emements e in a.
+//
 // Complexity: O(len(a)).
 func AllOf[T any](a []T, pred func(T) bool) bool {
 	for _, v := range a {
@@ -115,7 +123,8 @@ func AllOf[T any](a []T, pred func(T) bool) bool {
 	return true
 }
 
-// AllOf return true if pred(e) returns true for any emements e in a.
+// AnyOf return true if pred(e) returns true for any emements e in a.
+//
 // Complexity: O(len(a)).
 func AnyOf[T any](a []T, pred func(T) bool) bool {
 	for _, v := range a {
@@ -126,7 +135,8 @@ func AnyOf[T any](a []T, pred func(T) bool) bool {
 	return false
 }
 
-// AllOf return true pred(e) returns true for none emements e in a.
+// NoneOf return true pred(e) returns true for none emements e in a.
+//
 // Complexity: O(len(a)).
 func NoneOf[T any](a []T, pred func(T) bool) bool {
 	return !AnyOf(a, pred)

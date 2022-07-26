@@ -2,7 +2,7 @@ package contalgo
 
 import "fmt"
 
-// DList is a doubly linked list
+// DList is a doubly linked list.
 type DList[T any] struct {
 	head   dListNode[T]
 	length int
