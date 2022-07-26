@@ -1,5 +1,12 @@
 package contalgo
 
+// Copy make a copy of slice a.
+// Complexity: O(len(a)).
+func Copy[T any](a []T) []T {
+	b := append([]T{}, a...)
+	return b
+}
+
 // Transform applies the function op to each element in slice a and fill it to slice b.
 // The len(b) must not lesser than len(a).
 // Complexity: O(len(a)).
@@ -65,5 +72,47 @@ func UniqueCopy[T comparable](a []T) []T {
 		r = append(r, v)
 	}
 
+	return r
+}
+
+func Remove[T comparable](a []T, x T) []T {
+	j := 0
+	for _, v := range a {
+		if v != x {
+			a[j] = v
+			j++
+		}
+	}
+	return a[:j]
+}
+
+func RemoveCopy[T comparable](a []T, x T) []T {
+	r := make([]T, 0, len(a))
+	for _, v := range a {
+		if v != x {
+			r = append(r, v)
+		}
+	}
+	return r
+}
+
+func RemoveIf[T any](a []T, cond func(T) bool) []T {
+	j := 0
+	for _, v := range a {
+		if !cond(v) {
+			a[j] = v
+			j++
+		}
+	}
+	return a[:j]
+}
+
+func RemoveIfCopy[T any](a []T, cond func(T) bool) []T {
+	r := make([]T, 0, len(a))
+	for _, v := range a {
+		if !cond(v) {
+			r = append(r, v)
+		}
+	}
 	return r
 }
