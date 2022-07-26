@@ -12,7 +12,7 @@ func Range[T Numeric](first, last T) []T {
 
 // Generate fill each element of `a`` with `gen()`.
 // Complexity: O(len(a)).
-func Generate[T Numeric](a []T, gen func() T) {
+func Generate[T any](a []T, gen func() T) {
 	for i := range a {
 		a[i] = gen()
 	}
