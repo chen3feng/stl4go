@@ -1,4 +1,4 @@
-module github.com/chen3fenf/contalgo
+module github.com/chen3feng/contalgo
 
 go 1.18
 
