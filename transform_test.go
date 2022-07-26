@@ -1,6 +1,7 @@
 package contalgo
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -10,9 +11,30 @@ var (
 
 func TestTransform(t *testing.T) {
 	a := Range(0, 100)
-	b := Transform(a, func(v int) int { return v * v })
+	Transform(a, func(v int) int { return v * v })
 	for i, v := range a {
-		expectEq(t, v*v, b[i])
+		expectEq(t, v, i*i)
+	}
+}
+
+func TestTransformTo(t *testing.T) {
+	a := Range(0, 100)
+	b := make([]string, len(a))
+	TransformTo(a, func(v int) string { return strconv.Itoa(v) }, b)
+	for i, v := range a {
+		expectEq(t, strconv.Itoa(v), b[i])
+	}
+	expactPanic(t, func() {
+		c := make([]string, len(a)-1)
+		TransformTo(a, func(v int) string { return strconv.Itoa(v) }, c)
+	})
+}
+
+func TestTransformCopy(t *testing.T) {
+	a := Range(0, 100)
+	b := TransformCopy(a, func(v int) string { return strconv.Itoa(v) })
+	for i, v := range b {
+		expectEq(t, v, strconv.Itoa(i))
 	}
 }
 
