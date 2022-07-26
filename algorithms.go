@@ -237,9 +237,6 @@ func CountIf[T comparable](a []T, pred func(T) bool) int {
 //////////////////////////////////////////////////////////////////////////////
 // Sort
 
-func Sort[T constraints.Ordered](a []T) {
-}
-
 func IsSorted[T constraints.Ordered](a []T) bool {
 	if len(a) == 0 {
 		return true
@@ -254,6 +251,8 @@ func IsSorted[T constraints.Ordered](a []T) bool {
 	return true
 }
 
+// Unique remove adjacent repeated elements from the input slice
+// return the processed slice, andthe origin slice is also changed.
 func Unique[T comparable](a []T) []T {
 	if len(a) == 0 {
 		return a
@@ -268,4 +267,22 @@ func Unique[T comparable](a []T) []T {
 		}
 	}
 	return a[:i]
+}
+
+// Unique remove adjacent repeated elements from the input slice
+// return the processed slice, andthe origin slice is kept unchanged.
+func UniqueCopy[T comparable](a []T) []T {
+	var r []T
+	if len(a) == 0 {
+		return r
+	}
+
+	for _, v := range a {
+		if len(r) > 0 && r[len(r)-1] == v {
+			continue
+		}
+		r = append(r, v)
+	}
+
+	return r
 }

@@ -4,6 +4,10 @@ import (
 	"testing"
 )
 
+var (
+	emptyInts = []int{}
+)
+
 //////////////////////////////////////////////////////////////////////////////
 // Generative functions
 
@@ -46,6 +50,7 @@ func TestMinN(t *testing.T) {
 	expectEq(t, MinN(2, 1, 3), 1)
 	expectEq(t, MinN(1, 1, 1), 1)
 	expectEq(t, MinN("hello", "world"), "hello")
+	expactPanic(t, func() { MinN(emptyInts...) })
 }
 
 func TestMaxN(t *testing.T) {
@@ -53,6 +58,7 @@ func TestMaxN(t *testing.T) {
 	expectEq(t, MaxN(2, 1), 2)
 	expectEq(t, MaxN(2, 2), 2)
 	expectEq(t, MaxN("hello", "world"), "world")
+	expactPanic(t, func() { MaxN(emptyInts...) })
 }
 
 func TestMinMax(t *testing.T) {
@@ -68,6 +74,7 @@ func TestMinMaxN(t *testing.T) {
 	min, max := MinMaxN(4, 3, 2, 1)
 	expectEq(t, min, 1)
 	expectEq(t, max, 4)
+	expactPanic(t, func() { MinMaxN(emptyInts...) })
 }
 
 func TestSumAs(t *testing.T) {
@@ -100,9 +107,10 @@ func TestEqual(t *testing.T) {
 func TestCompare(t *testing.T) {
 	expectEq(t, Compare([]int{}, []int{}), 0)
 	expectEq(t, Compare([]int{1, 2, 3}, []int{1, 2, 3}), 0)
+	expectEq(t, Compare([]int{1, 2, 2}, []int{1, 2, 3}), -1)
+	expectEq(t, Compare([]int{1, 2, 4}, []int{1, 2, 3}), 1)
 	expectEq(t, Compare([]int{1, 2}, []int{1, 2, 3}), -1)
 	expectEq(t, Compare([]int{1, 2, 3}, []int{1, 2}), 1)
-	expectEq(t, Compare([]int{1, 2, 4}, []int{1, 2, 3}), 1)
 }
 
 func TestFind(t *testing.T) {
@@ -155,13 +163,25 @@ func TestCount(t *testing.T) {
 }
 
 func TestIsSorted(t *testing.T) {
+	expectTrue(t, IsSorted([]int{}))
 	expectTrue(t, IsSorted([]int{1, 2, 3, 4}))
 	expectTrue(t, IsSorted([]int{1, 2, 2, 3, 4}))
 	expectFalse(t, IsSorted([]int{1, 2, 2, 3, 2}))
 }
 
 func TestUnique(t *testing.T) {
+	expectTrue(t, Equal(Unique(emptyInts), emptyInts))
 	a := []int{1, 2, 2, 3, 2, 4}
 	b := []int{1, 2, 3, 2, 4}
 	expectTrue(t, Equal(Unique(a), b))
+	expectTrue(t, Equal(Unique(a[:len(b)]), b))
+}
+
+func TestUniqueCopy(t *testing.T) {
+	expectTrue(t, Equal(Unique(emptyInts), emptyInts))
+	a := []int{1, 2, 2, 3, 2, 4}
+	a1 := append([]int{}, a...)
+	b := []int{1, 2, 3, 2, 4}
+	expectTrue(t, Equal(UniqueCopy(a), b))
+	expectTrue(t, Equal(a, a1))
 }

@@ -17,6 +17,22 @@ func Test_NewStackCap(t *testing.T) {
 	expectEq(t, 10, s.Cap())
 }
 
+func Test_StackCap(t *testing.T) {
+	s := NewStackCap[int](10)
+	s.Push(1)
+	expectEq(t, 1, s.Len())
+	expectEq(t, 10, s.Cap())
+}
+
+func Test_Stack_Clean(t *testing.T) {
+	s := NewStack[int]()
+	s.Push(1)
+	s.Push(2)
+	s.Clean()
+	expectEq(t, 0, s.Len())
+	expectTrue(t, s.IsEmpty())
+}
+
 func Test_Stack_Push(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
@@ -33,4 +49,12 @@ func Test_Stack_Pop(t *testing.T) {
 	v, ok := s.Pop()
 	expectTrue(t, ok)
 	expectEq(t, 1, v)
+}
+
+func Test_Stack_Must(t *testing.T) {
+	s := NewStack[int]()
+	s.Push(1)
+	v := s.MustPop()
+	expectEq(t, 1, v)
+	expactPanic(t, func() { s.MustPop() })
 }

@@ -2,8 +2,8 @@ package contalgo
 
 import (
 	"fmt"
-	"testing"
 	"strings"
+	"testing"
 )
 
 func Test_New(t *testing.T) {
@@ -53,6 +53,13 @@ func Test_Del(t *testing.T) {
 	expectEq(t, s.Len(), 1)
 	s.Del("world")
 	expectEq(t, s.Len(), 0)
+}
+
+func Test_DelN(t *testing.T) {
+	s := NewSetOf("hello", "world")
+	s.DelN("hello", "world")
+	s.Del("world")
+	expectTrue(t, s.IsEmpty())
 }
 
 func Test_Clear(t *testing.T) {
