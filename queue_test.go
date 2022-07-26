@@ -23,6 +23,13 @@ func Test_Queue_String(t *testing.T) {
 	expectEq(t, "Queue[int]", q.String())
 }
 
+func Test_Queue_PushFront(t *testing.T) {
+	q := NewQueue[int]()
+	q.PushFront(1)
+	expectFalse(t, q.IsEmpty())
+	expectEq(t, 1, q.Len())
+}
+
 func Test_Queue_PushBack(t *testing.T) {
 	q := NewQueue[int]()
 	q.PushBack(1)
@@ -30,13 +37,45 @@ func Test_Queue_PushBack(t *testing.T) {
 	expectEq(t, 1, q.Len())
 }
 
+func Test_Queue_PopFront(t *testing.T) {
+	q := NewQueue[int]()
+	_, ok := q.PopFront()
+	expectFalse(t, ok)
+}
 func Test_Queue_PopBack(t *testing.T) {
 	q := NewQueue[int]()
-	v, ok := q.PopBack()
+	_, ok := q.PopBack()
 	expectFalse(t, ok)
+}
 
+func Test_Queue_PushFront_PopFront(t *testing.T) {
+	q := NewQueue[int]()
+	q.PushFront(1)
+	v, ok := q.PopFront()
+	expectTrue(t, ok)
+	expectEq(t, 1, v)
+}
+
+func Test_Queue_PushFront_PopBack(t *testing.T) {
+	q := NewQueue[int]()
+	q.PushFront(1)
+	v, ok := q.PopBack()
+	expectTrue(t, ok)
+	expectEq(t, 1, v)
+}
+
+func Test_Queue_PushBack_PopFront(t *testing.T) {
+	q := NewQueue[int]()
 	q.PushBack(1)
-	v, ok = q.PopFront()
+	v, ok := q.PopFront()
+	expectTrue(t, ok)
+	expectEq(t, 1, v)
+}
+
+func Test_Queue_PushBack_PopBack(t *testing.T) {
+	q := NewQueue[int]()
+	q.PushBack(1)
+	v, ok := q.PopBack()
 	expectTrue(t, ok)
 	expectEq(t, 1, v)
 }

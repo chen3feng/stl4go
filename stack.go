@@ -25,6 +25,10 @@ func (s *Stack[T]) Cap() int {
 	return cap(s.ele)
 }
 
+func (s *Stack[T]) Clean() {
+	s.ele = s.ele[0:0]
+}
+
 func (s *Stack[T]) Push(t T) {
 	s.ele = append(s.ele, t)
 }

@@ -87,7 +87,7 @@ func (l *DList[T]) PopBack() (T, bool) {
 	l.head.prev = l.head.prev.prev
 	l.head.prev.next = &l.head
 	l.length--
-	return val, false
+	return val, true
 }
 
 // ForEach iterate the list, apply each element to the cb callback function
@@ -99,7 +99,7 @@ func (l *DList[T]) ForEach(cb func(val T)) {
 
 // ForEach iterate the list, apply each element to the cb callback function, stop if cb returns false.
 func (l *DList[T]) ForEachIf(cb func(val T) bool) {
-	for n := l.head.prev; n != &l.head; n = n.next {
+	for n := l.head.next; n != &l.head; n = n.next {
 		if !cb(n.val) {
 			break
 		}
