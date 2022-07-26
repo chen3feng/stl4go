@@ -71,7 +71,7 @@ func TestMinMax(t *testing.T) {
 }
 
 func TestMinMaxN(t *testing.T) {
-	min, max := MinMaxN(4, 3, 2, 1)
+	min, max := MinMaxN(3, 4, 1, 2)
 	expectEq(t, min, 1)
 	expectEq(t, max, 4)
 	expactPanic(t, func() { MinMaxN(emptyInts...) })
@@ -178,7 +178,7 @@ func TestUnique(t *testing.T) {
 }
 
 func TestUniqueCopy(t *testing.T) {
-	expectTrue(t, Equal(Unique(emptyInts), emptyInts))
+	expectTrue(t, Equal(UniqueCopy(emptyInts), emptyInts))
 	a := []int{1, 2, 2, 3, 2, 4}
 	a1 := append([]int{}, a...)
 	b := []int{1, 2, 3, 2, 4}
