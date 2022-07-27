@@ -18,14 +18,25 @@ func Sum[T Numeric](a []T) T {
 	return SumAs[T](a)
 }
 
-// AverageAs returns the average value of a as type R.
-func AverageAs[R, T Numeric](a []T) R {
+// averageAs returns the average value of a as type R.
+func averageAs[R, T Numeric](a []T) R {
 	return SumAs[R](a) / R(len(a))
 }
 
 // Average returns the average value of a.
 func Average[T Numeric](a []T) T {
-	return AverageAs[T](a)
+	var x T
+	var i interface{} = x
+	switch i.(type) {
+	case int, int8, uint8, int16, uint16, int32, uint32:
+		return T(averageAs[int64](a))
+	case uint64:
+		return T(averageAs[uint64](a))
+	case float32, float64:
+		return T(averageAs[float64](a))
+	}
+	// int64, uint64, uintptr ...
+	return averageAs[T](a)
 }
 
 // Count returns the number of elements in the slice equals to x.

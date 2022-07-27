@@ -37,13 +37,6 @@ func Average[T Numeric](a []T) T
 ```
 Average returns the average value of a.
 
-#### func  AverageAs
-
-```go
-func AverageAs[R, T Numeric](a []T) R
-```
-AverageAs returns the average value of a as type R.
-
 #### func  Compare
 
 ```go
