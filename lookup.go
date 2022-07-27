@@ -1,11 +1,9 @@
 package contalgo
 
-import "golang.org/x/exp/constraints"
-
 // Max return the larger value between `a` and `b`.
 //
 // Complexity: O(1).
-func Max[T constraints.Ordered](a, b T) T {
+func Max[T Ordered](a, b T) T {
 	if a > b {
 		return a
 	}
@@ -15,7 +13,7 @@ func Max[T constraints.Ordered](a, b T) T {
 // Min return the smaller value between `a` and `b`.
 //
 // Complexity: O(1).
-func Min[T constraints.Ordered](a, b T) T {
+func Min[T Ordered](a, b T) T {
 	if a < b {
 		return a
 	}
@@ -25,7 +23,7 @@ func Min[T constraints.Ordered](a, b T) T {
 // MaxN return the maximum value in the sequence `a`.
 //
 // Complexity: O(len(a)).
-func MaxN[T constraints.Ordered](a ...T) T {
+func MaxN[T Ordered](a ...T) T {
 	if len(a) == 0 {
 		panic("can't call MaxN() with empty arguments list")
 	}
@@ -41,7 +39,7 @@ func MaxN[T constraints.Ordered](a ...T) T {
 // MinN return the minimum value in the sequence `a`.
 //
 // Complexity: O(len(a)).
-func MinN[T constraints.Ordered](a ...T) T {
+func MinN[T Ordered](a ...T) T {
 	if len(a) == 0 {
 		panic("can't call MaxN() with empty arguments list")
 	}
@@ -57,7 +55,7 @@ func MinN[T constraints.Ordered](a ...T) T {
 // MinMax returns both min and max between a and b.
 //
 // Complexity: O(1).
-func MinMax[T constraints.Ordered](a, b T) (min, max T) {
+func MinMax[T Ordered](a, b T) (min, max T) {
 	if a < b {
 		return a, b
 	}
@@ -67,7 +65,7 @@ func MinMax[T constraints.Ordered](a, b T) (min, max T) {
 // MinMaxN returns both min and max in slice a.
 //
 // Complexity: O(len(a))
-func MinMaxN[T constraints.Ordered](a ...T) (min, max T) {
+func MinMaxN[T Ordered](a ...T) (min, max T) {
 	if len(a) == 0 {
 		panic("can't call MaxN() with empty arguments list")
 	}

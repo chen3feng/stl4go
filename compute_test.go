@@ -17,6 +17,11 @@ func TestAverage(t *testing.T) {
 	expectEq(t, Average(a), 50)
 }
 
+func TestAverage_U64(t *testing.T) {
+	a := Range[uint64](0, 101)
+	expectEq(t, Average(a), 50)
+}
+
 func TestAverage_Float(t *testing.T) {
 	a := Range(0.0, 101.0)
 	expectEq(t, Average(a), 50.0)
