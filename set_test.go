@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+func Test_Set_Interface(t *testing.T) {
+	_ = Container[int](NewSet[int]())
+}
+
 func Test_New(t *testing.T) {
 	s := NewSet[string]()
 	expectEq(t, s.Len(), 0)
@@ -22,6 +26,12 @@ func Test_IsEmpty(t *testing.T) {
 	expectEq(t, s.IsEmpty(), true)
 	s.Add("hello")
 	expectEq(t, s.IsEmpty(), false)
+}
+
+func Test_Clean(t *testing.T) {
+	s := NewSetOf("hello", "world")
+	s.Clean()
+	expectTrue(t, s.IsEmpty())
 }
 
 func Test_String(t *testing.T) {
@@ -60,12 +70,6 @@ func Test_DelN(t *testing.T) {
 	s.DelN("hello", "world")
 	s.Del("world")
 	expectTrue(t, s.IsEmpty())
-}
-
-func Test_Clear(t *testing.T) {
-	s := NewSetOf("hello", "world")
-	s.Clear()
-	expectEq(t, s.IsEmpty(), true)
 }
 
 func Test_Keys(t *testing.T) {

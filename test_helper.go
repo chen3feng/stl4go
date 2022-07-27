@@ -30,6 +30,13 @@ func expectLt[T constraints.Ordered](t *testing.T, a, b T) {
 	}
 }
 
+func expectGt[T constraints.Ordered](t *testing.T, a, b T) {
+	if !(a > b) {
+		_, file, line, _ := runtime.Caller(1)
+		reportMismatch(t, a, ">", b, file, line)
+	}
+}
+
 func expectTrue(t *testing.T, actual bool) {
 	if !actual {
 		_, file, line, _ := runtime.Caller(1)
