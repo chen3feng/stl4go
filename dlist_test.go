@@ -4,6 +4,10 @@ import (
 	"testing"
 )
 
+func Test_Dlist_Interface(t *testing.T) {
+	_ = Container[int](NewDList[int]())
+}
+
 func Test_DList_New(t *testing.T) {
 	l := NewDList[int]()
 	expectTrue(t, l.IsEmpty())

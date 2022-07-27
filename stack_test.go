@@ -4,6 +4,9 @@ import (
 	"testing"
 )
 
+func Test_Stack_Interface(t *testing.T) {
+	_ = Container[int](NewStack[int]())
+}
 func Test_NewStack(t *testing.T) {
 	si := NewStack[int]()
 	ss := NewStack[string]()

@@ -30,6 +30,12 @@ func (s *Set[K]) Len() int {
 	return len(s.m)
 }
 
+func (s *Set[K]) Clean() {
+	for k := range s.m {
+		delete(s.m, k)
+	}
+}
+
 func (s *Set[K]) Has(k K) bool {
 	_, ok := s.m[k]
 	return ok
@@ -53,10 +59,6 @@ func (s *Set[K]) DelN(ks ...K) {
 	for _, k := range ks {
 		delete(s.m, k)
 	}
-}
-
-func (s *Set[K]) Clear() {
-	s.m = make(map[K]struct{})
 }
 
 func (s *Set[K]) Keys() []K {
