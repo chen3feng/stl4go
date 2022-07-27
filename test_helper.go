@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"runtime"
 	"testing"
-
-	"golang.org/x/exp/constraints"
 )
 
 func report(t *testing.T, file string, line int, msg string) {
@@ -23,14 +21,14 @@ func expectEq[T comparable](t *testing.T, a, b T) {
 	}
 }
 
-func expectLt[T constraints.Ordered](t *testing.T, a, b T) {
+func expectLt[T Ordered](t *testing.T, a, b T) {
 	if !(a < b) {
 		_, file, line, _ := runtime.Caller(1)
 		reportMismatch(t, a, "<", b, file, line)
 	}
 }
 
-func expectGt[T constraints.Ordered](t *testing.T, a, b T) {
+func expectGt[T Ordered](t *testing.T, a, b T) {
 	if !(a > b) {
 		_, file, line, _ := runtime.Caller(1)
 		reportMismatch(t, a, ">", b, file, line)
