@@ -520,26 +520,18 @@ func (q *Queue[T]) String() string
 #### type Set
 
 ```go
-type Set[K comparable] struct {
-}
+type Set[K comparable] map[K]bool
 ```
 
 Set is an associative container that contains a unordered set of unique objects
 of type K.
 
-#### func  NewSet
+#### func  MakeSetOf
 
 ```go
-func NewSet[K comparable]() *Set[K]
+func MakeSetOf[K comparable](ks ...K) Set[K]
 ```
-NewSet creates a new Set object.
-
-#### func  NewSetOf
-
-```go
-func NewSetOf[K comparable](ks ...K) *Set[K]
-```
-NewSetOf creates a new Set object with the initial content from ks.
+MakeSetOf creates a new Set object with the initial content from ks.
 
 #### func (*Set[K]) Add
 
@@ -607,10 +599,10 @@ func (s *Set[K]) Keys() []K
 func (s *Set[K]) Len() int
 ```
 
-#### func (*Set[K]) String
+#### func (Set[K]) String
 
 ```go
-func (s *Set[K]) String() string
+func (s Set[K]) String() string
 ```
 
 #### type Stack

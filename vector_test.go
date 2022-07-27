@@ -4,19 +4,18 @@ import (
 	"testing"
 )
 
-type Vec[T any] []T
-
 func Test_Vector_Interface(t *testing.T) {
 	v := MakeVector[int]()
 	_ = Container[int](&v)
 }
 
 func Test_MakeVector(t *testing.T) {
-	si := MakeVector[int]()
-	ss := MakeVector[string]()
-	expectEq(t, 0, si.Len())
-	expectEq(t, 0, ss.Len())
-	expectTrue(t, ss.IsEmpty())
+	MakeVector[int]()
+	_ = make(Vector[int], 1)
+	_ = make(Vector[int], 1, 2)
+	var v Vector[int]
+	_ = v
+	v = Vector[int]{1, 2, 3}
 }
 
 func Test_MakeVectorCap(t *testing.T) {
