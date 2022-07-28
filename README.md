@@ -40,7 +40,7 @@ Average returns the average value of a.
 #### func  Compare
 
 ```go
-func Compare[E constraints.Ordered](a, b []E) int
+func Compare[E Ordered](a, b []E) int
 ```
 Compare compares each elements in a and b.
 
@@ -123,7 +123,7 @@ Complexity: O(len(a)).
 #### func  IsSorted
 
 ```go
-func IsSorted[T constraints.Ordered](a []T) bool
+func IsSorted[T Ordered](a []T) bool
 ```
 IsSorted returns whether the slice a is sorted in ascending order.
 
@@ -132,14 +132,14 @@ Complexity: O(len(a)).
 #### func  Less
 
 ```go
-func Less[T constraints.Ordered](a, b T) bool
+func Less[T Ordered](a, b T) bool
 ```
 Less wraps the '<' operator for ordered types.
 
 #### func  Max
 
 ```go
-func Max[T constraints.Ordered](a, b T) T
+func Max[T Ordered](a, b T) T
 ```
 Max return the larger value between `a` and `b`.
 
@@ -148,7 +148,7 @@ Complexity: O(1).
 #### func  MaxN
 
 ```go
-func MaxN[T constraints.Ordered](a ...T) T
+func MaxN[T Ordered](a ...T) T
 ```
 MaxN return the maximum value in the sequence `a`.
 
@@ -157,7 +157,7 @@ Complexity: O(len(a)).
 #### func  Min
 
 ```go
-func Min[T constraints.Ordered](a, b T) T
+func Min[T Ordered](a, b T) T
 ```
 Min return the smaller value between `a` and `b`.
 
@@ -166,7 +166,7 @@ Complexity: O(1).
 #### func  MinMax
 
 ```go
-func MinMax[T constraints.Ordered](a, b T) (min, max T)
+func MinMax[T Ordered](a, b T) (min, max T)
 ```
 MinMax returns both min and max between a and b.
 
@@ -175,7 +175,7 @@ Complexity: O(1).
 #### func  MinMaxN
 
 ```go
-func MinMaxN[T constraints.Ordered](a ...T) (min, max T)
+func MinMaxN[T Ordered](a ...T) (min, max T)
 ```
 MinMaxN returns both min and max in slice a.
 
@@ -184,7 +184,7 @@ Complexity: O(len(a))
 #### func  MinN
 
 ```go
-func MinN[T constraints.Ordered](a ...T) T
+func MinN[T Ordered](a ...T) T
 ```
 MinN return the minimum value in the sequence `a`.
 
@@ -420,6 +420,18 @@ func (l *DList[T]) String() string
 ```
 String convert the list to string
 
+#### type Float
+
+```go
+type Float interface {
+	~float32 | ~float64
+}
+```
+
+Float is a constraint that permits any floating-point type. If future releases
+of Go add new predeclared floating-point types, this constraint will be modified
+to include them.
+
 #### type HashFn
 
 ```go
@@ -427,6 +439,18 @@ type HashFn[T any] func(t T) uint64
 ```
 
 HashFn is a function that returns the hash of 't'.
+
+#### type Integer
+
+```go
+type Integer interface {
+	Signed | Unsigned
+}
+```
+
+Integer is a constraint that permits any integer type. If future releases of Go
+add new predeclared integer types, this constraint will be modified to include
+them.
 
 #### type LessFn
 
@@ -440,11 +464,23 @@ LessFn is a function that returns whether 'a' is less than 'b'.
 
 ```go
 type Numeric interface {
-	constraints.Integer | constraints.Float
+	Integer | Float
 }
 ```
 
 Numeric is a constraint that permits any numeric type.
+
+#### type Ordered
+
+```go
+type Ordered interface {
+	Integer | Float | ~string
+}
+```
+
+Ordered is a constraint that permits any ordered type: any type that supports
+the operators < <= >= >. If future releases of Go add new ordered types, this
+constraint will be modified to include them.
 
 #### type Queue
 
@@ -598,6 +634,18 @@ func (s *Set[K]) Len() int
 func (s Set[K]) String() string
 ```
 
+#### type Signed
+
+```go
+type Signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+```
+
+Signed is a constraint that permits any signed integer type. If future releases
+of Go add new predeclared signed integer types, this constraint will be modified
+to include them.
+
 #### type Stack
 
 ```go
@@ -663,6 +711,18 @@ func (s *Stack[T]) Pop() (val T, ok bool)
 ```go
 func (s *Stack[T]) Push(t T)
 ```
+
+#### type Unsigned
+
+```go
+type Unsigned interface {
+	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+```
+
+Unsigned is a constraint that permits any unsigned integer type. If future
+releases of Go add new predeclared unsigned integer types, this constraint will
+be modified to include them.
 
 #### type Vector
 

@@ -1,7 +1,5 @@
 package contalgo
 
-import "golang.org/x/exp/constraints"
-
 // Equal returns whether two slices are equal.
 // Return true if they are the same length and all elements are equal.
 //
@@ -25,7 +23,7 @@ func Equal[T comparable](a, b []T) bool {
 // return -1 if a < b.
 //
 // Complexity: O(min(len(a), len(b))).
-func Compare[E constraints.Ordered](a, b []E) int {
+func Compare[E Ordered](a, b []E) int {
 	bl := len(b)
 	for i, v1 := range a {
 		if i >= bl {
