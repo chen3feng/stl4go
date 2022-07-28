@@ -9,13 +9,13 @@ var (
 	emptyInts = []int{}
 )
 
-func TestCopy(t *testing.T) {
+func Test_Copy(t *testing.T) {
 	a := []int{1, 2, 3, 4}
 	b := Copy(a)
 	expectTrue(t, Equal(a, b))
 }
 
-func TestTransform(t *testing.T) {
+func Test_Transform(t *testing.T) {
 	a := Range(0, 100)
 	Transform(a, func(v int) int { return v * v })
 	for i, v := range a {
@@ -23,7 +23,7 @@ func TestTransform(t *testing.T) {
 	}
 }
 
-func TestTransformTo(t *testing.T) {
+func Test_TransformTo(t *testing.T) {
 	a := Range(0, 100)
 	b := make([]string, len(a))
 	TransformTo(a, func(v int) string { return strconv.Itoa(v) }, b)
@@ -36,7 +36,7 @@ func TestTransformTo(t *testing.T) {
 	})
 }
 
-func TestTransformCopy(t *testing.T) {
+func Test_TransformCopy(t *testing.T) {
 	a := Range(0, 100)
 	b := TransformCopy(a, func(v int) string { return strconv.Itoa(v) })
 	for i, v := range b {
@@ -44,7 +44,7 @@ func TestTransformCopy(t *testing.T) {
 	}
 }
 
-func TestUnique(t *testing.T) {
+func Test_Unique(t *testing.T) {
 	expectTrue(t, Equal(Unique(emptyInts), emptyInts))
 	a := []int{1, 2, 2, 3, 2, 4}
 	b := []int{1, 2, 3, 2, 4}
@@ -52,7 +52,7 @@ func TestUnique(t *testing.T) {
 	expectTrue(t, Equal(Unique(a[:len(b)]), b))
 }
 
-func TestUniqueCopy(t *testing.T) {
+func Test_UniqueCopy(t *testing.T) {
 	expectTrue(t, Equal(UniqueCopy(emptyInts), emptyInts))
 	a := []int{1, 2, 2, 3, 2, 4}
 	a1 := append([]int{}, a...)
@@ -61,14 +61,14 @@ func TestUniqueCopy(t *testing.T) {
 	expectTrue(t, Equal(a, a1))
 }
 
-func TestRemove(t *testing.T) {
+func Test_Remove(t *testing.T) {
 	a := []int{1, 2, 2, 3, 2, 4}
 	b := Remove(a, 2)
 	expectTrue(t, Equal([]int{1, 3, 4}, b))
 	expectTrue(t, Equal([]int{1, 3, 4}, a[:len(b)]))
 }
 
-func TestRemoveCopy(t *testing.T) {
+func Test_RemoveCopy(t *testing.T) {
 	a := []int{1, 2, 2, 3, 2, 4}
 	a1 := []int{1, 2, 2, 3, 2, 4}
 	b := RemoveCopy(a, 2)
@@ -76,14 +76,14 @@ func TestRemoveCopy(t *testing.T) {
 	expectTrue(t, Equal(a1, a))
 }
 
-func TestRemoveIf(t *testing.T) {
+func Test_RemoveIf(t *testing.T) {
 	a := []int{1, 2, 2, 3, 2, 4}
 	b := RemoveIf(a, func(v int) bool { return v == 2 })
 	expectTrue(t, Equal([]int{1, 3, 4}, b))
 	expectTrue(t, Equal([]int{1, 3, 4}, a[:len(b)]))
 }
 
-func TestRemoveIfCopy(t *testing.T) {
+func Test_RemoveIfCopy(t *testing.T) {
 	a := []int{1, 2, 2, 3, 2, 4}
 	a1 := []int{1, 2, 2, 3, 2, 4}
 	b := RemoveIfCopy(a, func(v int) bool { return v == 2 })
