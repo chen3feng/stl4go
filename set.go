@@ -2,7 +2,6 @@ package contalgo
 
 import (
 	"fmt"
-	"reflect"
 )
 
 // Set is an associative container that contains a unordered set of unique objects of type K.
@@ -77,6 +76,5 @@ func (s *Set[K]) ForEachIf(cb func(k K) bool) {
 }
 
 func (s Set[K]) String() string {
-	var k *K = nil
-	return fmt.Sprintf("Set[%s]%v", reflect.TypeOf(k).String()[1:], s.Keys())
+	return fmt.Sprintf("Set[%s]%v", nameOfType[K](), s.Keys())
 }
