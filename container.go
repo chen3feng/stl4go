@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Container is a holder object that stores a collection of other objects.
 type Container[T any] interface {

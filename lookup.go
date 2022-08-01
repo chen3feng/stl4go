@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Max return the larger value between `a` and `b`.
 //

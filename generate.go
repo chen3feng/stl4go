@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Range make a []T filled with values in the `[first, last)` sequence.
 //

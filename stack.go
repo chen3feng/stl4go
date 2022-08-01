@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Stack s is a container adaptor that provides the functionality of a stack,
 // a LIFO (last-in, first-out) data structure.

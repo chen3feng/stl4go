@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Equal returns whether two slices are equal.
 // Return true if they are the same length and all elements are equal.

@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // SumAs summarize all elements in a.
 // returns the result as type R, this is useful when T is too small to hold the result.

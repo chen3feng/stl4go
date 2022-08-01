@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 import "fmt"
 
