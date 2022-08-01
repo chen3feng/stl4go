@@ -1,5 +1,7 @@
 package contalgo
 
+import "math/rand"
+
 // Copy make a copy of slice a.
 //
 // Complexity: O(len(a)).
@@ -139,4 +141,22 @@ func RemoveIfCopy[T any](a []T, cond func(T) bool) []T {
 		}
 	}
 	return r
+}
+
+// Shuffle pseudo-randomizes the order of elements.
+//
+// Complexity: O(len(a)).
+func Shuffle[T any](a []T) {
+	rand.Shuffle(len(a), func(i, j int) {
+		a[i], a[j] = a[j], a[i]
+	})
+}
+
+// Reverse reverses the order of the elements in the slice a.
+//
+// Complexity: O(len(a)).
+func Reverse[T any](a []T) {
+	for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
+		a[i], a[j] = a[j], a[i]
+	}
 }

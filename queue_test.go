@@ -14,10 +14,10 @@ func Test_Queue_New(t *testing.T) {
 	expectEq(t, 0, q.Len())
 }
 
-func Test_Queue_Clean(t *testing.T) {
+func Test_Queue_Clear(t *testing.T) {
 	q := NewQueue[int]()
 	q.PushBack(1)
-	q.Clean()
+	q.Clear()
 	expectTrue(t, q.IsEmpty())
 	expectEq(t, 0, q.Len())
 }

@@ -27,11 +27,11 @@ func Test_StackCap(t *testing.T) {
 	expectEq(t, 10, s.Cap())
 }
 
-func Test_Stack_Clean(t *testing.T) {
+func Test_Stack_Clear(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
 	s.Push(2)
-	s.Clean()
+	s.Clear()
 	expectEq(t, 0, s.Len())
 	expectTrue(t, s.IsEmpty())
 }

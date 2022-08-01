@@ -90,3 +90,20 @@ func Test_RemoveIfCopy(t *testing.T) {
 	expectTrue(t, Equal([]int{1, 3, 4}, b))
 	expectTrue(t, Equal(a1, a))
 }
+
+func Test_Shuffle(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5, 6}
+	Shuffle(a)
+}
+
+func Test_Reverse(t *testing.T) {
+	a := []int{1, 2, 3, 4}
+	Reverse(a)
+	expectTrue(t, Equal(a, []int{4, 3, 2, 1}))
+}
+
+func Test_Reverse_Odd(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5}
+	Reverse(a)
+	expectTrue(t, Equal(a, []int{5, 4, 3, 2, 1}))
+}

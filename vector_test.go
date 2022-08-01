@@ -41,9 +41,9 @@ func Test_VectorCap(t *testing.T) {
 	expectEq(t, 10, v.Cap())
 }
 
-func Test_Vector_Clean(t *testing.T) {
+func Test_Vector_Clear(t *testing.T) {
 	v := MakeVectorOf(1, 2, 3)
-	v.Clean()
+	v.Clear()
 	expectEq(t, 0, v.Len())
 	expectTrue(t, v.IsEmpty())
 	expectGt(t, v.Cap(), 0)

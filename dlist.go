@@ -16,22 +16,22 @@ type dListNode[T any] struct {
 // NewDList make a new DList object
 func NewDList[T any]() *DList[T] {
 	l := DList[T]{}
-	l.Clean()
+	l.Clear()
 	return &l
 }
 
 // NewDListOf make a new DList from a serial of values
 func NewDListOf[T any](vs ...T) *DList[T] {
 	l := DList[T]{}
-	l.Clean()
+	l.Clear()
 	for _, v := range vs {
 		l.PushBack(v)
 	}
 	return &l
 }
 
-// Clean cleanup the list
-func (l *DList[T]) Clean() {
+// Clear cleanup the list
+func (l *DList[T]) Clear() {
 	l.head.prev = &l.head
 	l.head.next = &l.head
 	l.length = 0
