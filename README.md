@@ -54,6 +54,7 @@ Package contalgo is a generic container and algorithm library for go.
 - [func RemoveIf[T any](a []T, cond func(T) bool) []T](<#func-removeif>)
 - [func RemoveIfCopy[T any](a []T, cond func(T) bool) []T](<#func-removeifcopy>)
 - [func Reverse[T any](a []T)](<#func-reverse>)
+- [func ReverseCopy[T any](a []T) []T](<#func-reversecopy>)
 - [func Shuffle[T any](a []T)](<#func-shuffle>)
 - [func Sort[T Ordered](a []T)](<#func-sort>)
 - [func SortFunc[T any](a []T, less func(x, y T) bool)](<#func-sortfunc>)
@@ -435,6 +436,16 @@ func Reverse[T any](a []T)
 ```
 
 Reverse reverses the order of the elements in the slice a.
+
+Complexity: O\(len\(a\)\).
+
+## func [ReverseCopy](<https://github.com/chen3feng/contalgo/blob/master/transform.go#L167>)
+
+```go
+func ReverseCopy[T any](a []T) []T
+```
+
+ReverseCopy returns a reversed copy of slice a.
 
 Complexity: O\(len\(a\)\).
 

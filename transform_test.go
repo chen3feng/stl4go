@@ -107,3 +107,9 @@ func Test_Reverse_Odd(t *testing.T) {
 	Reverse(a)
 	expectTrue(t, Equal(a, []int{5, 4, 3, 2, 1}))
 }
+
+func Test_ReverseCopy(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5}
+	b := ReverseCopy(a)
+	expectTrue(t, Equal(b, []int{5, 4, 3, 2, 1}))
+}
