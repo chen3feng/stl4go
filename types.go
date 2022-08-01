@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Signed is a constraint that permits any signed integer type.
 // If future releases of Go add new predeclared signed integer types,

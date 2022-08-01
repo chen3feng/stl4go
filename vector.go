@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Vector is a sequence container representing array that can change in size.
 type Vector[T any] []T

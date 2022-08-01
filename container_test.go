@@ -1,1 +1,1 @@
-package contalgo
+package stl4go
