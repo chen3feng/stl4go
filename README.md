@@ -4,9 +4,16 @@ This library contains generic containers and algorithms, it is designed to be ST
 
 点击这里查看[中文文档](README_zh.md)。
 
+[![License Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-red.svg)](COPYING)
+[![Python](https://img.shields.io/badge/Language-go1.18+-blue.svg)](https://www.python.org/)
 ![Build Status](https://github.com/chen3feng/stl4go/actions/workflows/go.yml/badge.svg)
-[![codebeat badge](https://codebeat.co/badges/f8424c61-c382-4baf-8b9e-84520866d0a5)](https://codebeat.co/projects/github-com-chen3feng-stl4go-master)
 [![Coverage Status](https://coveralls.io/repos/github/chen3feng/stl4go/badge.svg?branch=master)](https://coveralls.io/github/chen3feng/stl4go?branch=master)
+[![GoReport](https://goreportcard.com/badge/github.com/securego/gosec)](https://goreportcard.com/report/github.com/chen3feng/stl4go)
+
+<!--
+[![codebeat badge](https://codebeat.co/badges/f8424c61-c382-4baf-8b9e-84520866d0a5)](https://codebeat.co/projects/github-com-chen3feng-stl4go-master)
+[![Downloads](https://img.shields.io/github/downloads/chen3feng/stl4go/total.svg)](https://github.com/chen3feng/stl4go/releases)
+-->
 
 This library depends on go generics, which is introduced in 1.18+.
 
