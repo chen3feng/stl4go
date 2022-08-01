@@ -12,7 +12,7 @@ type Queue[T any] struct {
 // NewQueue create a new Queue object.
 func NewQueue[T any]() *Queue[T] {
 	q := Queue[T]{}
-	q.list.Clean()
+	q.list.Clear()
 	return &q
 }
 
@@ -24,8 +24,8 @@ func (q *Queue[T]) IsEmpty() bool {
 	return q.list.IsEmpty()
 }
 
-func (q *Queue[T]) Clean() {
-	q.list.Clean()
+func (q *Queue[T]) Clear() {
+	q.list.Clear()
 }
 
 func (q *Queue[T]) String() string {

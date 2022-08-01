@@ -28,7 +28,7 @@ func (s *Stack[T]) Cap() int {
 	return cap(s.ele)
 }
 
-func (s *Stack[T]) Clean() {
+func (s *Stack[T]) Clear() {
 	s.ele = s.ele[0:0]
 }
 

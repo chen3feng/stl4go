@@ -22,7 +22,7 @@ func (s *Set[K]) Len() int {
 	return len(*s)
 }
 
-func (s *Set[K]) Clean() {
+func (s *Set[K]) Clear() {
 	for k := range *s {
 		delete(*s, k)
 	}

@@ -31,9 +31,9 @@ func (v *Vector[T]) Cap() int {
 	return cap(*v)
 }
 
-// Clean erases all elements from the vector. After this call, Len() returns zero.
+// Clear erases all elements from the vector. After this call, Len() returns zero.
 // Leaves the Cap() of the vector unchanged.
-func (v *Vector[T]) Clean() {
+func (v *Vector[T]) Clear() {
 	*v = (*v)[0:0]
 }
 

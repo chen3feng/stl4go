@@ -35,9 +35,9 @@ func Test_Set_IsEmpty(t *testing.T) {
 	expectEq(t, s.IsEmpty(), false)
 }
 
-func Test_Set_Clean(t *testing.T) {
+func Test_Set_Clear(t *testing.T) {
 	s := MakeSetOf("hello", "world")
-	s.Clean()
+	s.Clear()
 	expectTrue(t, s.IsEmpty())
 }
 
