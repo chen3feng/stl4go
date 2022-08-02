@@ -57,6 +57,16 @@ func Test_Find(t *testing.T) {
 	expectFalse(t, ok)
 }
 
+func Test_FindIf(t *testing.T) {
+	isNeg := func(x int) bool { return x < 0 }
+	a := []int{1, 2, -3, 4, 3}
+	i, ok := FindIf(a, isNeg)
+	expectTrue(t, ok)
+	expectEq(t, i, 2)
+	i, ok = FindIf([]int{1, 2, 3, 4, 3}, isNeg)
+	expectFalse(t, ok)
+}
+
 func Test_Index(t *testing.T) {
 	a := []int{1, 2, 3, 4, 3}
 	expectEq(t, Index(a, 3), 2)
