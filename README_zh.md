@@ -2,9 +2,12 @@
 
 本库包含 Go 语言实现的范型容器和算法库，就像 C++ 中的 STL。
 
+[![License Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-red.svg)](COPYING)
+[![Python](https://img.shields.io/badge/Language-go1.18+-blue.svg)](https://www.python.org/)
 ![Build Status](https://github.com/chen3feng/stl4go/actions/workflows/go.yml/badge.svg)
-[![codebeat badge](https://codebeat.co/badges/f8424c61-c382-4baf-8b9e-84520866d0a5)](https://codebeat.co/projects/github-com-chen3feng-stl4go-master)
 [![Coverage Status](https://coveralls.io/repos/github/chen3feng/stl4go/badge.svg?branch=master)](https://coveralls.io/github/chen3feng/stl4go?branch=master)
+[![GoReport](https://goreportcard.com/badge/github.com/securego/gosec)](https://goreportcard.com/report/github.com/chen3feng/stl4go)
+
 
 <!-- gomarkdoc:embed:start -->
 
