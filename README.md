@@ -10,11 +10,6 @@ This library contains generic containers and algorithms, it is designed to be ST
 [![Coverage Status](https://coveralls.io/repos/github/chen3feng/stl4go/badge.svg?branch=master)](https://coveralls.io/github/chen3feng/stl4go?branch=master)
 [![GoReport](https://goreportcard.com/badge/github.com/securego/gosec)](https://goreportcard.com/report/github.com/chen3feng/stl4go)
 
-<!--
-[![codebeat badge](https://codebeat.co/badges/f8424c61-c382-4baf-8b9e-84520866d0a5)](https://codebeat.co/projects/github-com-chen3feng-stl4go-master)
-[![Downloads](https://img.shields.io/github/downloads/chen3feng/stl4go/total.svg)](https://github.com/chen3feng/stl4go/releases)
--->
-
 This library depends on go generics, which is introduced in 1.18+.
 
 <!-- gomarkdoc:embed:start -->
