@@ -1065,13 +1065,13 @@ func (sl *SkipList[K, V]) Find(key K) *V
 
 Find returns the value associated with the passed key if the key is in the skiplist, otherwise returns nil.
 
-### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L135>)
+### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L138>)
 
 ```go
 func (sl *SkipList[K, V]) ForEach(op func(K, *V))
 ```
 
-### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L141>)
+### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L144>)
 
 ```go
 func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool)
