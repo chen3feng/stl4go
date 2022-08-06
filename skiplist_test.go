@@ -72,7 +72,9 @@ func TestSkipList_Remove_Nonexist(t *testing.T) {
 func TestSkipList_Remove_Level(t *testing.T) {
 	sl := newSkipListN(1000)
 	expectGt(t, sl.level, 8)
-	sl.Clear()
+	for i := 0; i < 1000; i++ {
+		sl.Remove(i)
+	}
 	expectEq(t, sl.level, 1)
 }
 
@@ -85,6 +87,7 @@ func TestSkipList_Clean(t *testing.T) {
 
 	expectTrue(t, sl.IsEmpty())
 	expectEq(t, sl.Len(), 0)
+	expectEq(t, sl.level, 1)
 }
 
 func TestSkipList_level(t *testing.T) {
@@ -99,7 +102,16 @@ func TestSkipList_level(t *testing.T) {
 	expectLt(t, math.Abs(float64(Average(diffs))), 2)
 }
 
-func TestSkipList_Get(t *testing.T) {
+func TestSkipList_newnode(t *testing.T) {
+	for level := 1; level <= skipListMaxLevel; level++ {
+		node := newSkipListNode(level, 1, 1)
+		expectEq(t, len(node.next), level)
+	}
+	expactPanic(t, func() { newSkipListNode(0, 1, 1) })
+	expactPanic(t, func() { newSkipListNode(skipListMaxLevel+1, 1, 1) })
+}
+
+func TestSkipList_Find(t *testing.T) {
 	sl := newSkipListN(100)
 	for i := 0; i < 100; i++ {
 		p := sl.Find(i)

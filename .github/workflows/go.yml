@@ -25,7 +25,7 @@ jobs:
       run: go test -v ./... -covermode=count -coverprofile=coverage.out.tmp
 
     - name: Filter out test_helper
-      run: grep -F -v "/test_helper.go:" coverage.out.tmp > coverage.out
+      run: grep -E -v "/(test_helper)\.go:" coverage.out.tmp > coverage.out
 
     - name: Convert coverage.out to coverage.lcov
       uses: jandelgado/gcov2lcov-action@v1.0.9
