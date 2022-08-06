@@ -1,11 +1,11 @@
-package contalgo
+package stl4go
 
 import (
 	"testing"
 )
 
 func Test_Queue_Interface(t *testing.T) {
-	_ = Container[int](NewQueue[int]())
+	_ = Container(NewQueue[int]())
 }
 
 func Test_Queue_New(t *testing.T) {

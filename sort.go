@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 import (
 	"sort"
@@ -47,7 +47,7 @@ func (x ascSlice[T]) Swap(i, j int)      { x[i], x[j] = x[j], x[i] }
 // Sort sorts data in ascending order.
 // The order of equal elements is not guaranteed to be preserved.
 //
-// Complexity: O(N*log(N)), N=len(a).
+// Complexity: O(N*log(N)), where N=len(a).
 func Sort[T Ordered](a []T) {
 	sort.Sort(ascSlice[T](a))
 }
@@ -55,7 +55,7 @@ func Sort[T Ordered](a []T) {
 // StableSort sorts data in ascending order stably.
 // The order of equivalent elements is guaranteed to be preserved.
 //
-// Complexity: O(N*log(N)), N=len(a).
+// Complexity: O(N*log(N)^2), where N=len(a).
 func StableSort[T Ordered](a []T) {
 	sort.Stable(ascSlice[T](a))
 }

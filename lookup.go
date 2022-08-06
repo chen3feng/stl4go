@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 // Max return the larger value between `a` and `b`.
 //
@@ -82,13 +82,28 @@ func MinMaxN[T Ordered](a ...T) (min, max T) {
 	return
 }
 
-// Find find the value x in the given slice a linearly.
+// Find find the first value x in the given slice a linearly.
 // return (index, true) if found,
 // return (_, false) if not found.
+//
 // Complexity: O(len(a)).
 func Find[T comparable](a []T, x T) (index int, ok bool) {
 	for i, v := range a {
 		if v == x {
+			return i, true
+		}
+	}
+	return -1, false
+}
+
+// FindIf find the first value x satisfying function cond in the given slice a linearly.
+// return (index, true) if found,
+// return (_, false) if not found.
+//
+// Complexity: O(len(a)).
+func FindIf[T any](a []T, cond func(T) bool) (index int, ok bool) {
+	for i, v := range a {
+		if cond(v) {
 			return i, true
 		}
 	}

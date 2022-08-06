@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 
 func Test_Vector_Interface(t *testing.T) {
 	v := MakeVector[int]()
-	_ = Container[int](&v)
+	_ = Container(&v)
 }
 
 func Test_MakeVector(t *testing.T) {

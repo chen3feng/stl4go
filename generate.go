@@ -1,6 +1,7 @@
-package contalgo
+package stl4go
 
 // Range make a []T filled with values in the `[first, last)` sequence.
+// NOTE: the last is not included in the result.
 //
 // Complexity: O(last-first).
 func Range[T Numeric](first, last T) []T {

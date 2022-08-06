@@ -1,11 +1,11 @@
-package contalgo
+package stl4go
 
 // SumAs summarize all elements in a.
 // returns the result as type R, this is useful when T is too small to hold the result.
 // Complexity: O(len(a)).
 func SumAs[R, T Numeric](a []T) R {
 	var total R
-	for v := range a {
+	for _, v := range a {
 		total += R(v)
 	}
 	return total
@@ -18,8 +18,8 @@ func Sum[T Numeric](a []T) T {
 	return SumAs[T](a)
 }
 
-// averageAs returns the average value of a as type R.
-func averageAs[R, T Numeric](a []T) R {
+// AverageAs returns the average value of a as type R.
+func AverageAs[R, T Numeric](a []T) R {
 	return SumAs[R](a) / R(len(a))
 }
 
@@ -29,14 +29,14 @@ func Average[T Numeric](a []T) T {
 	var i interface{} = x
 	switch i.(type) {
 	case int, int8, uint8, int16, uint16, int32, uint32:
-		return T(averageAs[int64](a))
+		return T(AverageAs[int64](a))
 	case uint64:
-		return T(averageAs[uint64](a))
+		return T(AverageAs[uint64](a))
 	case float32, float64:
-		return T(averageAs[float64](a))
+		return T(AverageAs[float64](a))
 	}
 	// int64, uint64, uintptr ...
-	return averageAs[T](a)
+	return AverageAs[T](a)
 }
 
 // Count returns the number of elements in the slice equals to x.

@@ -1,4 +1,4 @@
-package contalgo
+package stl4go
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 func Test_Set_Interface(t *testing.T) {
 	s := make(Set[int])
-	_ = Container[int](&s)
+	_ = Container(&s)
 }
 
 func Test_MakeSet(t *testing.T) {

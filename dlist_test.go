@@ -1,11 +1,11 @@
-package contalgo
+package stl4go
 
 import (
 	"testing"
 )
 
 func Test_Dlist_Interface(t *testing.T) {
-	_ = Container[int](NewDList[int]())
+	_ = Container(NewDList[int]())
 }
 
 func Test_DList_New(t *testing.T) {
