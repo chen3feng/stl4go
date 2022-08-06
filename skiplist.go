@@ -37,7 +37,7 @@ func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
 	l := &SkipList[K, V]{
 		level:      1,
 		keyCmp:     OrderedCompare[K],
-		rander:     rand.New(rand.NewSource(time.Now().Unix())),
+		rander:     rand.New(rand.NewSource(time.Now().Unix())), //nolint:gosec
 		prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
 	}
 	l.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
