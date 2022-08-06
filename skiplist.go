@@ -128,6 +128,9 @@ func (sl *SkipList[K, V]) Remove(key K) bool {
 	for i, v := range node.next {
 		prevs[i].next[i] = v
 	}
+	for sl.level > 2 && sl.head.next[sl.level-1] == nil {
+		sl.level--
+	}
 	sl.len--
 	return true
 }
