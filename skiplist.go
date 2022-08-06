@@ -35,9 +35,10 @@ type skipListNode[K Ordered, V any] struct {
 // NewSkipList create a new Skiplist.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
 	l := &SkipList[K, V]{
-		level:      1,
-		keyCmp:     OrderedCompare[K],
-		rander:     rand.New(rand.NewSource(time.Now().Unix())), // #nosec G404
+		level:  1,
+		keyCmp: OrderedCompare[K],
+		// #nosec G404 -- This is not a security condition
+		rander:     rand.New(rand.NewSource(time.Now().Unix())),
 		prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
 	}
 	l.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
