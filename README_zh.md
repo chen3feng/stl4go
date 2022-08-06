@@ -59,6 +59,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func RemoveIf[T any](a []T, cond func(T) bool) []T](<#func-removeif>)
 - [func RemoveIfCopy[T any](a []T, cond func(T) bool) []T](<#func-removeifcopy>)
 - [func Reverse[T any](a []T)](<#func-reverse>)
+- [func ReverseCopy[T any](a []T) []T](<#func-reversecopy>)
 - [func Shuffle[T any](a []T)](<#func-shuffle>)
 - [func Sort[T Ordered](a []T)](<#func-sort>)
 - [func SortFunc[T any](a []T, less func(x, y T) bool)](<#func-sortfunc>)
@@ -527,6 +528,16 @@ func Reverse[T any](a []T)
 ```
 
 Reverse reverses the order of the elements in the slice a.
+
+Complexity: O\(len\(a\)\).
+
+## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L167>)
+
+```go
+func ReverseCopy[T any](a []T) []T
+```
+
+ReverseCopy returns a reversed copy of slice a.
 
 Complexity: O\(len\(a\)\).
 
@@ -1028,7 +1039,7 @@ func NewSkipList[K Ordered, V any]() *SkipList[K, V]
 
 NewSkipList create a new Skiplist.
 
-### func [NewSkipListFromMap](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L48>)
+### func [NewSkipListFromMap](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L49>)
 
 ```go
 func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V]
@@ -1036,13 +1047,13 @@ func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V]
 
 NewSkipListFromMap create a new Skiplist from a map.
 
-### func \(\*SkipList\[K, V\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L64>)
+### func \(\*SkipList\[K, V\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L65>)
 
 ```go
 func (sl *SkipList[K, V]) Clear()
 ```
 
-### func \(\*SkipList\[K, V\]\) [Find](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L108>)
+### func \(\*SkipList\[K, V\]\) [Find](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L109>)
 
 ```go
 func (sl *SkipList[K, V]) Find(key K) *V
@@ -1050,25 +1061,25 @@ func (sl *SkipList[K, V]) Find(key K) *V
 
 Find returns the value associated with the passed key if the key is in the skiplist, otherwise returns nil.
 
-### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L134>)
+### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L135>)
 
 ```go
 func (sl *SkipList[K, V]) ForEach(op func(K, *V))
 ```
 
-### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L140>)
+### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L141>)
 
 ```go
 func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool)
 ```
 
-### func \(\*SkipList\[K, V\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L116>)
+### func \(\*SkipList\[K, V\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L117>)
 
 ```go
 func (sl *SkipList[K, V]) Has(key K) bool
 ```
 
-### func \(\*SkipList\[K, V\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L73>)
+### func \(\*SkipList\[K, V\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L74>)
 
 ```go
 func (sl *SkipList[K, V]) Insert(key K, value V)
@@ -1076,19 +1087,19 @@ func (sl *SkipList[K, V]) Insert(key K, value V)
 
 Insert inserts a key\-value pair into the skiplist
 
-### func \(\*SkipList\[K, V\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L56>)
+### func \(\*SkipList\[K, V\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L57>)
 
 ```go
 func (sl *SkipList[K, V]) IsEmpty() bool
 ```
 
-### func \(\*SkipList\[K, V\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L60>)
+### func \(\*SkipList\[K, V\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L61>)
 
 ```go
 func (sl *SkipList[K, V]) Len() int
 ```
 
-### func \(\*SkipList\[K, V\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L122>)
+### func \(\*SkipList\[K, V\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L123>)
 
 ```go
 func (sl *SkipList[K, V]) Remove(key K) bool
