@@ -160,3 +160,14 @@ func Reverse[T any](a []T) {
 		a[i], a[j] = a[j], a[i]
 	}
 }
+
+// ReverseCopy returns a reversed copy of slice a.
+//
+// Complexity: O(len(a)).
+func ReverseCopy[T any](a []T) []T {
+	b := make([]T, 0, len(a))
+	for i := len(a) - 1; i >= 0; i-- {
+		b = append(b, a[i])
+	}
+	return b
+}
