@@ -28,9 +28,11 @@ type SkipList[K Ordered, V any] struct {
 type skipListNode[K Ordered, V any] struct {
 	key   K
 	value V
-	level int
 	next  []*skipListNode[K, V]
 }
+
+//go:generate bash ./skiplist_newnode_generate.sh skipListMaxLevel skiplist_newnode.go
+// func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V]
 
 // NewSkipList create a new Skiplist.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
@@ -70,33 +72,28 @@ func (sl *SkipList[K, V]) Clear() {
 	sl.len = 0
 }
 
-// Insert inserts a key-value pair into the skiplist
+// Insert inserts a key-value pair into the skiplist.
+// If the key is already in the skip list, it's value will be updated.
 func (sl *SkipList[K, V]) Insert(key K, value V) {
-	eq, prevs := sl.findInsertPoint(key)
+	node, prevs := sl.findInsertPoint(key)
 
-	if eq != nil {
+	if node != nil {
 		// Already exist, update the value
-		eq.value = value
+		node.value = value
 		return
 	}
 
 	level := sl.randomLevel()
-
-	e := &skipListNode[K, V]{
-		key:   key,
-		value: value,
-		level: level,
-		next:  make([]*skipListNode[K, V], level),
-	}
+	node = newSkipListNode(level, key, value)
 
 	for i := 0; i < Min(level, sl.level); i++ {
-		e.next[i] = prevs[i].next[i]
-		prevs[i].next[i] = e
+		node.next[i] = prevs[i].next[i]
+		prevs[i].next[i] = node
 	}
 
 	if level > sl.level {
 		for i := sl.level; i < level; i++ {
-			sl.head.next[i] = e
+			sl.head.next[i] = node
 		}
 		sl.level = level
 	}
@@ -128,7 +125,7 @@ func (sl *SkipList[K, V]) Remove(key K) bool {
 	for i, v := range node.next {
 		prevs[i].next[i] = v
 	}
-	for sl.level > 2 && sl.head.next[sl.level-1] == nil {
+	for sl.level > 1 && sl.head.next[sl.level-1] == nil {
 		sl.level--
 	}
 	sl.len--
@@ -191,30 +188,30 @@ func (sl *SkipList[K, V]) findInsertPoint(key K) (*skipListNode[K, V], []*skipLi
 	prevs := sl.prevsCache[0:sl.level]
 	prev := &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
-		if sl.head.next[i] != nil {
-			for next := prev.next[i]; next != nil; next = next.next[i] {
-				r := sl.keyCmp(next.key, key)
-				if r == 0 {
-					return next, nil
-				}
-				if r > 0 {
-					break
-				}
-				prev = next
+		for next := prev.next[i]; next != nil; next = next.next[i] {
+			r := sl.keyCmp(next.key, key)
+			if r == 0 {
+				// The key is already existed, prevs are useless because no new node insertion.
+				// stop searching.
+				return next, nil
 			}
+			if r > 0 {
+				// All other node in this level must be greater than the key,
+				// search the next level.
+				break
+			}
+			prev = next
 		}
 		prevs[i] = prev
 	}
 	return nil, prevs
 }
 
+// findRemovePoint finds the node which match the key and it's previous nodes.
 func (sl *SkipList[K, V]) findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
 	prevs := sl.findPrevNodes(key)
 	node := prevs[0].next[0]
-	if node == nil {
-		return nil, nil
-	}
-	if node != nil && sl.keyCmp(node.key, key) != 0 {
+	if node == nil || sl.keyCmp(node.key, key) != 0 {
 		return nil, nil
 	}
 	return node, prevs
@@ -224,13 +221,11 @@ func (sl *SkipList[K, V]) findPrevNodes(key K) []*skipListNode[K, V] {
 	prevs := sl.prevsCache[0:sl.level]
 	prev := &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
-		if sl.head.next[i] != nil {
-			for next := prev.next[i]; next != nil; next = next.next[i] {
-				if sl.keyCmp(next.key, key) >= 0 {
-					break
-				}
-				prev = next
+		for next := prev.next[i]; next != nil; next = next.next[i] {
+			if sl.keyCmp(next.key, key) >= 0 {
+				break
 			}
+			prev = next
 		}
 		prevs[i] = prev
 	}
