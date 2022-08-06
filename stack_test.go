@@ -5,7 +5,7 @@ import (
 )
 
 func Test_Stack_Interface(t *testing.T) {
-	_ = Container[int](NewStack[int]())
+	_ = Container(NewStack[int]())
 }
 func Test_NewStack(t *testing.T) {
 	si := NewStack[int]()
