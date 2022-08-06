@@ -25,6 +25,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func AllOf[T any](a []T, pred func(T) bool) bool](<#func-allof>)
 - [func AnyOf[T any](a []T, pred func(T) bool) bool](<#func-anyof>)
 - [func Average[T Numeric](a []T) T](<#func-average>)
+- [func AverageAs[R, T Numeric](a []T) R](<#func-averageas>)
 - [func BinarySearch[T Ordered](a []T, value T) (index int, ok bool)](<#func-binarysearch>)
 - [func BinarySearchFunc[T any](a []T, value T, less LessFn[T]) (index int, ok bool)](<#func-binarysearchfunc>)
 - [func Compare[E Ordered](a, b []E) int](<#func-compare>)
@@ -51,6 +52,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func MinMaxN[T Ordered](a ...T) (min, max T)](<#func-minmaxn>)
 - [func MinN[T Ordered](a ...T) T](<#func-minn>)
 - [func NoneOf[T any](a []T, pred func(T) bool) bool](<#func-noneof>)
+- [func OrderedCompare[T Ordered](a, b T) int](<#func-orderedcompare>)
 - [func Range[T Numeric](first, last T) []T](<#func-range>)
 - [func Remove[T comparable](a []T, x T) []T](<#func-remove>)
 - [func RemoveCopy[T comparable](a []T, x T) []T](<#func-removecopy>)
@@ -71,6 +73,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func UniqueCopy[T comparable](a []T) []T](<#func-uniquecopy>)
 - [func UpperBound[T Ordered](a []T, value T) int](<#func-upperbound>)
 - [func UpperBoundFunc[T any](a []T, value T, less LessFn[T]) int](<#func-upperboundfunc>)
+- [type CompareFn](<#type-comparefn>)
 - [type Container](<#type-container>)
 - [type DList](<#type-dlist>)
   - [func NewDList[T any]() *DList[T]](<#func-newdlist>)
@@ -116,6 +119,18 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (s *Set[K]) Len() int](<#func-setk-len>)
   - [func (s Set[K]) String() string](<#func-setk-string>)
 - [type Signed](<#type-signed>)
+- [type SkipList](<#type-skiplist>)
+  - [func NewSkipList[K Ordered, V any]() *SkipList[K, V]](<#func-newskiplist>)
+  - [func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V]](<#func-newskiplistfrommap>)
+  - [func (sl *SkipList[K, V]) Clear()](<#func-skiplistk-v-clear>)
+  - [func (sl *SkipList[K, V]) Find(key K) *V](<#func-skiplistk-v-find>)
+  - [func (sl *SkipList[K, V]) ForEach(op func(K, *V))](<#func-skiplistk-v-foreach>)
+  - [func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool)](<#func-skiplistk-v-foreachif>)
+  - [func (sl *SkipList[K, V]) Has(key K) bool](<#func-skiplistk-v-has>)
+  - [func (sl *SkipList[K, V]) Insert(key K, value V)](<#func-skiplistk-v-insert>)
+  - [func (sl *SkipList[K, V]) IsEmpty() bool](<#func-skiplistk-v-isempty>)
+  - [func (sl *SkipList[K, V]) Len() int](<#func-skiplistk-v-len>)
+  - [func (sl *SkipList[K, V]) Remove(key K) bool](<#func-skiplistk-v-remove>)
 - [type Stack](<#type-stack>)
   - [func NewStack[T any]() *Stack[T]](<#func-newstack>)
   - [func NewStackCap[T any](capicity int) *Stack[T]](<#func-newstackcap>)
@@ -174,6 +189,14 @@ func Average[T Numeric](a []T) T
 ```
 
 Average returns the average value of a.
+
+## func [AverageAs](<https://github.com/chen3feng/stl4go/blob/master/compute.go#L22>)
+
+```go
+func AverageAs[R, T Numeric](a []T) R
+```
+
+AverageAs returns the average value of a as type R.
 
 ## func [BinarySearch](<https://github.com/chen3feng/stl4go/blob/master/binary_search.go#L100>)
 
@@ -269,7 +292,7 @@ Equal returns whether two slices are equal. Return true if they are the same len
 
 Complexity: O\(min\(len\(a\), len\(b\)\)\).
 
-## func [Equals](<https://github.com/chen3feng/stl4go/blob/master/types.go#L51>)
+## func [Equals](<https://github.com/chen3feng/stl4go/blob/master/types.go#L57>)
 
 ```go
 func Equals[T comparable](a, b T) bool
@@ -339,7 +362,7 @@ IsSorted returns whether the slice a is sorted in ascending order.
 
 Complexity: O\(len\(a\)\).
 
-## func [Less](<https://github.com/chen3feng/stl4go/blob/master/types.go#L56>)
+## func [Less](<https://github.com/chen3feng/stl4go/blob/master/types.go#L62>)
 
 ```go
 func Less[T Ordered](a, b T) bool
@@ -438,6 +461,14 @@ func NoneOf[T any](a []T, pred func(T) bool) bool
 NoneOf return true pred\(e\) returns true for none emements e in a.
 
 Complexity: O\(len\(a\)\).
+
+## func [OrderedCompare](<https://github.com/chen3feng/stl4go/blob/master/types.go#L67>)
+
+```go
+func OrderedCompare[T Ordered](a, b T) int
+```
+
+OrderedCompare provide default CompareFn for ordered types.
 
 ## func [Range](<https://github.com/chen3feng/stl4go/blob/master/generate.go#L7>)
 
@@ -639,12 +670,20 @@ The elements in the slice a should sorted according with compare func less.
 
 Complexity: O\(log\(len\(a\)\)\).
 
+## type [CompareFn](<https://github.com/chen3feng/stl4go/blob/master/types.go#L51>)
+
+CompareFn is a 3 way compare function that returns 1  if a \>  b, returns 0  if a == b, returns \-1 if a \< b.
+
+```go
+type CompareFn[T any] func(a, b T) int
+```
+
 ## type [Container](<https://github.com/chen3feng/stl4go/blob/master/container.go#L4-L8>)
 
 Container is a holder object that stores a collection of other objects.
 
 ```go
-type Container[T any] interface {
+type Container interface {
     IsEmpty() bool // IsEmpty checks if the container has no elements.
     Len() int      // Len returns the number of elements in the container.
     Clear()        // Clear erases all elements from the container. After this call, Len() returns zero.
@@ -759,7 +798,7 @@ type Float interface {
 }
 ```
 
-## type [HashFn](<https://github.com/chen3feng/stl4go/blob/master/types.go#L48>)
+## type [HashFn](<https://github.com/chen3feng/stl4go/blob/master/types.go#L54>)
 
 HashFn is a function that returns the hash of 't'.
 
@@ -968,6 +1007,94 @@ type Signed interface {
     // contains filtered or unexported methods
 }
 ```
+
+## type [SkipList](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L17-L26>)
+
+SkipList is a probabilistic data structure that seem likely to supplant balanced trees as the implementation method of choice for many applications. Skip list algorithms have the same asymptotic expected time bounds as balanced trees and are simpler, faster and use less space.
+
+See https://en.wikipedia.org/wiki/Skip_list for more details.
+
+```go
+type SkipList[K Ordered, V any] struct {
+    // contains filtered or unexported fields
+}
+```
+
+### func [NewSkipList](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L36>)
+
+```go
+func NewSkipList[K Ordered, V any]() *SkipList[K, V]
+```
+
+NewSkipList create a new Skiplist.
+
+### func [NewSkipListFromMap](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L48>)
+
+```go
+func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V]
+```
+
+NewSkipListFromMap create a new Skiplist from a map.
+
+### func \(\*SkipList\[K, V\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L64>)
+
+```go
+func (sl *SkipList[K, V]) Clear()
+```
+
+### func \(\*SkipList\[K, V\]\) [Find](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L108>)
+
+```go
+func (sl *SkipList[K, V]) Find(key K) *V
+```
+
+Find returns the value associated with the passed key if the key is in the skiplist, otherwise returns nil.
+
+### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L134>)
+
+```go
+func (sl *SkipList[K, V]) ForEach(op func(K, *V))
+```
+
+### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L140>)
+
+```go
+func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool)
+```
+
+### func \(\*SkipList\[K, V\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L116>)
+
+```go
+func (sl *SkipList[K, V]) Has(key K) bool
+```
+
+### func \(\*SkipList\[K, V\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L73>)
+
+```go
+func (sl *SkipList[K, V]) Insert(key K, value V)
+```
+
+Insert inserts a key\-value pair into the skiplist
+
+### func \(\*SkipList\[K, V\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L56>)
+
+```go
+func (sl *SkipList[K, V]) IsEmpty() bool
+```
+
+### func \(\*SkipList\[K, V\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L60>)
+
+```go
+func (sl *SkipList[K, V]) Len() int
+```
+
+### func \(\*SkipList\[K, V\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L122>)
+
+```go
+func (sl *SkipList[K, V]) Remove(key K) bool
+```
+
+Remove removes the key\-value pair associated with the passed key and returns true if the key is in the skiplist, otherwise returns false.
 
 ## type [Stack](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L5-L7>)
 

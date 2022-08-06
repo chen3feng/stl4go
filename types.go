@@ -44,6 +44,12 @@ type Numeric interface {
 // LessFn is a function that returns whether 'a' is less than 'b'.
 type LessFn[T any] func(a, b T) bool
 
+// CompareFn is a 3 way compare function that
+// returns 1  if a >  b,
+// returns 0  if a == b,
+// returns -1 if a < b.
+type CompareFn[T any] func(a, b T) int
+
 // HashFn is a function that returns the hash of 't'.
 type HashFn[T any] func(t T) uint64
 
@@ -55,4 +61,15 @@ func Equals[T comparable](a, b T) bool {
 // Less wraps the '<' operator for ordered types.
 func Less[T Ordered](a, b T) bool {
 	return a < b
+}
+
+// OrderedCompare provide default CompareFn for ordered types.
+func OrderedCompare[T Ordered](a, b T) int {
+	switch {
+	case a < b:
+		return -1
+	case a > b:
+		return 1
+	}
+	return 0
 }
