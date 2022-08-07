@@ -1,3 +1,13 @@
+// This implementation is based on https://github.com/liyue201/gostl/tree/master/ds/skiplist
+// (many thanks), added many optimizations, such as:
+//
+//  - adaptive level
+//  - lesser search for prevs when key already exists.
+//  - reduce memory allocations
+//  - richer interface.
+//
+// etc.
+
 package stl4go
 
 import (
