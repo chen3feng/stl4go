@@ -74,6 +74,20 @@ Package stl4go is a generic container and algorithm library for go.
 - [func UniqueCopy[T comparable](a []T) []T](<#func-uniquecopy>)
 - [func UpperBound[T Ordered](a []T, value T) int](<#func-upperbound>)
 - [func UpperBoundFunc[T any](a []T, value T, less LessFn[T]) int](<#func-upperboundfunc>)
+- [type BuiltinSet](<#type-builtinset>)
+  - [func MakeBuiltinSetOf[K comparable](ks ...K) BuiltinSet[K]](<#func-makebuiltinsetof>)
+  - [func (s *BuiltinSet[K]) Clear()](<#func-builtinsetk-clear>)
+  - [func (s *BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
+  - [func (s *BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
+  - [func (s *BuiltinSet[K]) Has(k K) bool](<#func-builtinsetk-has>)
+  - [func (s *BuiltinSet[K]) Insert(k K)](<#func-builtinsetk-insert>)
+  - [func (s *BuiltinSet[K]) InsertN(ks ...K)](<#func-builtinsetk-insertn>)
+  - [func (s *BuiltinSet[K]) IsEmpty() bool](<#func-builtinsetk-isempty>)
+  - [func (s *BuiltinSet[K]) Keys() []K](<#func-builtinsetk-keys>)
+  - [func (s *BuiltinSet[K]) Len() int](<#func-builtinsetk-len>)
+  - [func (s *BuiltinSet[K]) Remove(k K) bool](<#func-builtinsetk-remove>)
+  - [func (s *BuiltinSet[K]) RemoveN(ks ...K)](<#func-builtinsetk-removen>)
+  - [func (s BuiltinSet[K]) String() string](<#func-builtinsetk-string>)
 - [type CompareFn](<#type-comparefn>)
 - [type Container](<#type-container>)
 - [type DList](<#type-dlist>)
@@ -107,19 +121,6 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (q *Queue[T]) PushFront(val T)](<#func-queuet-pushfront>)
   - [func (q *Queue[T]) String() string](<#func-queuet-string>)
 - [type Set](<#type-set>)
-  - [func MakeSetOf[K comparable](ks ...K) Set[K]](<#func-makesetof>)
-  - [func (s *Set[K]) Add(k K)](<#func-setk-add>)
-  - [func (s *Set[K]) AddN(ks ...K)](<#func-setk-addn>)
-  - [func (s *Set[K]) Clear()](<#func-setk-clear>)
-  - [func (s *Set[K]) Del(k K)](<#func-setk-del>)
-  - [func (s *Set[K]) DelN(ks ...K)](<#func-setk-deln>)
-  - [func (s *Set[K]) ForEach(cb func(k K))](<#func-setk-foreach>)
-  - [func (s *Set[K]) ForEachIf(cb func(k K) bool)](<#func-setk-foreachif>)
-  - [func (s *Set[K]) Has(k K) bool](<#func-setk-has>)
-  - [func (s *Set[K]) IsEmpty() bool](<#func-setk-isempty>)
-  - [func (s *Set[K]) Keys() []K](<#func-setk-keys>)
-  - [func (s *Set[K]) Len() int](<#func-setk-len>)
-  - [func (s Set[K]) String() string](<#func-setk-string>)
 - [type Signed](<#type-signed>)
 - [type SkipList](<#type-skiplist>)
   - [func NewSkipList[K Ordered, V any]() *SkipList[K, V]](<#func-newskiplist>)
@@ -683,6 +684,94 @@ The elements in the slice a should sorted according with compare func less.
 
 Complexity: O\(log\(len\(a\)\)\).
 
+## type [BuiltinSet](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L8>)
+
+BuiltinSet is an associative container that contains a unordered set of unique objects of type K.
+
+```go
+type BuiltinSet[K comparable] map[K]bool
+```
+
+### func [MakeBuiltinSetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L11>)
+
+```go
+func MakeBuiltinSetOf[K comparable](ks ...K) BuiltinSet[K]
+```
+
+MakeBuiltinSetOf creates a new BuiltinSet object with the initial content from ks.
+
+### func \(\*BuiltinSet\[K\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L25>)
+
+```go
+func (s *BuiltinSet[K]) Clear()
+```
+
+### func \(\*BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L66>)
+
+```go
+func (s *BuiltinSet[K]) ForEach(cb func(k K))
+```
+
+### func \(\*BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L72>)
+
+```go
+func (s *BuiltinSet[K]) ForEachIf(cb func(k K) bool)
+```
+
+### func \(\*BuiltinSet\[K\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L31>)
+
+```go
+func (s *BuiltinSet[K]) Has(k K) bool
+```
+
+### func \(\*BuiltinSet\[K\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L36>)
+
+```go
+func (s *BuiltinSet[K]) Insert(k K)
+```
+
+### func \(\*BuiltinSet\[K\]\) [InsertN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L40>)
+
+```go
+func (s *BuiltinSet[K]) InsertN(ks ...K)
+```
+
+### func \(\*BuiltinSet\[K\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L17>)
+
+```go
+func (s *BuiltinSet[K]) IsEmpty() bool
+```
+
+### func \(\*BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L58>)
+
+```go
+func (s *BuiltinSet[K]) Keys() []K
+```
+
+### func \(\*BuiltinSet\[K\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L21>)
+
+```go
+func (s *BuiltinSet[K]) Len() int
+```
+
+### func \(\*BuiltinSet\[K\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L46>)
+
+```go
+func (s *BuiltinSet[K]) Remove(k K) bool
+```
+
+### func \(\*BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L52>)
+
+```go
+func (s *BuiltinSet[K]) RemoveN(ks ...K)
+```
+
+### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L80>)
+
+```go
+func (s BuiltinSet[K]) String() string
+```
+
 ## type [CompareFn](<https://github.com/chen3feng/stl4go/blob/master/types.go#L51>)
 
 CompareFn is a 3 way compare function that returns 1  if a \>  b, returns 0  if a == b, returns \-1 if a \< b.
@@ -939,92 +1028,21 @@ func (q *Queue[T]) PushFront(val T)
 func (q *Queue[T]) String() string
 ```
 
-## type [Set](<https://github.com/chen3feng/stl4go/blob/master/set.go#L8>)
+## type [Set](<https://github.com/chen3feng/stl4go/blob/master/container.go#L22-L31>)
 
-Set is an associative container that contains a unordered set of unique objects of type K.
-
-```go
-type Set[K comparable] map[K]bool
-```
-
-### func [MakeSetOf](<https://github.com/chen3feng/stl4go/blob/master/set.go#L11>)
+Set is a containers that store unique elements.
 
 ```go
-func MakeSetOf[K comparable](ks ...K) Set[K]
-```
-
-MakeSetOf creates a new Set object with the initial content from ks.
-
-### func \(\*Set\[K\]\) [Add](<https://github.com/chen3feng/stl4go/blob/master/set.go#L36>)
-
-```go
-func (s *Set[K]) Add(k K)
-```
-
-### func \(\*Set\[K\]\) [AddN](<https://github.com/chen3feng/stl4go/blob/master/set.go#L40>)
-
-```go
-func (s *Set[K]) AddN(ks ...K)
-```
-
-### func \(\*Set\[K\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/set.go#L25>)
-
-```go
-func (s *Set[K]) Clear()
-```
-
-### func \(\*Set\[K\]\) [Del](<https://github.com/chen3feng/stl4go/blob/master/set.go#L46>)
-
-```go
-func (s *Set[K]) Del(k K)
-```
-
-### func \(\*Set\[K\]\) [DelN](<https://github.com/chen3feng/stl4go/blob/master/set.go#L50>)
-
-```go
-func (s *Set[K]) DelN(ks ...K)
-```
-
-### func \(\*Set\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/set.go#L64>)
-
-```go
-func (s *Set[K]) ForEach(cb func(k K))
-```
-
-### func \(\*Set\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/set.go#L70>)
-
-```go
-func (s *Set[K]) ForEachIf(cb func(k K) bool)
-```
-
-### func \(\*Set\[K\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/set.go#L31>)
-
-```go
-func (s *Set[K]) Has(k K) bool
-```
-
-### func \(\*Set\[K\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/set.go#L17>)
-
-```go
-func (s *Set[K]) IsEmpty() bool
-```
-
-### func \(\*Set\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/set.go#L56>)
-
-```go
-func (s *Set[K]) Keys() []K
-```
-
-### func \(\*Set\[K\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/set.go#L21>)
-
-```go
-func (s *Set[K]) Len() int
-```
-
-### func \(Set\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/set.go#L78>)
-
-```go
-func (s Set[K]) String() string
+type Set[K any] interface {
+    Container
+    Has(K) bool             // Checks whether the container contains element with specific key.
+    Insert(K)               // Inserts a key-value pair in to the container or replace existing value.
+    InsertN(...K)           // Inserts multiple key-value pairs in to the container or replace existing value.
+    Remove(K) bool          // Remove element with specific key.
+    RemoveN(...K)           // Remove multiple elements with specific keys.
+    ForEach(func(K))        // Iterate the container.
+    ForEachIf(func(K) bool) // Iterate the container, stops when the callback returns false.
+}
 ```
 
 ## type [Signed](<https://github.com/chen3feng/stl4go/blob/master/types.go#L6-L8>)
