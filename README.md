@@ -132,8 +132,10 @@ Package stl4go is a generic container and algorithm library for go.
   - [func NewSkipListFunc[K any, V any](keyCmp CompareFn[K]) *SkipList[K, V]](<#func-newskiplistfunc>)
   - [func (sl *SkipList[K, V]) Clear()](<#func-skiplistk-v-clear>)
   - [func (sl *SkipList[K, V]) Find(key K) *V](<#func-skiplistk-v-find>)
-  - [func (sl *SkipList[K, V]) ForEach(op func(K, *V))](<#func-skiplistk-v-foreach>)
-  - [func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool)](<#func-skiplistk-v-foreachif>)
+  - [func (sl *SkipList[K, V]) ForEach(op func(K, V))](<#func-skiplistk-v-foreach>)
+  - [func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool)](<#func-skiplistk-v-foreachif>)
+  - [func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V))](<#func-skiplistk-v-foreachmutable>)
+  - [func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool)](<#func-skiplistk-v-foreachmutableif>)
   - [func (sl *SkipList[K, V]) Has(key K) bool](<#func-skiplistk-v-has>)
   - [func (sl *SkipList[K, V]) Insert(key K, value V)](<#func-skiplistk-v-insert>)
   - [func (sl *SkipList[K, V]) IsEmpty() bool](<#func-skiplistk-v-isempty>)
@@ -930,19 +932,21 @@ LessFn is a function that returns whether 'a' is less than 'b'.
 type LessFn[T any] func(a, b T) bool
 ```
 
-## type [Map](<https://github.com/chen3feng/stl4go/blob/master/container.go#L11-L19>)
+## type [Map](<https://github.com/chen3feng/stl4go/blob/master/container.go#L11-L21>)
 
 Map is a associative container that contains key\-value pairs with unique keys.
 
 ```go
 type Map[K any, V any] interface {
     Container
-    Has(K) bool                 // Checks whether the container contains element with specific key.
-    Find(K) *V                  // Finds element with specific key.
-    Insert(K, V)                // Inserts a key-value pair in to the container or replace existing value.
-    Remove(K) bool              // Remove element with specific key.
-    ForEach(func(K, *V))        // Iterate the container.
-    ForEachIf(func(K, *V) bool) // Iterate the container, stops when the callback returns false.
+    Has(K) bool                        // Checks whether the container contains element with specific key.
+    Find(K) *V                         // Finds element with specific key.
+    Insert(K, V)                       // Inserts a key-value pair in to the container or replace existing value.
+    Remove(K) bool                     // Remove element with specific key.
+    ForEach(func(K, V))                // Iterate the container.
+    ForEachIf(func(K, V) bool)         // Iterate the container, stops when the callback returns false.
+    ForEachMutable(func(K, *V))        // Iterate the container, *V is mutable.
+    ForEachMutableIf(func(K, *V) bool) // Iterate the container, *V is mutable, stops when the callback returns false.
 }
 ```
 
@@ -1032,7 +1036,7 @@ func (q *Queue[T]) PushFront(val T)
 func (q *Queue[T]) String() string
 ```
 
-## type [Set](<https://github.com/chen3feng/stl4go/blob/master/container.go#L22-L31>)
+## type [Set](<https://github.com/chen3feng/stl4go/blob/master/container.go#L24-L33>)
 
 Set is a containers that store unique elements.
 
@@ -1112,13 +1116,25 @@ Find returns the value associated with the passed key if the key is in the skipl
 ### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L150>)
 
 ```go
-func (sl *SkipList[K, V]) ForEach(op func(K, *V))
+func (sl *SkipList[K, V]) ForEach(op func(K, V))
 ```
 
-### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L156>)
+### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L162>)
 
 ```go
-func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool)
+func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool)
+```
+
+### func \(\*SkipList\[K, V\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L156>)
+
+```go
+func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V))
+```
+
+### func \(\*SkipList\[K, V\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L170>)
+
+```go
+func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool)
 ```
 
 ### func \(\*SkipList\[K, V\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L129>)

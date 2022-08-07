@@ -147,20 +147,33 @@ func (sl *SkipList[K, V]) Remove(key K) bool {
 	return true
 }
 
-func (sl *SkipList[K, V]) ForEach(op func(K, *V)) {
+func (sl *SkipList[K, V]) ForEach(op func(K, V)) {
+	for e := sl.head.next[0]; e != nil; e = e.next[0] {
+		op(e.key, e.value)
+	}
+}
+
+func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V)) {
 	for e := sl.head.next[0]; e != nil; e = e.next[0] {
 		op(e.key, &e.value)
 	}
 }
 
-func (sl *SkipList[K, V]) ForEachIf(op func(K, *V) bool) {
+func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool) {
+	for e := sl.head.next[0]; e != nil; e = e.next[0] {
+		if !op(e.key, e.value) {
+			return
+		}
+	}
+}
+
+func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool) {
 	for e := sl.head.next[0]; e != nil; e = e.next[0] {
 		if !op(e.key, &e.value) {
 			return
 		}
 	}
 }
-
 func (sl *SkipList[K, V]) randomLevel() int {
 	total := uint64(1)<<uint64(skipListMaxLevel) - 1 // 2^n-1
 	k := sl.rander.Uint64() % total
