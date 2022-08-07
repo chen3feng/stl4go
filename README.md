@@ -79,7 +79,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func UpperBound[T Ordered](a []T, value T) int](<#func-upperbound>)
 - [func UpperBoundFunc[T any](a []T, value T, less LessFn[T]) int](<#func-upperboundfunc>)
 - [type BuiltinSet](<#type-builtinset>)
-  - [func MakeSetOf[K comparable](ks ...K) BuiltinSet[K]](<#func-makesetof>)
+  - [func MakeBuiltinSetOf[K comparable](ks ...K) BuiltinSet[K]](<#func-makebuiltinsetof>)
   - [func (s *BuiltinSet[K]) Clear()](<#func-builtinsetk-clear>)
   - [func (s *BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
   - [func (s *BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
@@ -696,13 +696,13 @@ BuiltinSet is an associative container that contains a unordered set of unique o
 type BuiltinSet[K comparable] map[K]bool
 ```
 
-### func [MakeSetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L11>)
+### func [MakeBuiltinSetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L11>)
 
 ```go
-func MakeSetOf[K comparable](ks ...K) BuiltinSet[K]
+func MakeBuiltinSetOf[K comparable](ks ...K) BuiltinSet[K]
 ```
 
-MakeSetOf creates a new BuiltinSet object with the initial content from ks.
+MakeBuiltinSetOf creates a new BuiltinSet object with the initial content from ks.
 
 ### func \(\*BuiltinSet\[K\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L25>)
 

@@ -7,8 +7,8 @@ import (
 // BuiltinSet is an associative container that contains a unordered set of unique objects of type K.
 type BuiltinSet[K comparable] map[K]bool
 
-// MakeSetOf creates a new BuiltinSet object with the initial content from ks.
-func MakeSetOf[K comparable](ks ...K) BuiltinSet[K] {
+// MakeBuiltinSetOf creates a new BuiltinSet object with the initial content from ks.
+func MakeBuiltinSetOf[K comparable](ks ...K) BuiltinSet[K] {
 	s := make(BuiltinSet[K])
 	s.InsertN(ks...)
 	return s
