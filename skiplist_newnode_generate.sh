@@ -8,7 +8,7 @@ generate() {
     echo "package $GOPACKAGE"
     echo "
 // newSkipListNode creates a new node initialized with specified key, value and next slice.
-func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V] {
+func newSkipListNode[K any, V any](level int, key K, value V) *skipListNode[K, V] {
 	// For nodes with each levels, point their next slice to the nexts array allocated together,
 	// which can reduce 1 memory allocation and improve performance.
 	//
