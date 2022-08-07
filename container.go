@@ -17,3 +17,15 @@ type Map[K any, V any] interface {
 	ForEach(func(K, *V))        // Iterate the container.
 	ForEachIf(func(K, *V) bool) // Iterate the container, stops when the callback returns false.
 }
+
+// Set is a containers that store unique elements.
+type Set[K any] interface {
+	Container
+	Has(K) bool             // Checks whether the container contains element with specific key.
+	Insert(K)               // Inserts a key-value pair in to the container or replace existing value.
+	InsertN(...K)           // Inserts multiple key-value pairs in to the container or replace existing value.
+	Remove(K) bool          // Remove element with specific key.
+	RemoveN(...K)           // Remove multiple elements with specific keys.
+	ForEach(func(K))        // Iterate the container.
+	ForEachIf(func(K) bool) // Iterate the container, stops when the callback returns false.
+}
