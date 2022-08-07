@@ -30,7 +30,7 @@ func TestNewSkipListFunc(t *testing.T) {
 	sl.Insert(Person{"lisi", 20}, 1)
 	sl.Insert(Person{"wangwu", 30}, 1)
 	var ps []Person
-	sl.ForEach(func(p Person, _ *int) {
+	sl.ForEach(func(p Person, _ int) {
 		ps = append(ps, p)
 	})
 	expectEq(t, ps[0].name, "lisi")
@@ -159,19 +159,17 @@ func TestSkipList_Has(t *testing.T) {
 func TestSkipList_ForEach(t *testing.T) {
 	sl := newSkipListN(100)
 	a := []int{}
-	sl.ForEach(func(k int, v *int) {
+	sl.ForEach(func(k int, v int) {
 		a = append(a, k)
 	})
 	expectEq(t, len(a), 100)
 	expectTrue(t, IsSorted(a))
 }
 
-func isEven(n int) bool { return n%2 == 0 }
-
 func TestSkipList_ForEachIf(t *testing.T) {
 	sl := newSkipListN(100)
 	a := []int{}
-	sl.ForEachIf(func(k int, v *int) bool {
+	sl.ForEachIf(func(k int, v int) bool {
 		if k < 50 {
 			a = append(a, k)
 			return true
@@ -179,4 +177,27 @@ func TestSkipList_ForEachIf(t *testing.T) {
 		return false
 	})
 	expectLt(t, MaxN(a...), 50)
+}
+
+func TestSkipList_ForEachMutable(t *testing.T) {
+	sl := newSkipListN(100)
+	sl.ForEachMutable(func(k int, v *int) {
+		*v = -*v
+	})
+	for i := 0; i < sl.Len(); i++ {
+		expectEq(t, *sl.Find(i), -i)
+	}
+}
+
+func TestSkipList_ForEachMutableIf(t *testing.T) {
+	sl := newSkipListN(100)
+	sl.ForEachMutableIf(func(k int, v *int) bool {
+		if k > 50 {
+			*v = 0
+			return false
+		}
+		return true
+	})
+
+	expectEq(t, *sl.Find(51), 0)
 }

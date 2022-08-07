@@ -10,12 +10,14 @@ type Container interface {
 // Map is a associative container that contains key-value pairs with unique keys.
 type Map[K any, V any] interface {
 	Container
-	Has(K) bool                 // Checks whether the container contains element with specific key.
-	Find(K) *V                  // Finds element with specific key.
-	Insert(K, V)                // Inserts a key-value pair in to the container or replace existing value.
-	Remove(K) bool              // Remove element with specific key.
-	ForEach(func(K, *V))        // Iterate the container.
-	ForEachIf(func(K, *V) bool) // Iterate the container, stops when the callback returns false.
+	Has(K) bool                        // Checks whether the container contains element with specific key.
+	Find(K) *V                         // Finds element with specific key.
+	Insert(K, V)                       // Inserts a key-value pair in to the container or replace existing value.
+	Remove(K) bool                     // Remove element with specific key.
+	ForEach(func(K, V))                // Iterate the container.
+	ForEachIf(func(K, V) bool)         // Iterate the container, stops when the callback returns false.
+	ForEachMutable(func(K, *V))        // Iterate the container, *V is mutable.
+	ForEachMutableIf(func(K, *V) bool) // Iterate the container, *V is mutable, stops when the callback returns false.
 }
 
 // Set is a containers that store unique elements.
