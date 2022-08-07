@@ -13,8 +13,37 @@ func TestNewSkipList(t *testing.T) {
 	NewSkipList[int, int]()
 }
 
+func TestNewSkipListFunc(t *testing.T) {
+	type Person struct {
+		name string
+		age  int
+	}
+	personCmp := func(a, b Person) int {
+		r := OrderedCompare(a.age, b.age)
+		if r != 0 {
+			return r
+		}
+		return OrderedCompare(a.name, b.name)
+	}
+	sl := NewSkipListFunc[Person, int](personCmp)
+	sl.Insert(Person{"zhangsan", 20}, 1)
+	sl.Insert(Person{"lisi", 20}, 1)
+	sl.Insert(Person{"wangwu", 30}, 1)
+	var ps []Person
+	sl.ForEach(func(p Person, _ *int) {
+		ps = append(ps, p)
+	})
+	expectEq(t, ps[0].name, "lisi")
+	expectEq(t, ps[1].name, "zhangsan")
+	expectEq(t, ps[2].name, "wangwu")
+}
+
 func TestNewSkipListFromMap(t *testing.T) {
-	NewSkipListFromMap(map[int]int{1: 1, 2: 2, 3: 3})
+	m := map[int]int{1: -1, 2: -2, 3: -3}
+	sl := NewSkipListFromMap(m)
+	for k := range m {
+		expectTrue(t, sl.Has(k))
+	}
 }
 
 func TestSkipList_Insert(t *testing.T) {

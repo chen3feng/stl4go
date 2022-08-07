@@ -14,7 +14,7 @@ const (
 // asymptotic expected time bounds as balanced trees and are simpler, faster and use less space.
 //
 // See https://en.wikipedia.org/wiki/Skip_list for more details.
-type SkipList[K Ordered, V any] struct {
+type SkipList[K any, V any] struct {
 	keyCmp CompareFn[K]
 	level  int // Current level, may increase dynamically during insertion
 	len    int // Total elements numner in the skiplist.
@@ -25,7 +25,7 @@ type SkipList[K Ordered, V any] struct {
 	rander     *rand.Rand
 }
 
-type skipListNode[K Ordered, V any] struct {
+type skipListNode[K any, V any] struct {
 	key   K
 	value V
 	next  []*skipListNode[K, V]
@@ -34,17 +34,9 @@ type skipListNode[K Ordered, V any] struct {
 //go:generate bash ./skiplist_newnode_generate.sh skipListMaxLevel skiplist_newnode.go
 // func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V]
 
-// NewSkipList create a new Skiplist.
+// NewSkipList creates a new Skiplist.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
-	l := &SkipList[K, V]{
-		level:  1,
-		keyCmp: OrderedCompare[K],
-		// #nosec G404 -- This is not a security condition
-		rander:     rand.New(rand.NewSource(time.Now().Unix())),
-		prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
-	}
-	l.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
-	return l
+	return NewSkipListFunc[K, V](OrderedCompare[K])
 }
 
 // NewSkipListFromMap create a new Skiplist from a map.
@@ -54,6 +46,19 @@ func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V] {
 		sl.Insert(k, v)
 	}
 	return sl
+}
+
+// NewSkipListFunc creates a new Skiplist with specified compare function keyCmp.
+func NewSkipListFunc[K any, V any](keyCmp CompareFn[K]) *SkipList[K, V] {
+	l := &SkipList[K, V]{
+		level:  1,
+		keyCmp: keyCmp,
+		// #nosec G404 -- This is not a security condition
+		rander:     rand.New(rand.NewSource(time.Now().Unix())),
+		prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
+	}
+	l.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
+	return l
 }
 
 func (sl *SkipList[K, V]) IsEmpty() bool {
