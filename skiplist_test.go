@@ -6,7 +6,7 @@ import (
 )
 
 func TestSkipListInterface(t *testing.T) {
-	_ = Container(NewSkipList[int, int]())
+	_ = Map[int, int](NewSkipList[int, int]())
 }
 
 func TestNewSkipList(t *testing.T) {
