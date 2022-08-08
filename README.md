@@ -1,8 +1,8 @@
 # stl4go -- STL for Golang
 
-This library contains generic containers and algorithms, it is designed to be STL for Golang.
+English [中文版](README_zh.md)
 
-点击这里查看[中文文档](README_zh.md)。
+This library contains generic containers and algorithms, it is designed to be STL for Golang.
 
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-red.svg)](COPYING)
 [![Python](https://img.shields.io/badge/Language-go1.18+-blue.svg)](https://www.python.org/)
