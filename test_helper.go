@@ -21,6 +21,13 @@ func expectEq[T comparable](t *testing.T, a, b T) {
 	}
 }
 
+func expectNe[T comparable](t *testing.T, a, b T) {
+	if !(a != b) {
+		_, file, line, _ := runtime.Caller(1)
+		reportMismatch(t, a, "!=", b, file, line)
+	}
+}
+
 func expectLt[T Ordered](t *testing.T, a, b T) {
 	if !(a < b) {
 		_, file, line, _ := runtime.Caller(1)
@@ -32,6 +39,20 @@ func expectGt[T Ordered](t *testing.T, a, b T) {
 	if !(a > b) {
 		_, file, line, _ := runtime.Caller(1)
 		reportMismatch(t, a, ">", b, file, line)
+	}
+}
+
+func expectLe[T Ordered](t *testing.T, a, b T) {
+	if !(a <= b) {
+		_, file, line, _ := runtime.Caller(1)
+		reportMismatch(t, a, "<=", b, file, line)
+	}
+}
+
+func expectGe[T Ordered](t *testing.T, a, b T) {
+	if !(a >= b) {
+		_, file, line, _ := runtime.Caller(1)
+		reportMismatch(t, a, ">=", b, file, line)
 	}
 }
 

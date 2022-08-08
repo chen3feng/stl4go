@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	benchInitSize  = 1000000
-	benchBatchSize = 100
+	benchInitSize  = 100000
+	benchBatchSize = 10
 )
 
 func newMapN(n int) map[int]int {
@@ -57,6 +57,35 @@ func BenchmarkMap_Insert_Dup(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		for i := 0; i < benchBatchSize; i++ {
 			m[i] = i
+		}
+	}
+}
+
+func BenchmarkMap_Find(b *testing.B) {
+	m := newMapN(benchInitSize)
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		for i := 0; i < benchBatchSize; i++ {
+			_, _ = m[i]
+		}
+	}
+}
+func BenchmarkSkipList_Find(b *testing.B) {
+	sl := newSkipListN(benchInitSize)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for n := 0; n < benchBatchSize; n++ {
+			_ = sl.Find(n)
+		}
+	}
+}
+
+func BenchmarkSkipList_FindEnd(b *testing.B) {
+	sl := newSkipListN(benchInitSize)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for n := 0; n < benchBatchSize; n++ {
+			_ = sl.Find(benchInitSize)
 		}
 	}
 }
