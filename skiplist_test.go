@@ -100,7 +100,7 @@ func TestSkipList_Remove_Nonexist(t *testing.T) {
 
 func TestSkipList_Remove_Level(t *testing.T) {
 	sl := newSkipListN(100)
-	expectGe(t, sl.level, 5)
+	expectGe(t, sl.level, 4)
 	for i := 0; i < 100; i++ {
 		sl.Remove(i)
 	}
