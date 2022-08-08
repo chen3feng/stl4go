@@ -1,4 +1,6 @@
-# stl4go
+# stl4go -- Go 语言的 STL
+
+[English](README.md) 中文版
 
 本库包含 Go 语言实现的范型容器和算法库，就像 C++ 中的 STL。
 
