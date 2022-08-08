@@ -1,6 +1,6 @@
 # stl4go -- STL for Golang
 
-English [中文版](README_zh.md)
+English | [简体中文](README_zh.md)
 
 This library contains generic containers and algorithms, it is designed to be STL for Golang.
 
