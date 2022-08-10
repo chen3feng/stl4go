@@ -25,10 +25,11 @@ const (
 //
 // See https://en.wikipedia.org/wiki/Skip_list for more details.
 type SkipList[K any, V any] struct {
-	keyCmp CompareFn[K]
-	level  int // Current level, may increase dynamically during insertion
-	len    int // Total elements numner in the skiplist.
-	head   skipListNode[K, V]
+	keyCmp         CompareFn[K]
+	builtinCompare bool
+	level          int // Current level, may increase dynamically during insertion
+	len            int // Total elements numner in the skiplist.
+	head           skipListNode[K, V]
 	// This cache is used to save the previous nodes when modifying the skip list to avoid
 	// allocating memory each time it is called.
 	prevsCache []*skipListNode[K, V] // Cache to avoid memory allocation.
@@ -46,7 +47,9 @@ type skipListNode[K any, V any] struct {
 
 // NewSkipList creates a new Skiplist.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
-	return NewSkipListFunc[K, V](OrderedCompare[K])
+	sl := NewSkipListFunc[K, V](OrderedCompare[K])
+	sl.builtinCompare = true
+	return sl
 }
 
 // NewSkipListFromMap create a new Skiplist from a map.
@@ -192,7 +195,28 @@ func (sl *SkipList[K, V]) randomLevel() int {
 	return level
 }
 
-func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V] {
+//go:generate bash ./skiplist_findnode_generate.sh skiplist_findnode.go
+// func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V]
+
+func findNodeFast[K Ordered, V any](sl *SkipList[K, V], key K) *skipListNode[K, V] {
+	var pre = &sl.head
+	for i := sl.level - 1; i >= 0; i-- {
+		cur := pre.next[i]
+		for ; cur != nil; cur = cur.next[i] {
+			cmpRet := OrderedCompare(cur.key, key)
+			if cmpRet == 0 {
+				return cur
+			}
+			if cmpRet > 0 {
+				break
+			}
+			pre = cur
+		}
+	}
+	return nil
+}
+
+func (sl *SkipList[K, V]) findNodeSlow(key K) *skipListNode[K, V] {
 	var pre = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
 		cur := pre.next[i]
