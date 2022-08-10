@@ -10,10 +10,12 @@ func forceCast[T any, F any](f *F) *T {
 	return (*T)(unsafe.Pointer(f))
 }
 
+// findNode find the node which has specified key.
 func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V] {
 	if !sl.builtinCompare {
 		return sl.findNodeSlow(key)
 	}
+	// For knowned Ordered types, use findNodeFast to improve performance.
 	var iface interface{} = key
 	switch iface.(type) {
 	case int:

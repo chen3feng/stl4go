@@ -26,9 +26,9 @@ const (
 // See https://en.wikipedia.org/wiki/Skip_list for more details.
 type SkipList[K any, V any] struct {
 	keyCmp         CompareFn[K]
-	builtinCompare bool
-	level          int // Current level, may increase dynamically during insertion
-	len            int // Total elements numner in the skiplist.
+	builtinCompare bool // Whether the key type is Ordered, so we can use builtin compare to improve performance.
+	level          int  // Current level, may increase dynamically during insertion
+	len            int  // Total elements numner in the skiplist.
 	head           skipListNode[K, V]
 	// This cache is used to save the previous nodes when modifying the skip list to avoid
 	// allocating memory each time it is called.
@@ -198,6 +198,7 @@ func (sl *SkipList[K, V]) randomLevel() int {
 //go:generate bash ./skiplist_findnode_generate.sh skiplist_findnode.go
 // func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V]
 
+// findNodeFast find node with builtin compare function, which is faster because it can be inlined.
 func findNodeFast[K Ordered, V any](sl *SkipList[K, V], key K) *skipListNode[K, V] {
 	var pre = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
@@ -216,6 +217,7 @@ func findNodeFast[K Ordered, V any](sl *SkipList[K, V], key K) *skipListNode[K, 
 	return nil
 }
 
+// findNodeSlow use keyCmp to compare key, which is slower.
 func (sl *SkipList[K, V]) findNodeSlow(key K) *skipListNode[K, V] {
 	var pre = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
