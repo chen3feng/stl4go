@@ -5,16 +5,7 @@
 
 generate() {
 	# NOTE the tab chars, they are used to follow the go style guides.
-    echo "\
-package $GOPACKAGE
-
-import \"unsafe\""
-
-	echo "
-func forceCast[T any, F any](f *F) *T {
-	//#nosec G103
-	return (*T)(unsafe.Pointer(f))
-}"
+    echo "package $GOPACKAGE"
 
 	echo "
 // findNode find the node which has specified key.
@@ -29,9 +20,9 @@ func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V] {
 	for type in int string int32 uint32 int64 uint64 int8 uint8 int16 uint16 uintptr float32 float64; do
 		echo "\
 	case $type:
-		tsl := forceCast[SkipList[$type, V]](sl)
+		tsl := pointerCast[*SkipList[$type, V]](sl)
 		v, _ := iface.($type)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))"
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))"
 	done
 	echo "\
 	}

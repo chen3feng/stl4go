@@ -3,13 +3,6 @@
 
 package stl4go
 
-import "unsafe"
-
-func forceCast[T any, F any](f *F) *T {
-	//#nosec G103
-	return (*T)(unsafe.Pointer(f))
-}
-
 // findNode find the node which has specified key.
 func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V] {
 	if !sl.builtinCompare {
@@ -19,57 +12,57 @@ func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V] {
 	var iface interface{} = key
 	switch iface.(type) {
 	case int:
-		tsl := forceCast[SkipList[int, V]](sl)
+		tsl := pointerCast[*SkipList[int, V]](sl)
 		v, _ := iface.(int)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case string:
-		tsl := forceCast[SkipList[string, V]](sl)
+		tsl := pointerCast[*SkipList[string, V]](sl)
 		v, _ := iface.(string)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case int32:
-		tsl := forceCast[SkipList[int32, V]](sl)
+		tsl := pointerCast[*SkipList[int32, V]](sl)
 		v, _ := iface.(int32)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case uint32:
-		tsl := forceCast[SkipList[uint32, V]](sl)
+		tsl := pointerCast[*SkipList[uint32, V]](sl)
 		v, _ := iface.(uint32)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case int64:
-		tsl := forceCast[SkipList[int64, V]](sl)
+		tsl := pointerCast[*SkipList[int64, V]](sl)
 		v, _ := iface.(int64)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case uint64:
-		tsl := forceCast[SkipList[uint64, V]](sl)
+		tsl := pointerCast[*SkipList[uint64, V]](sl)
 		v, _ := iface.(uint64)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case int8:
-		tsl := forceCast[SkipList[int8, V]](sl)
+		tsl := pointerCast[*SkipList[int8, V]](sl)
 		v, _ := iface.(int8)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case uint8:
-		tsl := forceCast[SkipList[uint8, V]](sl)
+		tsl := pointerCast[*SkipList[uint8, V]](sl)
 		v, _ := iface.(uint8)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case int16:
-		tsl := forceCast[SkipList[int16, V]](sl)
+		tsl := pointerCast[*SkipList[int16, V]](sl)
 		v, _ := iface.(int16)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case uint16:
-		tsl := forceCast[SkipList[uint16, V]](sl)
+		tsl := pointerCast[*SkipList[uint16, V]](sl)
 		v, _ := iface.(uint16)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case uintptr:
-		tsl := forceCast[SkipList[uintptr, V]](sl)
+		tsl := pointerCast[*SkipList[uintptr, V]](sl)
 		v, _ := iface.(uintptr)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case float32:
-		tsl := forceCast[SkipList[float32, V]](sl)
+		tsl := pointerCast[*SkipList[float32, V]](sl)
 		v, _ := iface.(float32)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	case float64:
-		tsl := forceCast[SkipList[float64, V]](sl)
+		tsl := pointerCast[*SkipList[float64, V]](sl)
 		v, _ := iface.(float64)
-		return forceCast[skipListNode[K, V]](findNodeFast(tsl, v))
+		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))
 	}
 	return sl.findNodeSlow(key)
 }
