@@ -1,6 +1,7 @@
 package stl4go
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -70,6 +71,7 @@ func BenchmarkMap_Find(b *testing.B) {
 		}
 	}
 }
+
 func BenchmarkSkipList_Find(b *testing.B) {
 	sl := newSkipListN(benchInitSize)
 	b.ResetTimer()
@@ -98,6 +100,52 @@ func BenchmarkSkipList_Find(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
 				_ = sl.findNodeSlow(benchInitSize)
+			}
+		}
+	})
+}
+
+func BenchmarkSkipListString(b *testing.B) {
+	sl := NewSkipList[string, int]()
+	var a []string
+	for i := 0; i < benchBatchSize; i++ {
+		a = append(a, strconv.Itoa(benchInitSize+i))
+	}
+	end := strconv.Itoa(2 * benchInitSize)
+	b.ResetTimer()
+	b.Run("Insert", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				sl.Insert(a[n], n)
+			}
+		}
+	})
+	b.Run("Find", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				sl.Find(a[n])
+			}
+		}
+	})
+	b.Run("FindEnd", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				sl.Find(end)
+			}
+		}
+	})
+
+	b.Run("RemoveEnd", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				sl.Remove(end)
+			}
+		}
+	})
+	b.Run("Remove", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				sl.Remove(a[n])
 			}
 		}
 	})
