@@ -11,6 +11,7 @@
 package stl4go
 
 import (
+	"math/bits"
 	"math/rand"
 	"time"
 )
@@ -177,21 +178,17 @@ func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool) {
 		}
 	}
 }
+
 func (sl *SkipList[K, V]) randomLevel() int {
 	total := uint64(1)<<uint64(skipListMaxLevel) - 1 // 2^n-1
 	k := sl.rander.Uint64() % total
-	levelN := uint64(1) << (uint64(skipListMaxLevel) - 1)
-
-	level := 1
-	for total -= levelN; total > k; level++ {
-		levelN >>= 1
-		total -= levelN
-		// Since levels are randomly generated, most should be less than log2(s.len).
-		// Then make a limit according to sl.len to avoid unexpectedly large value.
-		if level > 2 && 1<<(level-2) > sl.len {
-			break
-		}
+	level := skipListMaxLevel - bits.Len64(k) + 1
+	// Since levels are randomly generated, most should be less than log2(s.len).
+	// Then make a limit according to sl.len to avoid unexpectedly large value.
+	for level > 3 && 1<<(level-3) > sl.len {
+		level--
 	}
+
 	return level
 }
 
