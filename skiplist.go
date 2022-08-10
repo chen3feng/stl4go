@@ -198,17 +198,16 @@ func (sl *SkipList[K, V]) randomLevel() int {
 //go:generate bash ./skiplist_findnode_generate.sh skiplist_findnode.go
 // func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V]
 
-// findNodeFast find node with builtin compare function, which is faster because it can be inlined.
+// findNodeFast find node with builtin comparation, which is faster than function call.
 func findNodeFast[K Ordered, V any](sl *SkipList[K, V], key K) *skipListNode[K, V] {
 	var pre = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
 		cur := pre.next[i]
 		for ; cur != nil; cur = cur.next[i] {
-			cmpRet := OrderedCompare(cur.key, key)
-			if cmpRet == 0 {
+			if cur.key == key {
 				return cur
 			}
-			if cmpRet > 0 {
+			if cur.key > key {
 				break
 			}
 			pre = cur

@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	benchInitSize  = 100000
+	benchInitSize  = 1000000
 	benchBatchSize = 10
 )
 
@@ -73,19 +73,32 @@ func BenchmarkMap_Find(b *testing.B) {
 func BenchmarkSkipList_Find(b *testing.B) {
 	sl := newSkipListN(benchInitSize)
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		for n := 0; n < benchBatchSize; n++ {
-			_ = sl.Find(n)
+	b.Run("Find", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				_ = sl.findNode(n)
+			}
 		}
-	}
-}
-
-func BenchmarkSkipList_FindEnd(b *testing.B) {
-	sl := newSkipListN(benchInitSize)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		for n := 0; n < benchBatchSize; n++ {
-			_ = sl.Find(benchInitSize)
+	})
+	b.Run("FindSlow", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				_ = sl.findNodeSlow(n)
+			}
 		}
-	}
+	})
+	b.Run("FindEnd", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				_ = sl.findNode(benchInitSize)
+			}
+		}
+	})
+	b.Run("FindEndSlow", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for n := 0; n < benchBatchSize; n++ {
+				_ = sl.findNodeSlow(benchInitSize)
+			}
+		}
+	})
 }
