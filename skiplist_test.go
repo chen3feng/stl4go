@@ -13,6 +13,40 @@ func TestNewSkipList(t *testing.T) {
 	NewSkipList[int, int]()
 }
 
+func TestNewSkipListString(t *testing.T) {
+	sl := NewSkipList[string, int]()
+	sl.Insert("hello", 1)
+	expectTrue(t, sl.Has("hello"))
+	expectEq(t, *sl.Find("hello"), 1)
+	expectFalse(t, sl.Has("world"))
+	expectEq(t, sl.Find("world"), nil)
+}
+
+func testNewSkipListType[T Numeric](t *testing.T) {
+	sl := NewSkipList[T, int]()
+	var n T = 1
+	sl.Insert(n, 1)
+	expectTrue(t, sl.Has(n))
+	expectEq(t, *sl.Find(n), 1)
+	expectFalse(t, sl.Has(n+1))
+	expectEq(t, sl.Find(n+1), nil)
+}
+
+func TestNewSkipListInt8(t *testing.T)  { testNewSkipListType[int8](t) }
+func TestNewSkipListInt16(t *testing.T) { testNewSkipListType[int16](t) }
+func TestNewSkipListInt32(t *testing.T) { testNewSkipListType[int32](t) }
+func TestNewSkipListInt64(t *testing.T) { testNewSkipListType[int64](t) }
+
+func TestNewSkipListUInt8(t *testing.T)  { testNewSkipListType[uint8](t) }
+func TestNewSkipListUInt16(t *testing.T) { testNewSkipListType[uint16](t) }
+func TestNewSkipListUInt32(t *testing.T) { testNewSkipListType[uint32](t) }
+func TestNewSkipListUInt64(t *testing.T) { testNewSkipListType[uint64](t) }
+
+func TestNewSkipListUIntPtr(t *testing.T) { testNewSkipListType[uintptr](t) }
+
+func TestNewSkipListFloat32(t *testing.T) { testNewSkipListType[float32](t) }
+func TestNewSkipListFloat64(t *testing.T) { testNewSkipListType[float64](t) }
+
 func TestNewSkipListFunc(t *testing.T) {
 	type Person struct {
 		name string
@@ -29,6 +63,8 @@ func TestNewSkipListFunc(t *testing.T) {
 	sl.Insert(Person{"zhangsan", 20}, 1)
 	sl.Insert(Person{"lisi", 20}, 1)
 	sl.Insert(Person{"wangwu", 30}, 1)
+	expectTrue(t, sl.Has(Person{"zhangsan", 20}))
+	expectFalse(t, sl.Has(Person{"zhangsan", 30}))
 	var ps []Person
 	sl.ForEach(func(p Person, _ int) {
 		ps = append(ps, p)
