@@ -15,13 +15,12 @@ func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V] {
 	}
 	// For knowned Ordered types, use findNodeFast to improve performance.
 	var iface interface{} = key
-	switch iface.(type) {"
+	switch v := iface.(type) {"
 
 	for type in int string int32 uint32 int64 uint64 int8 uint8 int16 uint16 uintptr float32 float64; do
 		echo "\
 	case $type:
 		tsl := pointerCast[*SkipList[$type, V]](sl)
-		v, _ := iface.($type)
 		return pointerCast[*skipListNode[K, V]](findNodeFast(tsl, v))"
 	done
 	echo "\
