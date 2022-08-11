@@ -78,28 +78,28 @@ func BenchmarkSkipList_Find(b *testing.B) {
 	b.Run("Find", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
-				_ = sl.findNode(n)
+				_ = sl.Find(n)
 			}
 		}
 	})
 	b.Run("FindSlow", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
-				_ = sl.findNodeSlow(n)
+				_ = sl.Find(n)
 			}
 		}
 	})
 	b.Run("FindEnd", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
-				_ = sl.findNode(benchInitSize)
+				_ = sl.Find(benchInitSize)
 			}
 		}
 	})
 	b.Run("FindEndSlow", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
-				_ = sl.findNodeSlow(benchInitSize)
+				_ = sl.Find(benchInitSize)
 			}
 		}
 	})

@@ -26,15 +26,14 @@ const (
 //
 // See https://en.wikipedia.org/wiki/Skip_list for more details.
 type SkipList[K any, V any] struct {
-	keyCmp         CompareFn[K]
-	builtinCompare bool // Whether the key type is Ordered, so we can use builtin compare to improve performance.
-	level          int  // Current level, may increase dynamically during insertion
-	len            int  // Total elements numner in the skiplist.
-	head           skipListNode[K, V]
+	level int // Current level, may increase dynamically during insertion
+	len   int // Total elements numner in the skiplist.
+	head  skipListNode[K, V]
 	// This cache is used to save the previous nodes when modifying the skip list to avoid
 	// allocating memory each time it is called.
 	prevsCache []*skipListNode[K, V] // Cache to avoid memory allocation.
 	rander     *rand.Rand
+	impl       skipListImpl[K, V]
 }
 
 type skipListNode[K any, V any] struct {
@@ -43,17 +42,34 @@ type skipListNode[K any, V any] struct {
 	next  []*skipListNode[K, V]
 }
 
-//go:generate bash ./skiplist_newnode_generate.sh skipListMaxLevel skiplist_newnode.go
-// func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V]
-
-// NewSkipList creates a new Skiplist.
-func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
-	sl := NewSkipListFunc[K, V](OrderedCompare[K])
-	sl.builtinCompare = true
-	return sl
+// skipListImpl is an interface to provide different implementation for Ordered key or CompareFn.
+//
+// We can use CompareFn to cumpare Ordered keys, but a separated implementation is much faster.
+// We don't make the whole skip list an interface, in order to share the type independented method.
+// And because these methods are called directly without going through the interface, they are also
+// much faster.
+type skipListImpl[K any, V any] interface {
+	findNode(key K) *skipListNode[K, V]
+	findInsertPoint(key K) (*skipListNode[K, V], []*skipListNode[K, V])
+	findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V])
 }
 
-// NewSkipListFromMap create a new Skiplist from a map.
+// NewSkipList creates a new SkipList for Ordered key type.
+func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
+	sl := skipListOrdered[K, V]{
+		SkipList: SkipList[K, V]{
+			level: 1,
+			// #nosec G404 -- This is not a security condition
+			rander:     rand.New(rand.NewSource(time.Now().Unix())),
+			prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
+		},
+	}
+	sl.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
+	sl.impl = (skipListImpl[K, V])(&sl)
+	return &sl.SkipList
+}
+
+// NewSkipListFromMap creates a new SkipList from a map.
 func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V] {
 	sl := NewSkipList[K, V]()
 	for k, v := range m {
@@ -62,17 +78,13 @@ func NewSkipListFromMap[K Ordered, V any](m map[K]V) *SkipList[K, V] {
 	return sl
 }
 
-// NewSkipListFunc creates a new Skiplist with specified compare function keyCmp.
+// NewSkipListFunc creates a new SkipList with specified compare function keyCmp.
 func NewSkipListFunc[K any, V any](keyCmp CompareFn[K]) *SkipList[K, V] {
-	l := &SkipList[K, V]{
-		level:  1,
-		keyCmp: keyCmp,
-		// #nosec G404 -- This is not a security condition
-		rander:     rand.New(rand.NewSource(time.Now().Unix())),
-		prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
-	}
-	l.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
-	return l
+	sl := skipListFunc[K, V]{}
+	sl.init()
+	sl.keyCmp = keyCmp
+	sl.impl = skipListImpl[K, V](&sl)
+	return &sl.SkipList
 }
 
 func (sl *SkipList[K, V]) IsEmpty() bool {
@@ -94,7 +106,7 @@ func (sl *SkipList[K, V]) Clear() {
 // Insert inserts a key-value pair into the skiplist.
 // If the key is already in the skip list, it's value will be updated.
 func (sl *SkipList[K, V]) Insert(key K, value V) {
-	node, prevs := sl.findInsertPoint(key)
+	node, prevs := sl.impl.findInsertPoint(key)
 
 	if node != nil {
 		// Already exist, update the value
@@ -123,7 +135,7 @@ func (sl *SkipList[K, V]) Insert(key K, value V) {
 // Find returns the value associated with the passed key if the key is in the skiplist, otherwise
 // returns nil.
 func (sl *SkipList[K, V]) Find(key K) *V {
-	node := sl.findNode(key)
+	node := sl.impl.findNode(key)
 	if node != nil {
 		return &node.value
 	}
@@ -131,13 +143,13 @@ func (sl *SkipList[K, V]) Find(key K) *V {
 }
 
 func (sl *SkipList[K, V]) Has(key K) bool {
-	return sl.findNode(key) != nil
+	return sl.impl.findNode(key) != nil
 }
 
 // Remove removes the key-value pair associated with the passed key and returns true if the key is
 // in the skiplist, otherwise returns false.
 func (sl *SkipList[K, V]) Remove(key K) bool {
-	node, prevs := sl.findRemovePoint(key)
+	node, prevs := sl.impl.findRemovePoint(key)
 	if node == nil {
 		return false
 	}
@@ -179,6 +191,17 @@ func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool) {
 	}
 }
 
+func (sl *SkipList[K, V]) init() {
+	sl.level = 1
+	// #nosec G404 -- This is not a security condition
+	sl.rander = rand.New(rand.NewSource(time.Now().Unix()))
+	sl.prevsCache = make([]*skipListNode[K, V], skipListMaxLevel)
+	sl.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
+}
+
+//go:generate bash ./skiplist_newnode_generate.sh skipListMaxLevel skiplist_newnode.go
+// func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V]
+
 func (sl *SkipList[K, V]) randomLevel() int {
 	total := uint64(1)<<uint64(skipListMaxLevel) - 1 // 2^n-1
 	k := sl.rander.Uint64() % total
@@ -192,11 +215,14 @@ func (sl *SkipList[K, V]) randomLevel() int {
 	return level
 }
 
-//go:generate bash ./skiplist_findnode_generate.sh skiplist_findnode.go
-// func (sl *SkipList[K, V]) findNode(key K) *skipListNode[K, V]
+/// skipListOrdered part
 
-// findNodeFast find node with builtin comparation, which is faster than function call.
-func findNodeFast[K Ordered, V any](sl *SkipList[K, V], key K) *skipListNode[K, V] {
+// skipListOrdered is the skip list implementation for Ordered types.
+type skipListOrdered[K Ordered, V any] struct {
+	SkipList[K, V]
+}
+
+func (sl *skipListOrdered[K, V]) findNode(key K) *skipListNode[K, V] {
 	var pre = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
 		cur := pre.next[i]
@@ -213,8 +239,65 @@ func findNodeFast[K Ordered, V any](sl *SkipList[K, V], key K) *skipListNode[K, 
 	return nil
 }
 
+// findInsertPoint returns (*node, nil) to the existed node if the key exists,
+// or (nil, []*node) to the previous nodes if the key doesn't exist
+func (sl *skipListOrdered[K, V]) findInsertPoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
+	prevs := sl.prevsCache[0:sl.level]
+	prev := &sl.head
+	for i := sl.level - 1; i >= 0; i-- {
+		for next := prev.next[i]; next != nil; next = next.next[i] {
+			if next.key == key {
+				// The key is already existed, prevs are useless because no new node insertion.
+				// stop searching.
+				return next, nil
+			}
+			if next.key > key {
+				// All other node in this level must be greater than the key,
+				// search the next level.
+				break
+			}
+			prev = next
+		}
+		prevs[i] = prev
+	}
+	return nil, prevs
+}
+
+// findRemovePoint finds the node which match the key and it's previous nodes.
+func (sl *skipListOrdered[K, V]) findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
+	prevs := sl.findPrevNodes(key)
+	node := prevs[0].next[0]
+	if node == nil || node.key != key {
+		return nil, nil
+	}
+	return node, prevs
+}
+
+func (sl *skipListOrdered[K, V]) findPrevNodes(key K) []*skipListNode[K, V] {
+	prevs := sl.prevsCache[0:sl.level]
+	prev := &sl.head
+	for i := sl.level - 1; i >= 0; i-- {
+		for next := prev.next[i]; next != nil; next = next.next[i] {
+			if next.key >= key {
+				break
+			}
+			prev = next
+		}
+		prevs[i] = prev
+	}
+	return prevs
+}
+
+/// skipListFunc part
+
+// skipListFunc is the skip list implementation which compare keys with func.
+type skipListFunc[K any, V any] struct {
+	SkipList[K, V]
+	keyCmp CompareFn[K]
+}
+
 // findNodeSlow use keyCmp to compare key, which is slower.
-func (sl *SkipList[K, V]) findNodeSlow(key K) *skipListNode[K, V] {
+func (sl *skipListFunc[K, V]) findNode(key K) *skipListNode[K, V] {
 	var pre = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
 		cur := pre.next[i]
@@ -234,7 +317,7 @@ func (sl *SkipList[K, V]) findNodeSlow(key K) *skipListNode[K, V] {
 
 // findInsertPoint returns (*node, nil) to the existed node if the key exists,
 // or (nil, []*node) to the previous nodes if the key doesn't exist
-func (sl *SkipList[K, V]) findInsertPoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
+func (sl *skipListFunc[K, V]) findInsertPoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
 	prevs := sl.prevsCache[0:sl.level]
 	prev := &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
@@ -258,7 +341,7 @@ func (sl *SkipList[K, V]) findInsertPoint(key K) (*skipListNode[K, V], []*skipLi
 }
 
 // findRemovePoint finds the node which match the key and it's previous nodes.
-func (sl *SkipList[K, V]) findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
+func (sl *skipListFunc[K, V]) findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V]) {
 	prevs := sl.findPrevNodes(key)
 	node := prevs[0].next[0]
 	if node == nil || sl.keyCmp(node.key, key) != 0 {
@@ -267,7 +350,7 @@ func (sl *SkipList[K, V]) findRemovePoint(key K) (*skipListNode[K, V], []*skipLi
 	return node, prevs
 }
 
-func (sl *SkipList[K, V]) findPrevNodes(key K) []*skipListNode[K, V] {
+func (sl *skipListFunc[K, V]) findPrevNodes(key K) []*skipListNode[K, V] {
 	prevs := sl.prevsCache[0:sl.level]
 	prev := &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
