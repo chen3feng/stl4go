@@ -65,6 +65,11 @@ func TestNewSkipListFunc(t *testing.T) {
 	sl.Insert(Person{"wangwu", 30}, 1)
 	expectTrue(t, sl.Has(Person{"zhangsan", 20}))
 	expectFalse(t, sl.Has(Person{"zhangsan", 30}))
+	expectEq(t, sl.Len(), 3)
+
+	sl.Insert(Person{"zhangsan", 20}, 1)
+	expectEq(t, sl.Len(), 3)
+
 	var ps []Person
 	sl.ForEach(func(p Person, _ int) {
 		ps = append(ps, p)
@@ -72,6 +77,12 @@ func TestNewSkipListFunc(t *testing.T) {
 	expectEq(t, ps[0].name, "lisi")
 	expectEq(t, ps[1].name, "zhangsan")
 	expectEq(t, ps[2].name, "wangwu")
+
+	sl.Remove(Person{"zhangsan", 20})
+	expectEq(t, sl.Len(), 2)
+
+	sl.Remove(Person{"zhaoliu", 40})
+	expectEq(t, sl.Len(), 2)
 }
 
 func TestNewSkipListFromMap(t *testing.T) {
