@@ -10,7 +10,7 @@ type DList[T any] struct {
 
 type dListNode[T any] struct {
 	prev, next *dListNode[T]
-	val        T
+	value      T
 }
 
 // NewDList make a new DList object
@@ -52,6 +52,28 @@ func (l *DList[T]) String() string {
 	return fmt.Sprintf("DList[%v]", nameOfType[T]())
 }
 
+type dlistIterator[T any] struct {
+	dl   *DList[T]
+	node *dListNode[T]
+}
+
+func (it *dlistIterator[T]) IsNotEnd() bool {
+	return it.node != &it.dl.head
+}
+
+func (it *dlistIterator[T]) MoveToNext() {
+	it.node = it.node.next
+}
+
+func (it *dlistIterator[T]) Value() T {
+	return it.node.value
+}
+
+// Iterate returns an iterator to the first element in the list.
+func (l *DList[T]) Iterate() Iterator[T] {
+	return &dlistIterator[T]{l, l.head.next}
+}
+
 func (l *DList[T]) PushFront(val T) {
 	n := dListNode[T]{&l.head, l.head.next, val}
 	l.head.next.prev = &n
@@ -71,7 +93,7 @@ func (l *DList[T]) PopFront() (T, bool) {
 	if l.length == 0 {
 		return val, false
 	}
-	val = l.head.next.val
+	val = l.head.next.value
 	l.head.next = l.head.next.next
 	l.head.prev = &l.head
 	l.length--
@@ -83,7 +105,7 @@ func (l *DList[T]) PopBack() (T, bool) {
 	if l.length == 0 {
 		return val, false
 	}
-	val = l.head.prev.val
+	val = l.head.prev.value
 	l.head.prev = l.head.prev.prev
 	l.head.prev.next = &l.head
 	l.length--
@@ -93,14 +115,14 @@ func (l *DList[T]) PopBack() (T, bool) {
 // ForEach iterate the list, apply each element to the cb callback function
 func (l *DList[T]) ForEach(cb func(val T)) {
 	for n := l.head.next; n != &l.head; n = n.next {
-		cb(n.val)
+		cb(n.value)
 	}
 }
 
 // ForEach iterate the list, apply each element to the cb callback function, stop if cb returns false.
 func (l *DList[T]) ForEachIf(cb func(val T) bool) {
 	for n := l.head.next; n != &l.head; n = n.next {
-		if !cb(n.val) {
+		if !cb(n.value) {
 			break
 		}
 	}

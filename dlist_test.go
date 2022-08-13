@@ -25,6 +25,16 @@ func Test_DList_String(t *testing.T) {
 	expectEq(t, "DList[int]", l.String())
 }
 
+func Test_DList_Iterate(t *testing.T) {
+	l := NewDListOf(1, 2, 3)
+	i := 1
+	for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
+		expectEq(t, it.Value(), i)
+		i++
+	}
+	expectEq(t, i, 4)
+}
+
 func Test_DList_PushFront(t *testing.T) {
 	l := NewDList[int]()
 	l.PushFront(1)
@@ -104,4 +114,22 @@ func Test_DList_ForEachIf(t *testing.T) {
 		return n != 2
 	})
 	expectEq(t, c, 2)
+}
+
+func Benchmark_DList_Iterate(b *testing.B) {
+	l := NewDListOf(Range(1, 10000)...)
+	b.Run("Iterate", func(b *testing.B) {
+		sum := 0
+		for i := 0; i < b.N; i++ {
+			for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
+				sum += it.Value()
+			}
+		}
+	})
+	b.Run("Iterate", func(b *testing.B) {
+		sum := 0
+		for i := 0; i < b.N; i++ {
+			l.ForEach(func(val int) { sum += val })
+		}
+	})
 }
