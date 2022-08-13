@@ -18,6 +18,16 @@ func newMapN(n int) map[int]int {
 	return m
 }
 
+func BenchmarkSkipList_Iterate(b *testing.B) {
+	sl := newSkipListN(100)
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		for i := sl.Iterate(); i.IsNotEnd(); i.MoveToNext() {
+			_, _ = i.Key(), i.Value()
+		}
+	}
+}
+
 func BenchmarkSkipList_Insert(b *testing.B) {
 	start := benchInitSize
 	sl := newSkipListN(start)
@@ -82,21 +92,14 @@ func BenchmarkSkipList_Find(b *testing.B) {
 			}
 		}
 	})
-	b.Run("FindSlow", func(b *testing.B) {
+	b.Run("LowerBound", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
-				_ = sl.Find(n)
+				_ = sl.impl.lowerBound(n)
 			}
 		}
 	})
 	b.Run("FindEnd", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			for n := 0; n < benchBatchSize; n++ {
-				_ = sl.Find(benchInitSize)
-			}
-		}
-	})
-	b.Run("FindEndSlow", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			for n := 0; n < benchBatchSize; n++ {
 				_ = sl.Find(benchInitSize)

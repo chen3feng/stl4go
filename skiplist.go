@@ -36,24 +36,6 @@ type SkipList[K any, V any] struct {
 	impl       skipListImpl[K, V]
 }
 
-type skipListNode[K any, V any] struct {
-	key   K
-	value V
-	next  []*skipListNode[K, V]
-}
-
-// skipListImpl is an interface to provide different implementation for Ordered key or CompareFn.
-//
-// We can use CompareFn to cumpare Ordered keys, but a separated implementation is much faster.
-// We don't make the whole skip list an interface, in order to share the type independented method.
-// And because these methods are called directly without going through the interface, they are also
-// much faster.
-type skipListImpl[K any, V any] interface {
-	findNode(key K) *skipListNode[K, V]
-	findInsertPoint(key K) (*skipListNode[K, V], []*skipListNode[K, V])
-	findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V])
-}
-
 // NewSkipList creates a new SkipList for Ordered key type.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
 	sl := skipListOrdered[K, V]{
@@ -103,6 +85,10 @@ func (sl *SkipList[K, V]) Clear() {
 	sl.len = 0
 }
 
+func (sl *SkipList[K, V]) Iterate() MapIterator[K, V] {
+	return &skipListIterator[K, V]{sl.head.next[0], nil}
+}
+
 // Insert inserts a key-value pair into the skiplist.
 // If the key is already in the skip list, it's value will be updated.
 func (sl *SkipList[K, V]) Insert(key K, value V) {
@@ -144,6 +130,19 @@ func (sl *SkipList[K, V]) Find(key K) *V {
 
 func (sl *SkipList[K, V]) Has(key K) bool {
 	return sl.impl.findNode(key) != nil
+}
+
+func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V] {
+	return &skipListIterator[K, V]{sl.impl.lowerBound(key), nil}
+}
+
+func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V] {
+	return &skipListIterator[K, V]{sl.impl.upperBound(key), nil}
+}
+
+// FindRange returns an iterator in range [first, last) (last is not includeed).
+func (sl *SkipList[K, V]) FindRange(first, last K) MapIterator[K, V] {
+	return &skipListIterator[K, V]{sl.impl.lowerBound(first), sl.impl.upperBound(last)}
 }
 
 // Remove removes the key-value pair associated with the passed key and returns true if the key is
@@ -191,6 +190,51 @@ func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool) {
 	}
 }
 
+/// SkipList implementation part.
+
+type skipListNode[K any, V any] struct {
+	key   K
+	value V
+	next  []*skipListNode[K, V]
+}
+
+//go:generate bash ./skiplist_newnode_generate.sh skipListMaxLevel skiplist_newnode.go
+// func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V]
+
+type skipListIterator[K any, V any] struct {
+	node, end *skipListNode[K, V]
+}
+
+func (it *skipListIterator[K, V]) IsNotEnd() bool {
+	return it.node != it.end
+}
+
+func (it *skipListIterator[K, V]) MoveToNext() {
+	it.node = it.node.next[0]
+}
+
+func (it *skipListIterator[K, V]) Key() K {
+	return it.node.key
+}
+
+func (it *skipListIterator[K, V]) Value() V {
+	return it.node.value
+}
+
+// skipListImpl is an interface to provide different implementation for Ordered key or CompareFn.
+//
+// We can use CompareFn to cumpare Ordered keys, but a separated implementation is much faster.
+// We don't make the whole skip list an interface, in order to share the type independented method.
+// And because these methods are called directly without going through the interface, they are also
+// much faster.
+type skipListImpl[K any, V any] interface {
+	findNode(key K) *skipListNode[K, V]
+	lowerBound(key K) *skipListNode[K, V]
+	upperBound(key K) *skipListNode[K, V]
+	findInsertPoint(key K) (*skipListNode[K, V], []*skipListNode[K, V])
+	findRemovePoint(key K) (*skipListNode[K, V], []*skipListNode[K, V])
+}
+
 func (sl *SkipList[K, V]) init() {
 	sl.level = 1
 	// #nosec G404 -- This is not a security condition
@@ -198,9 +242,6 @@ func (sl *SkipList[K, V]) init() {
 	sl.prevsCache = make([]*skipListNode[K, V], skipListMaxLevel)
 	sl.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
 }
-
-//go:generate bash ./skiplist_newnode_generate.sh skipListMaxLevel skiplist_newnode.go
-// func newSkipListNode[K Ordered, V any](level int, key K, value V) *skipListNode[K, V]
 
 func (sl *SkipList[K, V]) randomLevel() int {
 	total := uint64(1)<<uint64(skipListMaxLevel) - 1 // 2^n-1
@@ -223,20 +264,43 @@ type skipListOrdered[K Ordered, V any] struct {
 }
 
 func (sl *skipListOrdered[K, V]) findNode(key K) *skipListNode[K, V] {
-	var pre = &sl.head
+	return sl.doFindNode(key, true)
+}
+
+func (sl *skipListOrdered[K, V]) doFindNode(key K, eq bool) *skipListNode[K, V] {
+	// This function execute the job of findNode if eq is true, otherwise lowBound.
+	// Passing the control variable eq is ugly but it's faster than testing node
+	// again outside the function in findNode.
+	prev := &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
-		cur := pre.next[i]
-		for ; cur != nil; cur = cur.next[i] {
+		for cur := prev.next[i]; cur != nil; cur = cur.next[i] {
 			if cur.key == key {
 				return cur
 			}
 			if cur.key > key {
+				// All other node in this level must be greater than the key,
+				// search the next level.
 				break
 			}
-			pre = cur
+			prev = cur
 		}
 	}
-	return nil
+	if eq {
+		return nil
+	}
+	return prev.next[0]
+}
+
+func (sl *skipListOrdered[K, V]) lowerBound(key K) *skipListNode[K, V] {
+	return sl.doFindNode(key, false)
+}
+
+func (sl *skipListOrdered[K, V]) upperBound(key K) *skipListNode[K, V] {
+	node := sl.lowerBound(key)
+	if node != nil && node.key == key {
+		return node.next[0]
+	}
+	return node
 }
 
 // findInsertPoint returns (*node, nil) to the existed node if the key exists,
@@ -296,11 +360,18 @@ type skipListFunc[K any, V any] struct {
 	keyCmp CompareFn[K]
 }
 
-// findNodeSlow use keyCmp to compare key, which is slower.
 func (sl *skipListFunc[K, V]) findNode(key K) *skipListNode[K, V] {
-	var pre = &sl.head
+	node := sl.lowerBound(key)
+	if node != nil && sl.keyCmp(node.key, key) == 0 {
+		return node
+	}
+	return nil
+}
+
+func (sl *skipListFunc[K, V]) lowerBound(key K) *skipListNode[K, V] {
+	var prev = &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
-		cur := pre.next[i]
+		cur := prev.next[i]
 		for ; cur != nil; cur = cur.next[i] {
 			cmpRet := sl.keyCmp(cur.key, key)
 			if cmpRet == 0 {
@@ -309,10 +380,18 @@ func (sl *skipListFunc[K, V]) findNode(key K) *skipListNode[K, V] {
 			if cmpRet > 0 {
 				break
 			}
-			pre = cur
+			prev = cur
 		}
 	}
-	return nil
+	return prev.next[0]
+}
+
+func (sl *skipListFunc[K, V]) upperBound(key K) *skipListNode[K, V] {
+	node := sl.lowerBound(key)
+	if node != nil && sl.keyCmp(node.key, key) == 0 {
+		return node.next[0]
+	}
+	return node
 }
 
 // findInsertPoint returns (*node, nil) to the existed node if the key exists,
@@ -321,19 +400,19 @@ func (sl *skipListFunc[K, V]) findInsertPoint(key K) (*skipListNode[K, V], []*sk
 	prevs := sl.prevsCache[0:sl.level]
 	prev := &sl.head
 	for i := sl.level - 1; i >= 0; i-- {
-		for next := prev.next[i]; next != nil; next = next.next[i] {
-			r := sl.keyCmp(next.key, key)
+		for cur := prev.next[i]; cur != nil; cur = cur.next[i] {
+			r := sl.keyCmp(cur.key, key)
 			if r == 0 {
 				// The key is already existed, prevs are useless because no new node insertion.
 				// stop searching.
-				return next, nil
+				return cur, nil
 			}
 			if r > 0 {
 				// All other node in this level must be greater than the key,
 				// search the next level.
 				break
 			}
-			prev = next
+			prev = cur
 		}
 		prevs[i] = prev
 	}

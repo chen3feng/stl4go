@@ -5,8 +5,10 @@ import (
 	"testing"
 )
 
-func TestSkipListInterface(t *testing.T) {
-	_ = Map[int, int](NewSkipList[int, int]())
+func TestSkipList_Interface(t *testing.T) {
+	sl := NewSkipList[int, int]()
+	_ = Map[int, int](sl)
+	_ = MapIterator[int, int](sl.Iterate())
 }
 
 func TestNewSkipList(t *testing.T) {
@@ -93,6 +95,53 @@ func TestNewSkipListFromMap(t *testing.T) {
 	}
 }
 
+func TestNewSkipList_Iterate(t *testing.T) {
+	sl := newSkipListN(10)
+	i := 0
+	for it := sl.Iterate(); it.IsNotEnd(); it.MoveToNext() {
+		expectEq(t, it.Key(), i)
+		expectEq(t, it.Value(), i)
+		i++
+	}
+}
+
+func testNewSkipList_Iterater(t *testing.T, sl *SkipList[int, int]) {
+	t.Run("LowerBound", func(t *testing.T) {
+		expectEq(t, sl.LowerBound(1).Key(), 1)
+		expectEq(t, sl.LowerBound(3).Key(), 4)
+		expectEq(t, sl.LowerBound(4).Key(), 4)
+		expectFalse(t, sl.LowerBound(5).IsNotEnd())
+	})
+
+	t.Run("UpperBound", func(t *testing.T) {
+		expectEq(t, sl.UpperBound(0).Key(), 1)
+		expectEq(t, sl.UpperBound(1).Key(), 2)
+		expectEq(t, sl.UpperBound(3).Key(), 4)
+		expectFalse(t, sl.UpperBound(4).IsNotEnd())
+		expectFalse(t, sl.UpperBound(5).IsNotEnd())
+	})
+
+	t.Run("FindRange", func(t *testing.T) {
+		it := sl.FindRange(1, 3)
+		expectEq(t, it.Key(), 1)
+		it.MoveToNext()
+		expectEq(t, it.Key(), 2)
+	})
+}
+
+func TestNewSkipList_Iterater(t *testing.T) {
+	sl := NewSkipListFromMap(map[int]int{1: 1, 2: 2, 4: 4})
+	testNewSkipList_Iterater(t, sl)
+}
+
+func TestNewSkipList_Func_Iterater(t *testing.T) {
+	sl := NewSkipListFunc[int, int](OrderedCompare[int])
+	m := map[int]int{1: 1, 2: 2, 4: 4}
+	for k, v := range m {
+		sl.Insert(k, v)
+	}
+	testNewSkipList_Iterater(t, sl)
+}
 func TestSkipList_Insert(t *testing.T) {
 	sl := NewSkipList[int, int]()
 	for i := 0; i < 100; i++ {
