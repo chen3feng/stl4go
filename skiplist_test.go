@@ -105,7 +105,7 @@ func TestNewSkipList_Iterate(t *testing.T) {
 	}
 }
 
-func testNewSkipList_Iterater(t *testing.T, sl *SkipList[int, int]) {
+func testNewSkipListIterater(t *testing.T, sl *SkipList[int, int]) {
 	t.Run("LowerBound", func(t *testing.T) {
 		expectEq(t, sl.LowerBound(1).Key(), 1)
 		expectEq(t, sl.LowerBound(3).Key(), 4)
@@ -131,7 +131,7 @@ func testNewSkipList_Iterater(t *testing.T, sl *SkipList[int, int]) {
 
 func TestNewSkipList_Iterater(t *testing.T) {
 	sl := NewSkipListFromMap(map[int]int{1: 1, 2: 2, 4: 4})
-	testNewSkipList_Iterater(t, sl)
+	testNewSkipListIterater(t, sl)
 }
 
 func TestNewSkipList_Func_Iterater(t *testing.T) {
@@ -140,7 +140,7 @@ func TestNewSkipList_Func_Iterater(t *testing.T) {
 	for k, v := range m {
 		sl.Insert(k, v)
 	}
-	testNewSkipList_Iterater(t, sl)
+	testNewSkipListIterater(t, sl)
 }
 func TestSkipList_Insert(t *testing.T) {
 	sl := NewSkipList[int, int]()

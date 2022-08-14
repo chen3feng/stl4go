@@ -26,27 +26,20 @@ const (
 //
 // See https://en.wikipedia.org/wiki/Skip_list for more details.
 type SkipList[K any, V any] struct {
-	level int // Current level, may increase dynamically during insertion
-	len   int // Total elements numner in the skiplist.
-	head  skipListNode[K, V]
+	level int                // Current level, may increase dynamically during insertion
+	len   int                // Total elements numner in the skiplist.
+	head  skipListNode[K, V] // head.next[level] is the head of each level.
 	// This cache is used to save the previous nodes when modifying the skip list to avoid
 	// allocating memory each time it is called.
-	prevsCache []*skipListNode[K, V] // Cache to avoid memory allocation.
+	prevsCache []*skipListNode[K, V]
 	rander     *rand.Rand
 	impl       skipListImpl[K, V]
 }
 
 // NewSkipList creates a new SkipList for Ordered key type.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
-	sl := skipListOrdered[K, V]{
-		SkipList: SkipList[K, V]{
-			level: 1,
-			// #nosec G404 -- This is not a security condition
-			rander:     rand.New(rand.NewSource(time.Now().Unix())),
-			prevsCache: make([]*skipListNode[K, V], skipListMaxLevel),
-		},
-	}
-	sl.head.next = make([]*skipListNode[K, V], skipListMaxLevel)
+	sl := skipListOrdered[K, V]{}
+	sl.init()
 	sl.impl = (skipListImpl[K, V])(&sl)
 	return &sl.SkipList
 }
@@ -69,14 +62,17 @@ func NewSkipListFunc[K any, V any](keyCmp CompareFn[K]) *SkipList[K, V] {
 	return &sl.SkipList
 }
 
+// IsEmpty implements the Container interface.
 func (sl *SkipList[K, V]) IsEmpty() bool {
 	return sl.len == 0
 }
 
+// Len implements the Container interface.
 func (sl *SkipList[K, V]) Len() int {
 	return sl.len
 }
 
+// Clear implements the Container interface.
 func (sl *SkipList[K, V]) Clear() {
 	for i := range sl.head.next {
 		sl.head.next[i] = nil
@@ -85,6 +81,7 @@ func (sl *SkipList[K, V]) Clear() {
 	sl.len = 0
 }
 
+// Iterate return an iterator to the skiplist.
 func (sl *SkipList[K, V]) Iterate() MapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.head.next[0], nil}
 }
@@ -128,14 +125,21 @@ func (sl *SkipList[K, V]) Find(key K) *V {
 	return nil
 }
 
+// Has implement the Map interface.
 func (sl *SkipList[K, V]) Has(key K) bool {
 	return sl.impl.findNode(key) != nil
 }
 
+// LowerBound returns an iterator to the first element in the skiplist that
+// does not satisfy element < value (i.e. greater or equal to),
+// or a end itetator if no such element is found.
 func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.lowerBound(key), nil}
 }
 
+// UpperBound returns an iterator to the first element in the skiplist that
+// does not satisfy value < element (i.e. strictly greater),
+// or a end itetator if no such element is found.
 func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.upperBound(key), nil}
 }
@@ -162,18 +166,21 @@ func (sl *SkipList[K, V]) Remove(key K) bool {
 	return true
 }
 
+// ForEach implements the Map interface.
 func (sl *SkipList[K, V]) ForEach(op func(K, V)) {
 	for e := sl.head.next[0]; e != nil; e = e.next[0] {
 		op(e.key, e.value)
 	}
 }
 
+// ForEachMutable implements the Map interface.
 func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V)) {
 	for e := sl.head.next[0]; e != nil; e = e.next[0] {
 		op(e.key, &e.value)
 	}
 }
 
+// ForEachIf implements the Map interface.
 func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool) {
 	for e := sl.head.next[0]; e != nil; e = e.next[0] {
 		if !op(e.key, e.value) {
@@ -182,6 +189,7 @@ func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool) {
 	}
 }
 
+// ForEachMutableIf implements the Map interface.
 func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool) {
 	for e := sl.head.next[0]; e != nil; e = e.next[0] {
 		if !op(e.key, &e.value) {
