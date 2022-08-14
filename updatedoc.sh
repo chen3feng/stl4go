@@ -1,4 +1,3 @@
 #!/bin/bash
 
-gomarkdoc -o README.md -e .
-gomarkdoc -o README_zh.md -e .
+gomarkdoc -o generated_doc.md -e .
