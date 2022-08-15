@@ -74,6 +74,7 @@ func (l *DList[T]) Iterate() Iterator[T] {
 	return &dlistIterator[T]{l, l.head.next}
 }
 
+// PushFront pushes an element at the front of the list.
 func (l *DList[T]) PushFront(val T) {
 	n := dListNode[T]{&l.head, l.head.next, val}
 	l.head.next.prev = &n
@@ -81,6 +82,7 @@ func (l *DList[T]) PushFront(val T) {
 	l.length++
 }
 
+// PushBack pushes an element at the back of the list.
 func (l *DList[T]) PushBack(val T) {
 	n := dListNode[T]{l.head.prev, &l.head, val}
 	l.head.prev.next = &n
@@ -88,6 +90,7 @@ func (l *DList[T]) PushBack(val T) {
 	l.length++
 }
 
+// PopFront popups a element from the front of the list.
 func (l *DList[T]) PopFront() (T, bool) {
 	var val T
 	if l.length == 0 {
@@ -100,6 +103,7 @@ func (l *DList[T]) PopFront() (T, bool) {
 	return val, true
 }
 
+// PopBack popups a element from the back of the list.
 func (l *DList[T]) PopBack() (T, bool) {
 	var val T
 	if l.length == 0 {
@@ -119,7 +123,7 @@ func (l *DList[T]) ForEach(cb func(val T)) {
 	}
 }
 
-// ForEach iterate the list, apply each element to the cb callback function, stop if cb returns false.
+// ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 func (l *DList[T]) ForEachIf(cb func(val T) bool) {
 	for n := l.head.next; n != &l.head; n = n.next {
 		if !cb(n.value) {

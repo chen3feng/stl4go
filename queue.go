@@ -16,34 +16,42 @@ func NewQueue[T any]() *Queue[T] {
 	return &q
 }
 
+// Len implements the Container interface.
 func (q *Queue[T]) Len() int {
 	return q.list.Len()
 }
 
+// IsEmpty implements the Container interface.
 func (q *Queue[T]) IsEmpty() bool {
 	return q.list.IsEmpty()
 }
 
+// Clear implements the Container interface.
 func (q *Queue[T]) Clear() {
 	q.list.Clear()
 }
 
+// Len implements the fmt.Stringer interface.
 func (q *Queue[T]) String() string {
 	return fmt.Sprintf("Queue[%v]", nameOfType[T]())
 }
 
+// PushFront pushed an element to the front of the queue.
 func (q *Queue[T]) PushFront(val T) {
 	q.list.PushFront(val)
 }
 
+// PushBack pushed an element to the back of the queue.
 func (q *Queue[T]) PushBack(val T) {
 	q.list.PushBack(val)
 }
 
+// PopFront popups an element from the front of the queue.
 func (q *Queue[T]) PopFront() (T, bool) {
 	return q.list.PopFront()
 }
 
+// PopBack popups an element from the back of the queue.
 func (q *Queue[T]) PopBack() (T, bool) {
 	return q.list.PopBack()
 }

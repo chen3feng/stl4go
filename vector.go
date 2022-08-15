@@ -19,14 +19,17 @@ func MakeVectorOf[T any](v ...T) Vector[T] {
 	return (Vector[T])(v)
 }
 
+// IsEmpty implements the Container interface.
 func (v *Vector[T]) IsEmpty() bool {
 	return len(*v) == 0
 }
 
+// Len implements the Container interface.
 func (v *Vector[T]) Len() int {
 	return len(*v)
 }
 
+// Cap returns the capacity of the vector.
 func (v *Vector[T]) Cap() int {
 	return cap(*v)
 }
@@ -58,14 +61,19 @@ func (v *Vector[T]) Shrink() {
 	}
 }
 
+// At returns the element value at the index i.
+// You can also use the [] operator, and it's better.
 func (v *Vector[T]) At(i int) T {
 	return (*v)[i]
 }
 
+// Set sets the value of the element at the index i.
+// You can also use the [] operator, and it's better.
 func (v *Vector[T]) Set(i int, x T) {
 	(*v)[i] = x
 }
 
+// PushBack pushs an element to the end of the vector.
 func (v *Vector[T]) PushBack(x T) {
 	*v = append(*v, x)
 }
@@ -104,12 +112,12 @@ func (v *Vector[T]) Remove(i int) {
 	v.RemoveRange(i, i+1)
 }
 
-// Remove removes the elements in the range[i, j) from the vector.
+// RemoveRange removes the elements in the range[i, j) from the vector.
 func (v *Vector[T]) RemoveRange(i, j int) {
 	*v = append((*v)[:i], (*v)[j:]...)
 }
 
-// Remove removes the elements in the range[i, i+len) from the vector.
+// RemoveLength removes the elements in the range[i, i+len) from the vector.
 func (v *Vector[T]) RemoveLength(i int, len int) {
 	v.RemoveRange(i, i+len)
 }
