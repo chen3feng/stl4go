@@ -64,23 +64,26 @@ Different containers support different methods. The following are the methods su
 DList and SkipList support simple iterators.
 
 ```go
-    l := stl4go.NewDListOf(Range(1, 10000)...)
-    sum := 0
-    for i := 0; i < b.N; i++ {
-        for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
-            sum += it.Value()
-        }
+l := stl4go.NewDListOf(Range(1, 10000)...)
+sum := 0
+for i := 0; i < b.N; i++ {
+    for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
+        sum += it.Value()
     }
+}
 ```
 
-SkipList also supports interval iteration:
+SkipList also supports range iteration:
 
 ```go
-    l := stl4go.NewDListOf(Range(1, 1000)...)
-    it := sl.FindRange(120, 350)
+sl := stl4go.NewSkipList[int, int]()
+for i := 0; i < 1000; i++ {
+    sl.Insert(i, 0)
+}
+it := sl.FindRange(120, 350)
 ```
 
-Iterating over `it` yields numbers between 120 and 349.
+Iterating over `it` only yields the keys between 120 and 349.
 
 In many cases, it is more convenient to use the `ForEach` and `ForEachIf` methods provided by the container,
 and the performance is often better:
