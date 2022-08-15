@@ -50,23 +50,26 @@ import "github.com/chen3feng/stl4go"
 DList 和 SkipList 支持简单的迭代器。
 
 ```go
-    l := stl4go.NewDListOf(Range(1, 10000)...)
-    sum := 0
-    for i := 0; i < b.N; i++ {
-        for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
-            sum += it.Value()
-        }
+l := stl4go.NewDListOf(Range(1, 10000)...)
+sum := 0
+for i := 0; i < b.N; i++ {
+    for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
+        sum += it.Value()
     }
+}
 ```
 
 SkipList 还支持区间迭代：
 
 ```go
-    l := stl4go.NewDListOf(Range(1, 1000)...)
-    it := sl.FindRange(120, 350)
+sl := stl4go.NewSkipList[int, int]()
+for i := 0; i < 1000; i++ {
+    sl.Insert(i, 0)
+}
+it := sl.FindRange(120, 350)
 ```
 
-对 `it` 迭代可以得到 120~349 之间的数。
+对 `it` 迭代可以只会得到 120~349 之间的数。
 
 更多时候，使用容器提供的 `ForEach` 和 `ForEachIf` 更方便，往往性能也更好一些：
 

@@ -232,8 +232,8 @@ func TestSkipList_newnode(t *testing.T) {
 		node := newSkipListNode(level, 1, 1)
 		expectEq(t, len(node.next), level)
 	}
-	expactPanic(t, func() { newSkipListNode(0, 1, 1) })
-	expactPanic(t, func() { newSkipListNode(skipListMaxLevel+1, 1, 1) })
+	expectPanic(t, func() { newSkipListNode(0, 1, 1) })
+	expectPanic(t, func() { newSkipListNode(skipListMaxLevel+1, 1, 1) })
 }
 
 func TestSkipList_Find(t *testing.T) {

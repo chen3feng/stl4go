@@ -59,5 +59,5 @@ func Test_Stack_Must(t *testing.T) {
 	s.Push(1)
 	v := s.MustPop()
 	expectEq(t, v, 1)
-	expactPanic(t, func() { s.MustPop() })
+	expectPanic(t, func() { s.MustPop() })
 }

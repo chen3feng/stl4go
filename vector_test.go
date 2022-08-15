@@ -72,7 +72,7 @@ func Test_Vector_At_Set(t *testing.T) {
 	expectEq(t, v[0], 1)
 	v[0] = 2
 	expectEq(t, v[0], 2)
-	expactPanic(t, func() { v.Set(3, 2) })
+	expectPanic(t, func() { v.Set(3, 2) })
 }
 
 func Test_Vector_Insert(t *testing.T) {

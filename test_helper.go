@@ -71,7 +71,7 @@ func expectFalse(t *testing.T, actual bool) {
 	}
 }
 
-func expactPanic(t *testing.T, f func()) {
+func expectPanic(t *testing.T, f func()) {
 	t.Helper()
 	defer func() {
 		t.Helper()

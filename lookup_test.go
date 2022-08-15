@@ -21,7 +21,7 @@ func Test_MinN(t *testing.T) {
 	expectEq(t, MinN(2, 1, 3), 1)
 	expectEq(t, MinN(1, 1, 1), 1)
 	expectEq(t, MinN("hello", "world"), "hello")
-	expactPanic(t, func() { MinN(emptyInts...) })
+	expectPanic(t, func() { MinN(emptyInts...) })
 }
 
 func Test_MaxN(t *testing.T) {
@@ -29,7 +29,7 @@ func Test_MaxN(t *testing.T) {
 	expectEq(t, MaxN(2, 1), 2)
 	expectEq(t, MaxN(2, 2), 2)
 	expectEq(t, MaxN("hello", "world"), "world")
-	expactPanic(t, func() { MaxN(emptyInts...) })
+	expectPanic(t, func() { MaxN(emptyInts...) })
 }
 
 func Test_MinMax(t *testing.T) {
@@ -45,7 +45,7 @@ func Test_MinMaxN(t *testing.T) {
 	min, max := MinMaxN(3, 4, 1, 2)
 	expectEq(t, min, 1)
 	expectEq(t, max, 4)
-	expactPanic(t, func() { MinMaxN(emptyInts...) })
+	expectPanic(t, func() { MinMaxN(emptyInts...) })
 }
 
 func Test_Find(t *testing.T) {
