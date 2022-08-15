@@ -2,79 +2,81 @@ package stl4go
 
 import (
 	"fmt"
-	"runtime"
 	"testing"
 )
 
-func report(t *testing.T, file string, line int, msg string) {
-	t.Errorf("%v:%v: Wrong: %v\n", file, line, msg)
+func report(t *testing.T, msg string) {
+	t.Helper()
+	t.Errorf("Wrong: %v\n", msg)
 }
 
-func reportMismatch[T comparable](t *testing.T, a T, op string, b T, file string, line int) {
-	report(t, file, line, fmt.Sprintf("%v %v %v", a, op, b))
+func reportMismatch[T comparable](t *testing.T, a T, op string, b T) {
+	t.Helper()
+	report(t, fmt.Sprintf("%v %v %v", a, op, b))
 }
 
 func expectEq[T comparable](t *testing.T, a, b T) {
+	t.Helper()
 	if a != b {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, a, "==", b, file, line)
+		reportMismatch(t, a, "==", b)
 	}
 }
 
 func expectNe[T comparable](t *testing.T, a, b T) {
+	t.Helper()
 	if !(a != b) {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, a, "!=", b, file, line)
+		reportMismatch(t, a, "!=", b)
 	}
 }
 
 func expectLt[T Ordered](t *testing.T, a, b T) {
+	t.Helper()
 	if !(a < b) {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, a, "<", b, file, line)
+		reportMismatch(t, a, "<", b)
 	}
 }
 
 func expectGt[T Ordered](t *testing.T, a, b T) {
+	t.Helper()
 	if !(a > b) {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, a, ">", b, file, line)
+		reportMismatch(t, a, ">", b)
 	}
 }
 
 func expectLe[T Ordered](t *testing.T, a, b T) {
+	t.Helper()
 	if !(a <= b) {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, a, "<=", b, file, line)
+		reportMismatch(t, a, "<=", b)
 	}
 }
 
 func expectGe[T Ordered](t *testing.T, a, b T) {
+	t.Helper()
 	if !(a >= b) {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, a, ">=", b, file, line)
+		reportMismatch(t, a, ">=", b)
 	}
 }
 
 func expectTrue(t *testing.T, actual bool) {
+	t.Helper()
 	if !actual {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, actual, "==", true, file, line)
+		reportMismatch(t, actual, "==", true)
 	}
 }
 
 func expectFalse(t *testing.T, actual bool) {
+	t.Helper()
 	if actual {
-		_, file, line, _ := runtime.Caller(1)
-		reportMismatch(t, actual, "==", false, file, line)
+		reportMismatch(t, actual, "==", false)
 	}
 }
 
 func expactPanic(t *testing.T, f func()) {
-	_, file, line, _ := runtime.Caller(1)
+	t.Helper()
 	defer func() {
+		t.Helper()
 		if r := recover(); r == nil {
-			report(t, file, line, "din't panic")
+			report(t, "din't panic")
 		}
 	}()
 

@@ -11,18 +11,18 @@ func Test_Dlist_Interface(t *testing.T) {
 func Test_DList_New(t *testing.T) {
 	l := NewDList[int]()
 	expectTrue(t, l.IsEmpty())
-	expectEq(t, 0, l.Len())
+	expectEq(t, l.Len(), 0)
 }
 
 func Test_DList_NewOf(t *testing.T) {
 	l := NewDListOf(1, 2, 3)
 	expectFalse(t, l.IsEmpty())
-	expectEq(t, 3, l.Len())
+	expectEq(t, l.Len(), 3)
 }
 
 func Test_DList_String(t *testing.T) {
 	l := NewDList[int]()
-	expectEq(t, "DList[int]", l.String())
+	expectEq(t, l.String(), "DList[int]")
 }
 
 func Test_DList_Iterate(t *testing.T) {
@@ -39,14 +39,14 @@ func Test_DList_PushFront(t *testing.T) {
 	l := NewDList[int]()
 	l.PushFront(1)
 	expectFalse(t, l.IsEmpty())
-	expectEq(t, 1, l.Len())
+	expectEq(t, l.Len(), 1)
 }
 
 func Test_DList_PushBack(t *testing.T) {
 	l := NewDList[int]()
 	l.PushBack(1)
 	expectFalse(t, l.IsEmpty())
-	expectEq(t, 1, l.Len())
+	expectEq(t, l.Len(), 1)
 }
 
 func Test_DList_PopFront(t *testing.T) {
@@ -66,7 +66,7 @@ func Test_DList_PushBack_PopFront(t *testing.T) {
 	l.PushBack(1)
 	v, ok := l.PopFront()
 	expectTrue(t, ok)
-	expectEq(t, 1, v)
+	expectEq(t, v, 1)
 }
 
 func Test_DList_PushBack_PopBack(t *testing.T) {
