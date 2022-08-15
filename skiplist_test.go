@@ -240,7 +240,7 @@ func TestSkipList_Find(t *testing.T) {
 	sl := newSkipListN(100)
 	for i := 0; i < 100; i++ {
 		p := sl.Find(i)
-		expectEq(t, i, *p)
+		expectEq(t, *p, i)
 	}
 	expectEq(t, sl.Find(100), nil)
 }

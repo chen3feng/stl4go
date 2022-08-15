@@ -28,7 +28,7 @@ func Test_TransformTo(t *testing.T) {
 	b := make([]string, len(a))
 	TransformTo(a, func(v int) string { return strconv.Itoa(v) }, b)
 	for i, v := range a {
-		expectEq(t, strconv.Itoa(v), b[i])
+		expectEq(t, b[i], strconv.Itoa(v))
 	}
 	expactPanic(t, func() {
 		c := make([]string, len(a)-1)
