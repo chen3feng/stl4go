@@ -36,5 +36,5 @@ func newSkipListNode[K any, V any](level int, key K, value V) *skipListNode[K, V
 max_level=$(grep -E "^\s*$1\s*=\s*\d+" $GOFILE | grep -Eo "\d+")
 output_file=$2
 
-echo -e "// AUTO GENERATED CODE, DON'T EDIT!!!\n// EDIT $(basename $0) accordingly.\n" > $output_file
+echo -e "// AUTO GENERATED CODE, DO NOT EDIT!!!\n// EDIT $(basename $0) accordingly.\n" > $output_file
 generate $max_level >> $output_file

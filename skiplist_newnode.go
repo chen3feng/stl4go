@@ -1,4 +1,4 @@
-// AUTO GENERATED CODE, DON'T EDIT!!!
+// AUTO GENERATED CODE, DO NOT EDIT!!!
 // EDIT skiplist_newnode_generate.sh accordingly.
 
 package stl4go
