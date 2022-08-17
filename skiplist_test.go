@@ -170,6 +170,7 @@ func TestSkipList_Insert_Dup(t *testing.T) {
 
 func newSkipListN(n int) *SkipList[int, int] {
 	sl := NewSkipList[int, int]()
+	sl.rander.Seed(0)
 	for i := 0; i < n; i++ {
 		sl.Insert(i, i)
 	}

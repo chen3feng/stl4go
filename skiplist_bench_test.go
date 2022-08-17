@@ -110,6 +110,7 @@ func BenchmarkSkipList_Find(b *testing.B) {
 
 func BenchmarkSkipListString(b *testing.B) {
 	sl := NewSkipList[string, int]()
+	sl.rander.Seed(0)
 	var a []string
 	for i := 0; i < benchBatchSize; i++ {
 		a = append(a, strconv.Itoa(benchInitSize+i))
