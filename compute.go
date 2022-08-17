@@ -25,9 +25,8 @@ func AverageAs[R, T Numeric](a []T) R {
 
 // Average returns the average value of a.
 func Average[T Numeric](a []T) T {
-	var x T
-	var i interface{} = x
-	switch i.(type) {
+	var zero T // NOTE: convert 0 to interface have no malloc
+	switch any(zero).(type) {
 	case int, int8, uint8, int16, uint16, int32, uint32:
 		return T(AverageAs[int64](a))
 	case uint64:
