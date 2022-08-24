@@ -100,12 +100,14 @@ func (sl *SkipList[K, V]) Insert(key K, value V) {
 	level := sl.randomLevel()
 	node = newSkipListNode(level, key, value)
 
+	// Insert node to each level
 	for i := 0; i < Min(level, sl.level); i++ {
 		node.next[i] = prevs[i].next[i]
 		prevs[i].next[i] = node
 	}
 
 	if level > sl.level {
+		// Increase the level
 		for i := sl.level; i < level; i++ {
 			sl.head.next[i] = node
 		}
@@ -156,9 +158,10 @@ func (sl *SkipList[K, V]) Remove(key K) bool {
 	if node == nil {
 		return false
 	}
-	for i, v := range node.next {
+	for i, v := range node.next { // Nomove the node from each level's links.
 		prevs[i].next[i] = v
 	}
+	// Decrease the level if the top level become empty
 	for sl.level > 1 && sl.head.next[sl.level-1] == nil {
 		sl.level--
 	}
@@ -253,7 +256,7 @@ func (sl *SkipList[K, V]) init() {
 
 func (sl *SkipList[K, V]) randomLevel() int {
 	total := uint64(1)<<uint64(skipListMaxLevel) - 1 // 2^n-1
-	k := sl.rander.Uint64() % total
+	k := sl.rander.Uint64() & total
 	level := skipListMaxLevel - bits.Len64(k) + 1
 	// Since levels are randomly generated, most should be less than log2(s.len).
 	// Then make a limit according to sl.len to avoid unexpectedly large value.
