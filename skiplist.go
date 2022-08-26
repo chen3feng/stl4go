@@ -27,7 +27,7 @@ const (
 // See https://en.wikipedia.org/wiki/Skip_list for more details.
 type SkipList[K any, V any] struct {
 	level int                // Current level, may increase dynamically during insertion
-	len   int                // Total elements numner in the skiplist.
+	len   int                // Total elements number in the skiplist.
 	head  skipListNode[K, V] // head.next[level] is the head of each level.
 	// This cache is used to save the previous nodes when modifying the skip list to avoid
 	// allocating memory each time it is called.
@@ -134,19 +134,19 @@ func (sl *SkipList[K, V]) Has(key K) bool {
 
 // LowerBound returns an iterator to the first element in the skiplist that
 // does not satisfy element < value (i.e. greater or equal to),
-// or a end itetator if no such element is found.
+// or a end iterator if no such element is found.
 func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.lowerBound(key), nil}
 }
 
 // UpperBound returns an iterator to the first element in the skiplist that
 // does not satisfy value < element (i.e. strictly greater),
-// or a end itetator if no such element is found.
+// or a end iterator if no such element is found.
 func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.upperBound(key), nil}
 }
 
-// FindRange returns an iterator in range [first, last) (last is not includeed).
+// FindRange returns an iterator in range [first, last) (last is not included).
 func (sl *SkipList[K, V]) FindRange(first, last K) MapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.lowerBound(first), sl.impl.upperBound(last)}
 }
@@ -234,7 +234,7 @@ func (it *skipListIterator[K, V]) Value() V {
 
 // skipListImpl is an interface to provide different implementation for Ordered key or CompareFn.
 //
-// We can use CompareFn to cumpare Ordered keys, but a separated implementation is much faster.
+// We can use CompareFn to compare Ordered keys, but a separated implementation is much faster.
 // We don't make the whole skip list an interface, in order to share the type independented method.
 // And because these methods are called directly without going through the interface, they are also
 // much faster.
