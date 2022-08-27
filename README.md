@@ -210,7 +210,7 @@ And add more detailed documents.
 
 ## Go Doc
 
-Clock to view the [generated doc](generated_doc.md).
+Click to view the [generated doc](generated_doc.md).
 
 ## Reference
 
