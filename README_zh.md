@@ -182,6 +182,8 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 
 都比 go 标准库 [container/heap](https://pkg.go.dev/container/heap) 更容易使用且更快。
 
+用法和测试详情参见[heap的文档](heap.md)。
+
 ### 接口设计和命名
 
 较多地参考了 C++ STL。T 表示模板。是的，Go 的范型不是模板，但是谁让 C++ 那么影响力，而 STL 又那么有名呢。

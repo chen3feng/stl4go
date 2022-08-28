@@ -180,7 +180,7 @@ See C++ STL.
 
 #### heap
 
-Heap provides basic min heap algorithms:
+[Heap](heap.md) provides basic min heap algorithms:
 
 - `MakeMinHeap` Convert a slice to a min heap
 - `IsMinHeap` Check whether a slice is a min heap
@@ -197,6 +197,8 @@ and variants with custome comparasion function:
 - `RemoveHeapFunc`
 
 both of them are mush faster and easier to use than [container/heap](https://pkg.go.dev/container/heap).
+
+See detailed usage and benchmark report in the [document of heap](heap.md)。
 
 ### Interface Design and Naming
 
