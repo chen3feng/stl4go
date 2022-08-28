@@ -1,5 +1,7 @@
 # Heap
 
+stl4go provides a group of [heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) algorithms.
+
 ## Easy to use
 
 For ordered types, you can easily use the heap algorithms, for example, with `int` type:
@@ -7,13 +9,13 @@ For ordered types, you can easily use the heap algorithms, for example, with `in
 ```go
 func Example() {
     heap := []int {5, 4, 3, 2, 1}
-    stlgo.MakeHeap(heap)
+    stl4go.MakeMinHeap(heap)
     stl4go.PushMinHeap(&heap, 6)
-    stl4go.PopMinHeap(&heap)
+    n := stl4go.PopMinHeap(&heap) // get 1
 }
 ```
 
-Please compare with [container/heap](https://pkg.go.dev/container/heap#example-package-IntHeap):
+Please compare it with [container/heap](https://pkg.go.dev/container/heap#example-package-IntHeap):
 
 ```go
 // This example demonstrates an integer heap built using the heap interface.
@@ -58,7 +60,7 @@ func main() {
 }
 ```
 
-You must define a new type `IntHeap` and five methods before to use the library,
+You must define a new type `IntHeap` and five methods before to use the standard library,
 these boilerplate codes are verbose, tedious, and boring.
 
 ## Benchmark
