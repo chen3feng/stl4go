@@ -52,6 +52,7 @@ Currently implemented containers are:
       This is currently the fastest skip list I tested in GitHub, see [skiplist-survey](https://github.com/chen3feng/skiplist-survey) for performance comparison
 - [x] `Stack`, is a FILO container based on Slice implementation
 - [x] `Queue` is a bidirectional FIFO queue, implemented based on linked list.
+- [x] `PriorityQuque` is a priority queue based on heap. Much easier to use and faster than [container/heap](https://pkg.go.dev/container/heap).
 
 Different containers support different methods. The following are the methods supported by all containers:
 
@@ -176,6 +177,26 @@ See C++ STL.
 - `DescStableSort` descending stable sorting
 - `IsSorted` check whether the slice is sorted
 - `IsDescSorted` check whether the slice is sorted in descending order
+
+#### heap
+
+Heap provides basic min heap algorithms:
+
+- `MakeMinHeap` Convert a slice to a min heap
+- `IsMinHeap` Check whether a slice is a min heap
+- `PushMinHeap` Pushes an element in to the heap
+- `PopMinHeap` Popups an element from the top of the heap
+- `RemoveMinHeap` Removes an element at index from the heap
+
+and variants with custome comparasion function:
+
+- `MakeHeapFunc`
+- `IsHeapFunc`
+- `PushHeapFunc`
+- `PopHeapFunc`
+- `RemoveHeapFunc`
+
+both of them are mush faster and easier to use than [container/heap](https://pkg.go.dev/container/heap).
 
 ### Interface Design and Naming
 

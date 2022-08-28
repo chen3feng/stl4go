@@ -32,12 +32,13 @@ import "github.com/chen3feng/stl4go"
 
 目前实现的容器有：
 
-- [x] 集合 用 Go 自己的 map 封装了一个 `BuiltinSet`
-- [x] 基于 slice 封装的向量 `Vector`。提供了中间插入删除、区间删除等功能，依然与 slice 兼容。
-- [x] 双链表 DList
+- [x] `Set` 集合。用 Go 自己的 map 封装了一个 `BuiltinSet`
+- [x] `Vector` 是基于 slice 封装的向量。提供了中间插入删除、区间删除等功能，依然与 slice 兼容。
+- [x] `DList` 是双链表
 - [x] [跳表（SkipList）](skiplist.md) 是一种有序的关联容器，可以填补 Go `map` 只支持无序的的空白。这是目前全 GitHub 最快的跳表，参见 [skiplist-survey](https://github.com/chen3feng/skiplist-survey)的性能比较
-- [x] 栈 Stack，基于 Slice 实现
-- [x] 队列 Queue 双向进出的队列，基于链表实现
+- [x] `Stack`，栈基于 Slice 实现
+- [x] `Queue` 双向进出的队列，基于链表实现
+- [x] `PriorityQuque` 优先队列，基于堆实现，比 [container/heap](https://pkg.go.dev/container/heap) 更易用而且快不少。
 
 不同的容器支持的方法不同，下面是所有容器都支持的方法：
 
@@ -160,6 +161,26 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 - BinarySearch
 - LowerBound
 - UpperBound
+
+#### 堆
+
+提高基本的堆算法：
+
+- `MakeMinHeap` 在一个切片上构造出一个最小堆
+- `IsMinHeap` 判断一个切片是不是一个最小堆
+- `PushMinHeap` 把一个元素压入最小堆
+- `PopMinHeap` 弹出堆顶的元素
+- `RemoveMinHeap` 从切片的指定位置删除一个元素
+
+以及相应的自定义比较函数的版本：
+
+- `MakeHeapFunc`
+- `IsHeapFunc`
+- `PushHeapFunc`
+- `PopHeapFunc`
+- `RemoveHeapFunc`
+
+都比 go 标准库 [container/heap](https://pkg.go.dev/container/heap) 更容易使用且更快。
 
 ### 接口设计和命名
 
