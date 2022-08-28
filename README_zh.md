@@ -164,7 +164,7 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 
 #### 堆
 
-提高基本的堆算法：
+提供基本的堆算法：
 
 - `MakeMinHeap` 在一个切片上构造出一个最小堆
 - `IsMinHeap` 判断一个切片是不是一个最小堆
