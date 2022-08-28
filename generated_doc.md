@@ -30,12 +30,17 @@ Package stl4go is a generic container and algorithm library for go.
 - [func Find[T comparable](a []T, x T) (index int, ok bool)](<#func-find>)
 - [func FindIf[T any](a []T, cond func(T) bool) (index int, ok bool)](<#func-findif>)
 - [func Generate[T any](a []T, gen func() T)](<#func-generate>)
+- [func Greater[T Ordered](a, b T) bool](<#func-greater>)
 - [func Index[T comparable](a []T, x T) int](<#func-index>)
 - [func IsDescSorted[T Ordered](a []T) bool](<#func-isdescsorted>)
+- [func IsHeapFunc[T any](array []T, less LessFn[T]) bool](<#func-isheapfunc>)
+- [func IsMinHeap[T Ordered](array []T) bool](<#func-isminheap>)
 - [func IsSorted[T Ordered](a []T) bool](<#func-issorted>)
 - [func Less[T Ordered](a, b T) bool](<#func-less>)
 - [func LowerBound[T Ordered](a []T, value T) int](<#func-lowerbound>)
 - [func LowerBoundFunc[T any](a []T, value T, less LessFn[T]) int](<#func-lowerboundfunc>)
+- [func MakeHeapFunc[T any](array []T, less LessFn[T])](<#func-makeheapfunc>)
+- [func MakeMinHeap[T Ordered](array []T)](<#func-makeminheap>)
 - [func Max[T Ordered](a, b T) T](<#func-max>)
 - [func MaxN[T Ordered](a ...T) T](<#func-maxn>)
 - [func Min[T Ordered](a, b T) T](<#func-min>)
@@ -44,11 +49,17 @@ Package stl4go is a generic container and algorithm library for go.
 - [func MinN[T Ordered](a ...T) T](<#func-minn>)
 - [func NoneOf[T any](a []T, pred func(T) bool) bool](<#func-noneof>)
 - [func OrderedCompare[T Ordered](a, b T) int](<#func-orderedcompare>)
+- [func PopHeapFunc[T any](heap *[]T, less LessFn[T]) T](<#func-popheapfunc>)
+- [func PopMinHeap[T Ordered](heap *[]T) T](<#func-popminheap>)
+- [func PushHeapFunc[T any](heap *[]T, v T, less LessFn[T])](<#func-pushheapfunc>)
+- [func PushMinHeap[T Ordered](heap *[]T, v T)](<#func-pushminheap>)
 - [func Range[T Numeric](first, last T) []T](<#func-range>)
 - [func Remove[T comparable](a []T, x T) []T](<#func-remove>)
 - [func RemoveCopy[T comparable](a []T, x T) []T](<#func-removecopy>)
+- [func RemoveHeapFunc[T any](heap *[]T, i int, less LessFn[T]) T](<#func-removeheapfunc>)
 - [func RemoveIf[T any](a []T, cond func(T) bool) []T](<#func-removeif>)
 - [func RemoveIfCopy[T any](a []T, cond func(T) bool) []T](<#func-removeifcopy>)
+- [func RemoveMinHeap[T Ordered](heap *[]T, i int) T](<#func-removeminheap>)
 - [func Reverse[T any](a []T)](<#func-reverse>)
 - [func ReverseCopy[T any](a []T) []T](<#func-reversecopy>)
 - [func Shuffle[T any](a []T)](<#func-shuffle>)
@@ -104,6 +115,17 @@ Package stl4go is a generic container and algorithm library for go.
 - [type MapIterator](<#type-mapiterator>)
 - [type Numeric](<#type-numeric>)
 - [type Ordered](<#type-ordered>)
+- [type PriorityQueue](<#type-priorityqueue>)
+  - [func NewPriorityQueue[T Ordered]() *PriorityQueue[T]](<#func-newpriorityqueue>)
+  - [func NewPriorityQueueFunc[T any](less LessFn[T]) *PriorityQueue[T]](<#func-newpriorityqueuefunc>)
+  - [func NewPriorityQueueOf[T Ordered](elements ...T) *PriorityQueue[T]](<#func-newpriorityqueueof>)
+  - [func NewPriorityQueueOn[T Ordered](slice []T) *PriorityQueue[T]](<#func-newpriorityqueueon>)
+  - [func (pq *PriorityQueue[T]) Clear()](<#func-priorityqueuet-clear>)
+  - [func (pq *PriorityQueue[T]) IsEmpty() bool](<#func-priorityqueuet-isempty>)
+  - [func (pq *PriorityQueue[T]) Len() int](<#func-priorityqueuet-len>)
+  - [func (pq *PriorityQueue[T]) Pop() T](<#func-priorityqueuet-pop>)
+  - [func (pq *PriorityQueue[T]) Push(v T)](<#func-priorityqueuet-push>)
+  - [func (pq *PriorityQueue[T]) Top() T](<#func-priorityqueuet-top>)
 - [type Queue](<#type-queue>)
   - [func NewQueue[T any]() *Queue[T]](<#func-newqueue>)
   - [func (q *Queue[T]) Clear()](<#func-queuet-clear>)
@@ -246,7 +268,7 @@ Copy make a copy of slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [Count](<https://github.com/chen3feng/stl4go/blob/master/compute.go#L45>)
+## func [Count](<https://github.com/chen3feng/stl4go/blob/master/compute.go#L44>)
 
 ```go
 func Count[T comparable](a []T, x T) int
@@ -256,7 +278,7 @@ Count returns the number of elements in the slice equals to x.
 
 Complexity: O\(len\(a\)\).
 
-## func [CountIf](<https://github.com/chen3feng/stl4go/blob/master/compute.go#L58>)
+## func [CountIf](<https://github.com/chen3feng/stl4go/blob/master/compute.go#L57>)
 
 ```go
 func CountIf[T comparable](a []T, pred func(T) bool) int
@@ -334,6 +356,14 @@ Generate fill each element of \`a\`\` with \`gen\(\)\`.
 
 Complexity: O\(len\(a\)\).
 
+## func [Greater](<https://github.com/chen3feng/stl4go/blob/master/types.go#L67>)
+
+```go
+func Greater[T Ordered](a, b T) bool
+```
+
+Greater wraps the '\>' operator for ordered types.
+
 ## func [Index](<https://github.com/chen3feng/stl4go/blob/master/lookup.go#L118>)
 
 ```go
@@ -355,6 +385,26 @@ func IsDescSorted[T Ordered](a []T) bool
 IsDescSorted returns whether the slice a is sorted in descending order.
 
 Complexity: O\(len\(a\)\).
+
+## func [IsHeapFunc](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L118>)
+
+```go
+func IsHeapFunc[T any](array []T, less LessFn[T]) bool
+```
+
+IsHeapFunc checks whether the elements in slice array are a min heap \(accord to less\).
+
+Complexity: O\(len\(array\)\).
+
+## func [IsMinHeap](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L19>)
+
+```go
+func IsMinHeap[T Ordered](array []T) bool
+```
+
+IsMinHeap checks whether the elements in slice array are a min heap.
+
+Complexity: O\(len\(array\)\).
 
 ## func [IsSorted](<https://github.com/chen3feng/stl4go/blob/master/sort.go#L10>)
 
@@ -395,6 +445,26 @@ LowerBoundFunc returns an index to the first element in the ordered slice a that
 The elements in the slice a should sorted according with compare func less.
 
 Complexity: O\(log\(len\(a\)\)\).
+
+## func [MakeHeapFunc](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L107>)
+
+```go
+func MakeHeapFunc[T any](array []T, less LessFn[T])
+```
+
+MakeHeapFunc build a min\-heap on slice array with compare function less.
+
+Complexity: O\(len\(array\)\)
+
+## func [MakeMinHeap](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L8>)
+
+```go
+func MakeMinHeap[T Ordered](array []T)
+```
+
+MakeMinHeap build a min\-heap on slice array.
+
+Complexity: O\(len\(array\)\)
 
 ## func [Max](<https://github.com/chen3feng/stl4go/blob/master/lookup.go#L6>)
 
@@ -466,13 +536,53 @@ NoneOf return true pred\(e\) returns true for none emements e in a.
 
 Complexity: O\(len\(a\)\).
 
-## func [OrderedCompare](<https://github.com/chen3feng/stl4go/blob/master/types.go#L67>)
+## func [OrderedCompare](<https://github.com/chen3feng/stl4go/blob/master/types.go#L72>)
 
 ```go
 func OrderedCompare[T Ordered](a, b T) int
 ```
 
 OrderedCompare provide default CompareFn for ordered types.
+
+## func [PopHeapFunc](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L144>)
+
+```go
+func PopHeapFunc[T any](heap *[]T, less LessFn[T]) T
+```
+
+PopHeapFunc removes and returns the minimum \(according to less\) element from the heap.
+
+Complexity: O\(log n\) where n = len\(\*heap\).
+
+## func [PopMinHeap](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L44>)
+
+```go
+func PopMinHeap[T Ordered](heap *[]T) T
+```
+
+PopMinHeap removes and returns the minimum element from the heap.
+
+Complexity: O\(log n\) where n = len\(\*heap\).
+
+## func [PushHeapFunc](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L136>)
+
+```go
+func PushHeapFunc[T any](heap *[]T, v T, less LessFn[T])
+```
+
+PushHeapFunc pushes a element v into the heap.
+
+Complexity: O\(log\(len\(\*heap\)\)\).
+
+## func [PushMinHeap](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L36>)
+
+```go
+func PushMinHeap[T Ordered](heap *[]T, v T)
+```
+
+PushMinHeap pushes a element v into the min heap.
+
+Complexity: O\(log\(len\(\*heap\)\)\).
 
 ## func [Range](<https://github.com/chen3feng/stl4go/blob/master/generate.go#L7>)
 
@@ -504,6 +614,16 @@ RemoveCopy remove all elements which equals to x from the input slice. return th
 
 Complexity: O\(len\(a\)\).
 
+## func [RemoveHeapFunc](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L156>)
+
+```go
+func RemoveHeapFunc[T any](heap *[]T, i int, less LessFn[T]) T
+```
+
+RemoveHeapFunc removes and returns the element at index i from the heap.
+
+Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
+
 ## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L121>)
 
 ```go
@@ -523,6 +643,16 @@ func RemoveIfCopy[T any](a []T, cond func(T) bool) []T
 RemoveIfCopy drops each element which make cond\(x\) returns true from the input slice, copy other elements to a new slice and return it. The input slice is kept unchanged.
 
 Complexity: O\(len\(a\)\).
+
+## func [RemoveMinHeap](<https://github.com/chen3feng/stl4go/blob/master/heap.go#L56>)
+
+```go
+func RemoveMinHeap[T Ordered](heap *[]T, i int) T
+```
+
+RemoveMinHeap removes and returns the element at index i from the min heap.
+
+Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
 ## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L158>)
 
@@ -1027,6 +1157,127 @@ type Ordered interface {
 }
 ```
 
+## type [PriorityQueue](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L6-L9>)
+
+PriorityQueue is an queue with priority. The elements of the priority queue are ordered according to their natural ordering, or by a less function provided at construction time, depending on which constructor is used.
+
+```go
+type PriorityQueue[T any] struct {
+    // contains filtered or unexported fields
+}
+```
+
+<details><summary>Example</summary>
+<p>
+
+This example inserts several ints into an IntHeap, checks the minimum, and removes them in order of priority.
+
+```go
+{
+	h := NewPriorityQueue[int]()
+	h.Push(3)
+	h.Push(2)
+	h.Push(1)
+	h.Push(5)
+	fmt.Printf("minimum: %d\n", h.Top())
+
+	for h.Len() > 0 {
+		fmt.Printf("%d ", h.Pop())
+	}
+
+}
+```
+
+#### Output
+
+```
+minimum: 1
+1 2 3 5
+```
+
+</p>
+</details>
+
+### func [NewPriorityQueue](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L12>)
+
+```go
+func NewPriorityQueue[T Ordered]() *PriorityQueue[T]
+```
+
+NewPriorityQueue creates an empty priority object.
+
+### func [NewPriorityQueueFunc](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L34>)
+
+```go
+func NewPriorityQueueFunc[T any](less LessFn[T]) *PriorityQueue[T]
+```
+
+NewPriorityQueueFunc creates an empty priority object with specified compare function less.
+
+### func [NewPriorityQueueOf](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L29>)
+
+```go
+func NewPriorityQueueOf[T Ordered](elements ...T) *PriorityQueue[T]
+```
+
+NewPriorityQueueOf creates a new priority object with specified initial elements.
+
+### func [NewPriorityQueueOn](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L20>)
+
+```go
+func NewPriorityQueueOn[T Ordered](slice []T) *PriorityQueue[T]
+```
+
+NewPriorityQueueOn creates a new priority object on the specified slices. The slice become a heap after the call.
+
+### func \(\*PriorityQueue\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L52>)
+
+```go
+func (pq *PriorityQueue[T]) Clear()
+```
+
+Clear checks whether priority queue has no elements.
+
+### func \(\*PriorityQueue\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L47>)
+
+```go
+func (pq *PriorityQueue[T]) IsEmpty() bool
+```
+
+IsEmpty checks whether priority queue has no elements.
+
+### func \(\*PriorityQueue\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L42>)
+
+```go
+func (pq *PriorityQueue[T]) Len() int
+```
+
+Len returns the number of elements in the priority queue.
+
+### func \(\*PriorityQueue\[T\]\) [Pop](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L67>)
+
+```go
+func (pq *PriorityQueue[T]) Pop() T
+```
+
+Pop removes the top element in the priority queue.
+
+### func \(\*PriorityQueue\[T\]\) [Push](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L62>)
+
+```go
+func (pq *PriorityQueue[T]) Push(v T)
+```
+
+Push pushes the given element v to the priority queue.
+
+### func \(\*PriorityQueue\[T\]\) [Top](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L57>)
+
+```go
+func (pq *PriorityQueue[T]) Top() T
+```
+
+Top returns the top element in the priority queue.
+
 ## type [Queue](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L8-L10>)
 
 Queue is a FIFO container
@@ -1180,7 +1431,7 @@ func (sl *SkipList[K, V]) Clear()
 
 Clear implements the Container interface.
 
-### func \(\*SkipList\[K, V\]\) [Find](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L120>)
+### func \(\*SkipList\[K, V\]\) [Find](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L122>)
 
 ```go
 func (sl *SkipList[K, V]) Find(key K) *V
@@ -1188,15 +1439,15 @@ func (sl *SkipList[K, V]) Find(key K) *V
 
 Find returns the value associated with the passed key if the key is in the skiplist, otherwise returns nil.
 
-### func \(\*SkipList\[K, V\]\) [FindRange](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L148>)
+### func \(\*SkipList\[K, V\]\) [FindRange](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L150>)
 
 ```go
 func (sl *SkipList[K, V]) FindRange(first, last K) MapIterator[K, V]
 ```
 
-FindRange returns an iterator in range \[first, last\) \(last is not includeed\).
+FindRange returns an iterator in range \[first, last\) \(last is not included\).
 
-### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L170>)
+### func \(\*SkipList\[K, V\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L173>)
 
 ```go
 func (sl *SkipList[K, V]) ForEach(op func(K, V))
@@ -1204,7 +1455,7 @@ func (sl *SkipList[K, V]) ForEach(op func(K, V))
 
 ForEach implements the Map interface.
 
-### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L184>)
+### func \(\*SkipList\[K, V\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L187>)
 
 ```go
 func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool)
@@ -1212,7 +1463,7 @@ func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool)
 
 ForEachIf implements the Map interface.
 
-### func \(\*SkipList\[K, V\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L177>)
+### func \(\*SkipList\[K, V\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L180>)
 
 ```go
 func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V))
@@ -1220,7 +1471,7 @@ func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V))
 
 ForEachMutable implements the Map interface.
 
-### func \(\*SkipList\[K, V\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L193>)
+### func \(\*SkipList\[K, V\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L196>)
 
 ```go
 func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool)
@@ -1228,7 +1479,7 @@ func (sl *SkipList[K, V]) ForEachMutableIf(op func(K, *V) bool)
 
 ForEachMutableIf implements the Map interface.
 
-### func \(\*SkipList\[K, V\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L129>)
+### func \(\*SkipList\[K, V\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L131>)
 
 ```go
 func (sl *SkipList[K, V]) Has(key K) bool
@@ -1268,15 +1519,15 @@ func (sl *SkipList[K, V]) Len() int
 
 Len implements the Container interface.
 
-### func \(\*SkipList\[K, V\]\) [LowerBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L136>)
+### func \(\*SkipList\[K, V\]\) [LowerBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L138>)
 
 ```go
 func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V]
 ```
 
-LowerBound returns an iterator to the first element in the skiplist that does not satisfy element \< value \(i.e. greater or equal to\), or a end itetator if no such element is found.
+LowerBound returns an iterator to the first element in the skiplist that does not satisfy element \< value \(i.e. greater or equal to\), or a end iterator if no such element is found.
 
-### func \(\*SkipList\[K, V\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L154>)
+### func \(\*SkipList\[K, V\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L156>)
 
 ```go
 func (sl *SkipList[K, V]) Remove(key K) bool
@@ -1284,13 +1535,13 @@ func (sl *SkipList[K, V]) Remove(key K) bool
 
 Remove removes the key\-value pair associated with the passed key and returns true if the key is in the skiplist, otherwise returns false.
 
-### func \(\*SkipList\[K, V\]\) [UpperBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L143>)
+### func \(\*SkipList\[K, V\]\) [UpperBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L145>)
 
 ```go
 func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V]
 ```
 
-UpperBound returns an iterator to the first element in the skiplist that does not satisfy value \< element \(i.e. strictly greater\), or a end itetator if no such element is found.
+UpperBound returns an iterator to the first element in the skiplist that does not satisfy value \< element \(i.e. strictly greater\), or a end iterator if no such element is found.
 
 ## type [Stack](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L5-L7>)
 
