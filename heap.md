@@ -66,19 +66,21 @@ these boilerplate codes are verbose, tedious, and boring.
 The heap algorithms are also much faster than `container/heap`, even for the `Func` version.:
 
 ```console
-% go test -bench BenchmarkHeap
+% go test -bench BenchmarkHeap -benchmem
 goos: darwin
 goarch: arm64
 pkg: github.com/chen3feng/stl4go
-BenchmarkHeapInit/container/heap.Init-10                  362450              3172 ns/op
-BenchmarkHeapInit/stlgo.MakeMinHeap-10                    960280              1136 ns/op
-BenchmarkHeapInit/stlgo.MakeHeapFunc-10                   483109              2336 ns/op
-BenchmarkHeapPush/container/heap.Push-10                  101822             11639 ns/op
-BenchmarkHeapPush/stlgo.PushMinHeap-10                    501031              2283 ns/op
-BenchmarkHeapPush/stlgo.PushHeapFunc-10                   437288              2634 ns/op
-BenchmarkHeapPop/container/heap.Pop-10                     14550             82170 ns/op
-BenchmarkHeapPop/stlgo.PopMinHeap-10                       62139             19782 ns/op
-BenchmarkHeapPop/stlgo.PopHeapFunc-10                      22693             52900 ns/op
+BenchmarkHeapInit/container/heap.Init-10                  360126              3195 ns/op               0 B/op          0 allocs/op
+BenchmarkHeapInit/stlgo.MakeMinHeap-10                    998325              1127 ns/op               0 B/op          0 allocs/op
+BenchmarkHeapInit/stlgo.MakeHeapFunc-10                   488419              2355 ns/op               0 B/op          0 allocs/op
+...
+BenchmarkHeapPush/container/heap.Push-10                  101260             11630 ns/op            5952 B/op        744 allocs/op
+BenchmarkHeapPush/stlgo.PushMinHeap-10                    511680              2261 ns/op               0 B/op          0 allocs/op
+BenchmarkHeapPush/stlgo.PushHeapFunc-10                   445850              2625 ns/op               0 B/op          0 allocs/op
+...
+BenchmarkHeapPop/container/heap.Pop-10                     14709             81153 ns/op            5952 B/op        744 allocs/op
+BenchmarkHeapPop/stlgo.PopMinHeap-10                       61608             19516 ns/op               0 B/op          0 allocs/op
+BenchmarkHeapPop/stlgo.PopHeapFunc-10                      22887             52440 ns/op               0 B/op          0 allocs/op
 PASS
-ok      github.com/chen3feng/stl4go     17.670s
+ok      github.com/chen3feng/stl4go     19.827s
 ```
