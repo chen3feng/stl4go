@@ -116,7 +116,7 @@ func (l *DList[T]) PopBack() (T, bool) {
 	return val, true
 }
 
-// ForEach iterate the list, apply each element to the cb callback function
+// ForEach iterate the list, apply each element to the cb callback function.
 func (l *DList[T]) ForEach(cb func(val T)) {
 	for n := l.head.next; n != &l.head; n = n.next {
 		cb(n.value)
@@ -127,6 +127,22 @@ func (l *DList[T]) ForEach(cb func(val T)) {
 func (l *DList[T]) ForEachIf(cb func(val T) bool) {
 	for n := l.head.next; n != &l.head; n = n.next {
 		if !cb(n.value) {
+			break
+		}
+	}
+}
+
+// ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
+func (l *DList[T]) ForEachMutable(cb func(val *T)) {
+	for n := l.head.next; n != &l.head; n = n.next {
+		cb(&n.value)
+	}
+}
+
+// ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
+func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool) {
+	for n := l.head.next; n != &l.head; n = n.next {
+		if !cb(&n.value) {
 			break
 		}
 	}

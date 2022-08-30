@@ -55,9 +55,9 @@ func Test_BuiltinSet_Has(t *testing.T) {
 
 func Test_BuiltinSet_Get(t *testing.T) {
 	s := MakeBuiltinSetOf("hello", "world")
-	expectTrue(t, s["hello"])
-	expectTrue(t, s["world"])
-	expectFalse(t, s["!"])
+	expectTrue(t, s.Has("hello"))
+	expectTrue(t, s.Has("world"))
+	expectFalse(t, s.Has("!"))
 }
 
 func Test_BuiltinSet_Insert(t *testing.T) {

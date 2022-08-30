@@ -96,13 +96,11 @@ func Test_DList_PushFront_PopFront(t *testing.T) {
 func Test_DList_ForEach(t *testing.T) {
 	a := []int{1, 2, 3}
 	l := NewDListOf(a...)
-	c := 0
 	var b []int
 	l.ForEach(func(n int) {
-		c++
 		b = append(b, n)
 	})
-	expectEq(t, c, 3)
+	expectEq(t, len(b), 3)
 	expectTrue(t, Equal(a, b))
 }
 
@@ -112,6 +110,32 @@ func Test_DList_ForEachIf(t *testing.T) {
 	l.ForEachIf(func(n int) bool {
 		c = n
 		return n != 2
+	})
+	expectEq(t, c, 2)
+}
+
+func Test_DList_ForEachMutable(t *testing.T) {
+	a := []int{1, 2, 3}
+	l := NewDListOf(a...)
+	l.ForEachMutable(func(n *int) {
+		*n = -*n
+	})
+	var b []int
+	l.ForEach(func(n int) {
+		b = append(b, n)
+	})
+	expectEq(t, len(b), 3)
+	for i := range b {
+		expectEq(t, a[i], -b[i])
+	}
+}
+
+func Test_DList_ForEachMutableIf(t *testing.T) {
+	l := NewDListOf(1, 2, 3)
+	c := 0
+	l.ForEachMutableIf(func(n *int) bool {
+		c = *n
+		return *n != 2
 	})
 	expectEq(t, c, 2)
 }

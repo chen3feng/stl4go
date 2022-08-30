@@ -79,16 +79,16 @@ Package stl4go is a generic container and algorithm library for go.
 - [type BuiltinSet](<#type-builtinset>)
   - [func MakeBuiltinSetOf[K comparable](ks ...K) BuiltinSet[K]](<#func-makebuiltinsetof>)
   - [func (s *BuiltinSet[K]) Clear()](<#func-builtinsetk-clear>)
-  - [func (s *BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
-  - [func (s *BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
-  - [func (s *BuiltinSet[K]) Has(k K) bool](<#func-builtinsetk-has>)
-  - [func (s *BuiltinSet[K]) Insert(k K)](<#func-builtinsetk-insert>)
-  - [func (s *BuiltinSet[K]) InsertN(ks ...K)](<#func-builtinsetk-insertn>)
-  - [func (s *BuiltinSet[K]) IsEmpty() bool](<#func-builtinsetk-isempty>)
-  - [func (s *BuiltinSet[K]) Keys() []K](<#func-builtinsetk-keys>)
-  - [func (s *BuiltinSet[K]) Len() int](<#func-builtinsetk-len>)
-  - [func (s *BuiltinSet[K]) Remove(k K) bool](<#func-builtinsetk-remove>)
-  - [func (s *BuiltinSet[K]) RemoveN(ks ...K)](<#func-builtinsetk-removen>)
+  - [func (s BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
+  - [func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
+  - [func (s BuiltinSet[K]) Has(k K) bool](<#func-builtinsetk-has>)
+  - [func (s BuiltinSet[K]) Insert(k K)](<#func-builtinsetk-insert>)
+  - [func (s BuiltinSet[K]) InsertN(ks ...K)](<#func-builtinsetk-insertn>)
+  - [func (s BuiltinSet[K]) IsEmpty() bool](<#func-builtinsetk-isempty>)
+  - [func (s BuiltinSet[K]) Keys() []K](<#func-builtinsetk-keys>)
+  - [func (s BuiltinSet[K]) Len() int](<#func-builtinsetk-len>)
+  - [func (s BuiltinSet[K]) Remove(k K) bool](<#func-builtinsetk-remove>)
+  - [func (s BuiltinSet[K]) RemoveN(ks ...K)](<#func-builtinsetk-removen>)
   - [func (s BuiltinSet[K]) String() string](<#func-builtinsetk-string>)
 - [type CompareFn](<#type-comparefn>)
 - [type Container](<#type-container>)
@@ -98,6 +98,8 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (l *DList[T]) Clear()](<#func-dlistt-clear>)
   - [func (l *DList[T]) ForEach(cb func(val T))](<#func-dlistt-foreach>)
   - [func (l *DList[T]) ForEachIf(cb func(val T) bool)](<#func-dlistt-foreachif>)
+  - [func (l *DList[T]) ForEachMutable(cb func(val *T))](<#func-dlistt-foreachmutable>)
+  - [func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)](<#func-dlistt-foreachmutableif>)
   - [func (l *DList[T]) IsEmpty() bool](<#func-dlistt-isempty>)
   - [func (l *DList[T]) Iterate() Iterator[T]](<#func-dlistt-iterate>)
   - [func (l *DList[T]) Len() int](<#func-dlistt-len>)
@@ -819,7 +821,7 @@ Complexity: O\(log\(len\(a\)\)\).
 BuiltinSet is an associative container that contains a unordered set of unique objects of type K.
 
 ```go
-type BuiltinSet[K comparable] map[K]bool
+type BuiltinSet[K comparable] map[K]struct{}
 ```
 
 ### func [MakeBuiltinSetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L11>)
@@ -838,82 +840,82 @@ func (s *BuiltinSet[K]) Clear()
 
 Clear implements the Container interface.
 
-### func \(\*BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L76>)
+### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L76>)
 
 ```go
-func (s *BuiltinSet[K]) ForEach(cb func(k K))
+func (s BuiltinSet[K]) ForEach(cb func(k K))
 ```
 
 ForEach implements the Set interface.
 
-### func \(\*BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L83>)
+### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L83>)
 
 ```go
-func (s *BuiltinSet[K]) ForEachIf(cb func(k K) bool)
+func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)
 ```
 
 ForEachIf implements the Container interface.
 
-### func \(\*BuiltinSet\[K\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L35>)
+### func \(BuiltinSet\[K\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L35>)
 
 ```go
-func (s *BuiltinSet[K]) Has(k K) bool
+func (s BuiltinSet[K]) Has(k K) bool
 ```
 
 Has implements the Set interface.
 
-### func \(\*BuiltinSet\[K\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L41>)
+### func \(BuiltinSet\[K\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L41>)
 
 ```go
-func (s *BuiltinSet[K]) Insert(k K)
+func (s BuiltinSet[K]) Insert(k K)
 ```
 
 Insert implements the Set interface.
 
-### func \(\*BuiltinSet\[K\]\) [InsertN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L46>)
+### func \(BuiltinSet\[K\]\) [InsertN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L46>)
 
 ```go
-func (s *BuiltinSet[K]) InsertN(ks ...K)
+func (s BuiltinSet[K]) InsertN(ks ...K)
 ```
 
 InsertN implements the Set interface.
 
-### func \(\*BuiltinSet\[K\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L18>)
+### func \(BuiltinSet\[K\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L18>)
 
 ```go
-func (s *BuiltinSet[K]) IsEmpty() bool
+func (s BuiltinSet[K]) IsEmpty() bool
 ```
 
 IsEmpty implements the Container interface.
 
-### func \(\*BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L67>)
+### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L67>)
 
 ```go
-func (s *BuiltinSet[K]) Keys() []K
+func (s BuiltinSet[K]) Keys() []K
 ```
 
 Keys return a copy of all keys as a slice.
 
-### func \(\*BuiltinSet\[K\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L23>)
+### func \(BuiltinSet\[K\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L23>)
 
 ```go
-func (s *BuiltinSet[K]) Len() int
+func (s BuiltinSet[K]) Len() int
 ```
 
 Len implements the Container interface.
 
-### func \(\*BuiltinSet\[K\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L53>)
+### func \(BuiltinSet\[K\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L53>)
 
 ```go
-func (s *BuiltinSet[K]) Remove(k K) bool
+func (s BuiltinSet[K]) Remove(k K) bool
 ```
 
 Remove implements the Set interface.
 
-### func \(\*BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L60>)
+### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L60>)
 
 ```go
-func (s *BuiltinSet[K]) RemoveN(ks ...K)
+func (s BuiltinSet[K]) RemoveN(ks ...K)
 ```
 
 RemoveN implements the Set interface.
@@ -986,7 +988,7 @@ Clear cleanup the list
 func (l *DList[T]) ForEach(cb func(val T))
 ```
 
-ForEach iterate the list, apply each element to the cb callback function
+ForEach iterate the list, apply each element to the cb callback function.
 
 ### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L127>)
 
@@ -995,6 +997,22 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool)
 ```
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
+
+### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L136>)
+
+```go
+func (l *DList[T]) ForEachMutable(cb func(val *T))
+```
+
+ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
+
+### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L143>)
+
+```go
+func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)
+```
+
+ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
 
 ### func \(\*DList\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L46>)
 
