@@ -82,7 +82,7 @@ func (sl *SkipList[K, V]) Clear() {
 }
 
 // Iterate return an iterator to the skiplist.
-func (sl *SkipList[K, V]) Iterate() MapIterator[K, V] {
+func (sl *SkipList[K, V]) Iterate() MutableMapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.head.next[0], nil}
 }
 
@@ -135,19 +135,19 @@ func (sl *SkipList[K, V]) Has(key K) bool {
 // LowerBound returns an iterator to the first element in the skiplist that
 // does not satisfy element < value (i.e. greater or equal to),
 // or a end iterator if no such element is found.
-func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V] {
+func (sl *SkipList[K, V]) LowerBound(key K) MutableMapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.lowerBound(key), nil}
 }
 
 // UpperBound returns an iterator to the first element in the skiplist that
 // does not satisfy value < element (i.e. strictly greater),
 // or a end iterator if no such element is found.
-func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V] {
+func (sl *SkipList[K, V]) UpperBound(key K) MutableMapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.upperBound(key), nil}
 }
 
 // FindRange returns an iterator in range [first, last) (last is not included).
-func (sl *SkipList[K, V]) FindRange(first, last K) MapIterator[K, V] {
+func (sl *SkipList[K, V]) FindRange(first, last K) MutableMapIterator[K, V] {
 	return &skipListIterator[K, V]{sl.impl.lowerBound(first), sl.impl.upperBound(last)}
 }
 
@@ -230,6 +230,10 @@ func (it *skipListIterator[K, V]) Key() K {
 
 func (it *skipListIterator[K, V]) Value() V {
 	return it.node.value
+}
+
+func (it *skipListIterator[K, V]) Pointer() *V {
+	return &it.node.value
 }
 
 // skipListImpl is an interface to provide different implementation for Ordered key or CompareFn.

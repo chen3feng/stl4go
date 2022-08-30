@@ -69,8 +69,12 @@ func (it *dlistIterator[T]) Value() T {
 	return it.node.value
 }
 
+func (it *dlistIterator[T]) Pointer() *T {
+	return &it.node.value
+}
+
 // Iterate returns an iterator to the first element in the list.
-func (l *DList[T]) Iterate() Iterator[T] {
+func (l *DList[T]) Iterate() MutableIterator[T] {
 	return &dlistIterator[T]{l, l.head.next}
 }
 

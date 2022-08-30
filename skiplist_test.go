@@ -101,6 +101,7 @@ func TestNewSkipList_Iterate(t *testing.T) {
 	for it := sl.Iterate(); it.IsNotEnd(); it.MoveToNext() {
 		expectEq(t, it.Key(), i)
 		expectEq(t, it.Value(), i)
+		expectEq(t, *it.Pointer(), i)
 		i++
 	}
 }

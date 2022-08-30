@@ -48,7 +48,22 @@ import "github.com/chen3feng/stl4go"
 
 ### 迭代器
 
-DList 和 SkipList 支持简单的迭代器。
+DList 和 SkipList 支持迭代器。
+
+```go
+// Iterator is the interface for container's iterator.
+type Iterator[T any] interface {
+	IsNotEnd() bool // Whether it is point to the end of the range.
+	MoveToNext()    // Let it point to the next element.
+	Value() T       // Return the value of current element.
+}
+
+// MutableIterator is the interface for container's mutable iterator.
+type MutableIterator[T any] interface {
+	Iterator[T]
+	Pointer() *T // Return the pointer to the value of current element.
+}
+```
 
 ```go
 l := stl4go.NewDListOf(Range(1, 10000)...)
@@ -57,6 +72,22 @@ for i := 0; i < b.N; i++ {
     for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
         sum += it.Value()
     }
+}
+```
+
+SkipList 的迭代器是 `MutableMapIterator`:
+
+```go
+// MapIterator is the interface for map's iterator.
+type MapIterator[K any, V any] interface {
+	Iterator[V]
+	Key() K // The key of the element
+}
+
+// MutableMapIterator is the interface for map's mutable iterator.
+type MutableMapIterator[K any, V any] interface {
+	MutableIterator[V]
+	Key() K // The key of the element
 }
 ```
 
