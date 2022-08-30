@@ -30,6 +30,7 @@ func Test_DList_Iterate(t *testing.T) {
 	i := 1
 	for it := l.Iterate(); it.IsNotEnd(); it.MoveToNext() {
 		expectEq(t, it.Value(), i)
+		expectEq(t, *it.Pointer(), i)
 		i++
 	}
 	expectEq(t, i, 4)

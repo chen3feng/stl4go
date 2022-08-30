@@ -101,7 +101,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (l *DList[T]) ForEachMutable(cb func(val *T))](<#func-dlistt-foreachmutable>)
   - [func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)](<#func-dlistt-foreachmutableif>)
   - [func (l *DList[T]) IsEmpty() bool](<#func-dlistt-isempty>)
-  - [func (l *DList[T]) Iterate() Iterator[T]](<#func-dlistt-iterate>)
+  - [func (l *DList[T]) Iterate() MutableIterator[T]](<#func-dlistt-iterate>)
   - [func (l *DList[T]) Len() int](<#func-dlistt-len>)
   - [func (l *DList[T]) PopBack() (T, bool)](<#func-dlistt-popback>)
   - [func (l *DList[T]) PopFront() (T, bool)](<#func-dlistt-popfront>)
@@ -115,6 +115,8 @@ Package stl4go is a generic container and algorithm library for go.
 - [type LessFn](<#type-lessfn>)
 - [type Map](<#type-map>)
 - [type MapIterator](<#type-mapiterator>)
+- [type MutableIterator](<#type-mutableiterator>)
+- [type MutableMapIterator](<#type-mutablemapiterator>)
 - [type Numeric](<#type-numeric>)
 - [type Ordered](<#type-ordered>)
 - [type PriorityQueue](<#type-priorityqueue>)
@@ -146,7 +148,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func NewSkipListFunc[K any, V any](keyCmp CompareFn[K]) *SkipList[K, V]](<#func-newskiplistfunc>)
   - [func (sl *SkipList[K, V]) Clear()](<#func-skiplistk-v-clear>)
   - [func (sl *SkipList[K, V]) Find(key K) *V](<#func-skiplistk-v-find>)
-  - [func (sl *SkipList[K, V]) FindRange(first, last K) MapIterator[K, V]](<#func-skiplistk-v-findrange>)
+  - [func (sl *SkipList[K, V]) FindRange(first, last K) MutableMapIterator[K, V]](<#func-skiplistk-v-findrange>)
   - [func (sl *SkipList[K, V]) ForEach(op func(K, V))](<#func-skiplistk-v-foreach>)
   - [func (sl *SkipList[K, V]) ForEachIf(op func(K, V) bool)](<#func-skiplistk-v-foreachif>)
   - [func (sl *SkipList[K, V]) ForEachMutable(op func(K, *V))](<#func-skiplistk-v-foreachmutable>)
@@ -154,11 +156,11 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (sl *SkipList[K, V]) Has(key K) bool](<#func-skiplistk-v-has>)
   - [func (sl *SkipList[K, V]) Insert(key K, value V)](<#func-skiplistk-v-insert>)
   - [func (sl *SkipList[K, V]) IsEmpty() bool](<#func-skiplistk-v-isempty>)
-  - [func (sl *SkipList[K, V]) Iterate() MapIterator[K, V]](<#func-skiplistk-v-iterate>)
+  - [func (sl *SkipList[K, V]) Iterate() MutableMapIterator[K, V]](<#func-skiplistk-v-iterate>)
   - [func (sl *SkipList[K, V]) Len() int](<#func-skiplistk-v-len>)
-  - [func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V]](<#func-skiplistk-v-lowerbound>)
+  - [func (sl *SkipList[K, V]) LowerBound(key K) MutableMapIterator[K, V]](<#func-skiplistk-v-lowerbound>)
   - [func (sl *SkipList[K, V]) Remove(key K) bool](<#func-skiplistk-v-remove>)
-  - [func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V]](<#func-skiplistk-v-upperbound>)
+  - [func (sl *SkipList[K, V]) UpperBound(key K) MutableMapIterator[K, V]](<#func-skiplistk-v-upperbound>)
 - [type Stack](<#type-stack>)
   - [func NewStack[T any]() *Stack[T]](<#func-newstack>)
   - [func NewStackCap[T any](capicity int) *Stack[T]](<#func-newstackcap>)
@@ -982,7 +984,7 @@ func (l *DList[T]) Clear()
 
 Clear cleanup the list
 
-### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L120>)
+### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L124>)
 
 ```go
 func (l *DList[T]) ForEach(cb func(val T))
@@ -990,7 +992,7 @@ func (l *DList[T]) ForEach(cb func(val T))
 
 ForEach iterate the list, apply each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L127>)
+### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L131>)
 
 ```go
 func (l *DList[T]) ForEachIf(cb func(val T) bool)
@@ -998,7 +1000,7 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L136>)
+### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L140>)
 
 ```go
 func (l *DList[T]) ForEachMutable(cb func(val *T))
@@ -1006,7 +1008,7 @@ func (l *DList[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L143>)
+### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L147>)
 
 ```go
 func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)
@@ -1022,10 +1024,10 @@ func (l *DList[T]) IsEmpty() bool
 
 IsEmpty return whether the list is empty
 
-### func \(\*DList\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L73>)
+### func \(\*DList\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L77>)
 
 ```go
-func (l *DList[T]) Iterate() Iterator[T]
+func (l *DList[T]) Iterate() MutableIterator[T]
 ```
 
 Iterate returns an iterator to the first element in the list.
@@ -1038,7 +1040,7 @@ func (l *DList[T]) Len() int
 
 Len return the length of the list
 
-### func \(\*DList\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L107>)
+### func \(\*DList\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L111>)
 
 ```go
 func (l *DList[T]) PopBack() (T, bool)
@@ -1046,7 +1048,7 @@ func (l *DList[T]) PopBack() (T, bool)
 
 PopBack popups a element from the back of the list.
 
-### func \(\*DList\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L94>)
+### func \(\*DList\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L98>)
 
 ```go
 func (l *DList[T]) PopFront() (T, bool)
@@ -1054,7 +1056,7 @@ func (l *DList[T]) PopFront() (T, bool)
 
 PopFront popups a element from the front of the list.
 
-### func \(\*DList\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L86>)
+### func \(\*DList\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L90>)
 
 ```go
 func (l *DList[T]) PushBack(val T)
@@ -1062,7 +1064,7 @@ func (l *DList[T]) PushBack(val T)
 
 PushBack pushes an element at the back of the list.
 
-### func \(\*DList\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L78>)
+### func \(\*DList\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L82>)
 
 ```go
 func (l *DList[T]) PushFront(val T)
@@ -1106,7 +1108,7 @@ type Integer interface {
 }
 ```
 
-## type [Iterator](<https://github.com/chen3feng/stl4go/blob/master/container.go#L36-L40>)
+## type [Iterator](<https://github.com/chen3feng/stl4go/blob/master/iterator.go#L4-L8>)
 
 Iterator is the interface for container's iterator.
 
@@ -1144,12 +1146,34 @@ type Map[K any, V any] interface {
 }
 ```
 
-## type [MapIterator](<https://github.com/chen3feng/stl4go/blob/master/container.go#L43-L46>)
+## type [MapIterator](<https://github.com/chen3feng/stl4go/blob/master/iterator.go#L17-L20>)
 
 MapIterator is the interface for map's iterator.
 
 ```go
 type MapIterator[K any, V any] interface {
+    Key() K // The key of the element
+    // contains filtered or unexported methods
+}
+```
+
+## type [MutableIterator](<https://github.com/chen3feng/stl4go/blob/master/iterator.go#L11-L14>)
+
+MutableIterator is the interface for container's mutable iterator.
+
+```go
+type MutableIterator[T any] interface {
+    Pointer() *T // Return the pointer to the value of current element.
+    // contains filtered or unexported methods
+}
+```
+
+## type [MutableMapIterator](<https://github.com/chen3feng/stl4go/blob/master/iterator.go#L23-L26>)
+
+MutableMapIterator is the interface for map's mutable iterator.
+
+```go
+type MutableMapIterator[K any, V any] interface {
     Key() K // The key of the element
     // contains filtered or unexported methods
 }
@@ -1460,7 +1484,7 @@ Find returns the value associated with the passed key if the key is in the skipl
 ### func \(\*SkipList\[K, V\]\) [FindRange](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L150>)
 
 ```go
-func (sl *SkipList[K, V]) FindRange(first, last K) MapIterator[K, V]
+func (sl *SkipList[K, V]) FindRange(first, last K) MutableMapIterator[K, V]
 ```
 
 FindRange returns an iterator in range \[first, last\) \(last is not included\).
@@ -1524,7 +1548,7 @@ IsEmpty implements the Container interface.
 ### func \(\*SkipList\[K, V\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L85>)
 
 ```go
-func (sl *SkipList[K, V]) Iterate() MapIterator[K, V]
+func (sl *SkipList[K, V]) Iterate() MutableMapIterator[K, V]
 ```
 
 Iterate return an iterator to the skiplist.
@@ -1540,7 +1564,7 @@ Len implements the Container interface.
 ### func \(\*SkipList\[K, V\]\) [LowerBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L138>)
 
 ```go
-func (sl *SkipList[K, V]) LowerBound(key K) MapIterator[K, V]
+func (sl *SkipList[K, V]) LowerBound(key K) MutableMapIterator[K, V]
 ```
 
 LowerBound returns an iterator to the first element in the skiplist that does not satisfy element \< value \(i.e. greater or equal to\), or a end iterator if no such element is found.
@@ -1556,7 +1580,7 @@ Remove removes the key\-value pair associated with the passed key and returns tr
 ### func \(\*SkipList\[K, V\]\) [UpperBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist.go#L145>)
 
 ```go
-func (sl *SkipList[K, V]) UpperBound(key K) MapIterator[K, V]
+func (sl *SkipList[K, V]) UpperBound(key K) MutableMapIterator[K, V]
 ```
 
 UpperBound returns an iterator to the first element in the skiplist that does not satisfy value \< element \(i.e. strictly greater\), or a end iterator if no such element is found.
