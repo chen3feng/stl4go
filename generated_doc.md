@@ -26,7 +26,6 @@ Package stl4go is a generic container and algorithm library for go.
 - [func DescSort[T Ordered](a []T)](<#func-descsort>)
 - [func DescStableSort[T Ordered](a []T)](<#func-descstablesort>)
 - [func Equal[T comparable](a, b []T) bool](<#func-equal>)
-- [func Equals[T comparable](a, b T) bool](<#func-equals>)
 - [func Find[T comparable](a []T, x T) (index int, ok bool)](<#func-find>)
 - [func FindIf[T any](a []T, cond func(T) bool) (index int, ok bool)](<#func-findif>)
 - [func Generate[T any](a []T, gen func() T)](<#func-generate>)
@@ -322,14 +321,6 @@ Equal returns whether two slices are equal. Return true if they are the same len
 
 Complexity: O\(min\(len\(a\), len\(b\)\)\).
 
-## func [Equals](<https://github.com/chen3feng/stl4go/blob/master/types.go#L57>)
-
-```go
-func Equals[T comparable](a, b T) bool
-```
-
-Equals wraps the '==' operator for comparable types.
-
 ## func [Find](<https://github.com/chen3feng/stl4go/blob/master/lookup.go#L90>)
 
 ```go
@@ -360,7 +351,7 @@ Generate fill each element of \`a\`\` with \`gen\(\)\`.
 
 Complexity: O\(len\(a\)\).
 
-## func [Greater](<https://github.com/chen3feng/stl4go/blob/master/types.go#L67>)
+## func [Greater](<https://github.com/chen3feng/stl4go/blob/master/functor.go#L9>)
 
 ```go
 func Greater[T Ordered](a, b T) bool
@@ -420,7 +411,7 @@ IsSorted returns whether the slice a is sorted in ascending order.
 
 Complexity: O\(len\(a\)\).
 
-## func [Less](<https://github.com/chen3feng/stl4go/blob/master/types.go#L62>)
+## func [Less](<https://github.com/chen3feng/stl4go/blob/master/functor.go#L4>)
 
 ```go
 func Less[T Ordered](a, b T) bool
@@ -540,7 +531,7 @@ NoneOf return true pred\(e\) returns true for none emements e in a.
 
 Complexity: O\(len\(a\)\).
 
-## func [OrderedCompare](<https://github.com/chen3feng/stl4go/blob/master/types.go#L72>)
+## func [OrderedCompare](<https://github.com/chen3feng/stl4go/blob/master/functor.go#L14>)
 
 ```go
 func OrderedCompare[T Ordered](a, b T) int
