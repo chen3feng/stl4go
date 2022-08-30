@@ -48,7 +48,7 @@ import "github.com/chen3feng/stl4go"
 
 ### 迭代器
 
-DList 和 SkipList 支持迭代器。
+Vector、DList 和 SkipList 支持迭代器。
 
 ```go
 // Iterator is the interface for container's iterator.

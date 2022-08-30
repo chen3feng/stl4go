@@ -62,7 +62,7 @@ Different containers support different methods. The following are the methods su
 
 ### Iterators
 
-DList and SkipList support iterators.
+Vector, DList and SkipList support iterators.
 
 ```go
 // Iterator is the interface for container's iterator.
@@ -162,7 +162,8 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 
 ### Algorithms
 
-Due to the limitations of language, most algorithms only support Slice. The functions name of the algorithms ends with `If`, `Func`,
+Due to the limitations of language, most algorithms only support Slice.
+The functions name of the algorithms ends with `If` or `Func`,
 indicating that a custom comparison function can be passed.
 
 #### Generate

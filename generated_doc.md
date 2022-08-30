@@ -181,6 +181,8 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (v *Vector[T]) Clear()](<#func-vectort-clear>)
   - [func (v *Vector[T]) Insert(i int, x ...T)](<#func-vectort-insert>)
   - [func (v *Vector[T]) IsEmpty() bool](<#func-vectort-isempty>)
+  - [func (v Vector[T]) Iterate() MutableIterator[T]](<#func-vectort-iterate>)
+  - [func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]](<#func-vectort-iteraterange>)
   - [func (v *Vector[T]) Len() int](<#func-vectort-len>)
   - [func (v *Vector[T]) PushBack(x T)](<#func-vectort-pushback>)
   - [func (v *Vector[T]) Remove(i int)](<#func-vectort-remove>)
@@ -1749,6 +1751,22 @@ func (v *Vector[T]) IsEmpty() bool
 ```
 
 IsEmpty implements the Container interface.
+
+### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L126>)
+
+```go
+func (v Vector[T]) Iterate() MutableIterator[T]
+```
+
+Iterate returns an iterator to the whole vector.
+
+### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L131>)
+
+```go
+func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]
+```
+
+IterateRange returns an iterator to the range \[i, j\) of the vector.
 
 ### func \(\*Vector\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L28>)
 
