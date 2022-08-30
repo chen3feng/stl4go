@@ -126,3 +126,25 @@ func Test_Vector_RemoveLength(t *testing.T) {
 	expectEq(t, v[0], 1)
 	expectEq(t, v[1], 4)
 }
+
+func Test_Vector_Iterate(t *testing.T) {
+	v := MakeVectorOf(1, 2, 3, 4)
+	i := 1
+	for it := v.Iterate(); it.IsNotEnd(); it.MoveToNext() {
+		expectEq(t, it.Value(), i)
+		expectEq(t, *it.Pointer(), it.Value())
+		i++
+	}
+	expectEq(t, i, 5)
+}
+
+func Test_Vector_IterateRange(t *testing.T) {
+	v := MakeVectorOf(1, 2, 3, 4)
+	i := 2
+	for it := v.IterateRange(1, 3); it.IsNotEnd(); it.MoveToNext() {
+		expectEq(t, it.Value(), i)
+		expectEq(t, *it.Pointer(), it.Value())
+		i++
+	}
+	expectEq(t, i, 4)
+}

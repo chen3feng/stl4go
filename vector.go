@@ -121,3 +121,34 @@ func (v *Vector[T]) RemoveRange(i, j int) {
 func (v *Vector[T]) RemoveLength(i int, len int) {
 	v.RemoveRange(i, i+len)
 }
+
+// Iterate returns an iterator to the whole vector.
+func (v Vector[T]) Iterate() MutableIterator[T] {
+	return &vectorIterator[T]{v, 0}
+}
+
+// IterateRange returns an iterator to the range [i, j) of the vector.
+func (v Vector[T]) IterateRange(i, j int) MutableIterator[T] {
+	return &vectorIterator[T]{v[i:j], 0}
+}
+
+type vectorIterator[T any] struct {
+	v Vector[T]
+	i int
+}
+
+func (it vectorIterator[T]) Value() T {
+	return it.v[it.i]
+}
+
+func (it vectorIterator[T]) Pointer() *T {
+	return &it.v[it.i]
+}
+
+func (it vectorIterator[T]) IsNotEnd() bool {
+	return it.i < len(it.v)
+}
+
+func (it *vectorIterator[T]) MoveToNext() {
+	it.i++
+}
