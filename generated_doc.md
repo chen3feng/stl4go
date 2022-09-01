@@ -179,6 +179,10 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (v *Vector[T]) At(i int) T](<#func-vectort-at>)
   - [func (v *Vector[T]) Cap() int](<#func-vectort-cap>)
   - [func (v *Vector[T]) Clear()](<#func-vectort-clear>)
+  - [func (v Vector[T]) ForEach(cb func(val T))](<#func-vectort-foreach>)
+  - [func (v Vector[T]) ForEachIf(cb func(val T) bool)](<#func-vectort-foreachif>)
+  - [func (v Vector[T]) ForEachMutable(cb func(val *T))](<#func-vectort-foreachmutable>)
+  - [func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)](<#func-vectort-foreachmutableif>)
   - [func (v *Vector[T]) Insert(i int, x ...T)](<#func-vectort-insert>)
   - [func (v *Vector[T]) IsEmpty() bool](<#func-vectort-isempty>)
   - [func (v Vector[T]) Iterate() MutableIterator[T]](<#func-vectort-iterate>)
@@ -1734,6 +1738,38 @@ func (v *Vector[T]) Clear()
 
 Clear erases all elements from the vector. After this call, Len\(\) returns zero. Leaves the Cap\(\) of the vector unchanged.
 
+### func \(Vector\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L126>)
+
+```go
+func (v Vector[T]) ForEach(cb func(val T))
+```
+
+ForEach iterate the list, apply each element to the cb callback function.
+
+### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L133>)
+
+```go
+func (v Vector[T]) ForEachIf(cb func(val T) bool)
+```
+
+ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
+
+### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L142>)
+
+```go
+func (v Vector[T]) ForEachMutable(cb func(val *T))
+```
+
+ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
+
+### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L149>)
+
+```go
+func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)
+```
+
+ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
+
 ### func \(\*Vector\[T\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L91>)
 
 ```go
@@ -1752,7 +1788,7 @@ func (v *Vector[T]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L126>)
+### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L158>)
 
 ```go
 func (v Vector[T]) Iterate() MutableIterator[T]
@@ -1760,7 +1796,7 @@ func (v Vector[T]) Iterate() MutableIterator[T]
 
 Iterate returns an iterator to the whole vector.
 
-### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L131>)
+### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L163>)
 
 ```go
 func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]

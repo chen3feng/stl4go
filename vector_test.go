@@ -127,6 +127,49 @@ func Test_Vector_RemoveLength(t *testing.T) {
 	expectEq(t, v[1], 4)
 }
 
+func Test_Vector_ForEach(t *testing.T) {
+	a := []int{1, 2, 3}
+	v := MakeVectorOf(a...)
+	var b []int
+	v.ForEach(func(n int) {
+		b = append(b, n)
+	})
+	expectEq(t, len(b), 3)
+	expectTrue(t, Equal(a, b))
+}
+
+func Test_Vector_ForEachIf(t *testing.T) {
+	v := MakeVectorOf(1, 2, 3)
+	c := 0
+	v.ForEachIf(func(n int) bool {
+		c = n
+		return n != 2
+	})
+	expectEq(t, c, 2)
+}
+
+func Test_Vector_ForEachMutable(t *testing.T) {
+	a := []int{1, 2, 3}
+	v := MakeVectorOf(1, 2, 3)
+	v.ForEachMutable(func(n *int) {
+		*n = -*n
+	})
+	expectEq(t, v.Len(), 3)
+	for i := range v {
+		expectEq(t, a[i], -v[i])
+	}
+}
+
+func Test_Vector_ForEachMutableIf(t *testing.T) {
+	v := MakeVectorOf(1, 2, 3)
+	c := 0
+	v.ForEachMutableIf(func(n *int) bool {
+		c = *n
+		return *n != 2
+	})
+	expectEq(t, c, 2)
+}
+
 func Test_Vector_Iterate(t *testing.T) {
 	v := MakeVectorOf(1, 2, 3, 4)
 	i := 1

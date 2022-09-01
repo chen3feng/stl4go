@@ -122,6 +122,38 @@ func (v *Vector[T]) RemoveLength(i int, len int) {
 	v.RemoveRange(i, i+len)
 }
 
+// ForEach iterate the list, apply each element to the cb callback function.
+func (v Vector[T]) ForEach(cb func(val T)) {
+	for _, e := range v {
+		cb(e)
+	}
+}
+
+// ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
+func (v Vector[T]) ForEachIf(cb func(val T) bool) {
+	for _, e := range v {
+		if !cb(e) {
+			break
+		}
+	}
+}
+
+// ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
+func (v Vector[T]) ForEachMutable(cb func(val *T)) {
+	for i := range v {
+		cb(&v[i])
+	}
+}
+
+// ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
+func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool) {
+	for i := range v {
+		if !cb(&v[i]) {
+			break
+		}
+	}
+}
+
 // Iterate returns an iterator to the whole vector.
 func (v Vector[T]) Iterate() MutableIterator[T] {
 	return &vectorIterator[T]{v, 0}
