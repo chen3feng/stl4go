@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// BuiltinSet is an associative container that contains a unordered set of unique objects of type K.
+// BuiltinSet is an associative container that contains an unordered set of unique objects of type K.
 type BuiltinSet[K comparable] map[K]struct{}
 
 // MakeBuiltinSetOf creates a new BuiltinSet object with the initial content from ks.
@@ -25,9 +25,9 @@ func (s BuiltinSet[K]) Len() int {
 }
 
 // Clear implements the Container interface.
-func (s *BuiltinSet[K]) Clear() {
-	for k := range *s {
-		delete(*s, k)
+func (s BuiltinSet[K]) Clear() {
+	for k := range s {
+		delete(s, k)
 	}
 }
 
@@ -88,7 +88,82 @@ func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool) {
 	}
 }
 
-// String implements the fmt.Stringer interface
+// String implements the fmt.Stringer interface.
 func (s BuiltinSet[K]) String() string {
 	return fmt.Sprintf("BuiltinSet[%s]%v", nameOfType[K](), s.Keys())
+}
+
+// Update adds all elements from other to set. set |= other.
+func (s BuiltinSet[K]) Update(other BuiltinSet[K]) {
+	for k := range other {
+		s[k] = struct{}{}
+	}
+}
+
+// Union returns a new set with elements from the set and other.
+func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K] {
+	result := BuiltinSet[K]{}
+	result.Update(s)
+	result.Update(other)
+	return result
+}
+
+func orderSet[K comparable](a, b BuiltinSet[K]) (small, large BuiltinSet[K]) {
+	if a.Len() < b.Len() {
+		return a, b
+	}
+	return b, a
+}
+
+// Intersection returns a new set with elements common to the set and other.
+func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K] {
+	result := BuiltinSet[K]{}
+	small, large := orderSet(s, other)
+	for k := range small {
+		if large.Has(k) {
+			result.Insert(k)
+		}
+	}
+	return result
+}
+
+// Difference returns a new set with elements in the set that are not in other.
+func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K] {
+	result := BuiltinSet[K]{}
+	for k := range s {
+		if !other.Has(k) {
+			result.Insert(k)
+		}
+	}
+	return result
+}
+
+// IsDisjointOf return True if the set has no elements in common with other.
+// Sets are disjoint if and only if their intersection is the empty set.
+func (s BuiltinSet[K]) IsDisjointOf(other BuiltinSet[K]) bool {
+	small, large := orderSet(s, other)
+	for k := range small {
+		if large.Has(k) {
+			return false
+		}
+	}
+	return true
+}
+
+// IsSubsetOf tests whether every element in the set is in other.
+func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool {
+	if s.Len() > other.Len() {
+		return false
+	}
+	for k := range s {
+		if !other.Has(k) {
+			return false
+		}
+	}
+	return true
+}
+
+// IsSupersetOf tests whether every element in other is in the set.
+func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool {
+	return other.IsSubsetOf(s)
 }
