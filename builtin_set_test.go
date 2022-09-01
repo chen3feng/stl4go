@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+func setOf[T comparable](a ...T) BuiltinSet[T] {
+	return MakeBuiltinSetOf(a...)
+}
+
 func Test_BuiltinSet_Interface(t *testing.T) {
 	s := make(BuiltinSet[int])
 	_ = Set[int](&s)
@@ -24,7 +28,7 @@ func Test_MakeBuiltinSet2(t *testing.T) {
 }
 
 func Test_MakeBuiltinSetOf(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	expectEq(t, s.Len(), 2)
 }
 
@@ -36,25 +40,25 @@ func Test_BuiltinSet_IsEmpty(t *testing.T) {
 }
 
 func Test_BuiltinSet_Clear(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	s.Clear()
 	expectTrue(t, s.IsEmpty())
 }
 
 func Test_BuiltinSet_String(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	expectTrue(t, strings.HasPrefix(fmt.Sprintf("%v", s), "BuiltinSet[string]"))
 }
 
 func Test_BuiltinSet_Has(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	expectTrue(t, s.Has("hello"))
 	expectTrue(t, s.Has("world"))
 	expectFalse(t, s.Has("!"))
 }
 
 func Test_BuiltinSet_Get(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	expectTrue(t, s.Has("hello"))
 	expectTrue(t, s.Has("world"))
 	expectFalse(t, s.Has("!"))
@@ -77,7 +81,7 @@ func Test_BuiltinSet_InsertN(t *testing.T) {
 }
 
 func Test_BuiltinSet_Remove(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	s.Remove("hello")
 	expectEq(t, s.Len(), 1)
 	s.Remove("hello")
@@ -87,27 +91,27 @@ func Test_BuiltinSet_Remove(t *testing.T) {
 }
 
 func Test_BuiltinSet_RemoveN(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	s.RemoveN("hello", "world")
 	s.Remove("world")
 	expectTrue(t, s.IsEmpty())
 }
 
 func Test_BuiltinSet_Keys(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	ks := s.Keys()
 	expectEq(t, 2, len(ks))
 }
 
 func Test_BuiltinSet_For(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	for v := range s {
 		expectTrue(t, v == "hello" || v == "world")
 	}
 }
 
 func Test_BuiltinSet_ForEach(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	c := 0
 	s.ForEach(func(string) {
 		c++
@@ -116,11 +120,70 @@ func Test_BuiltinSet_ForEach(t *testing.T) {
 }
 
 func Test_BuiltinSet_ForEachIf(t *testing.T) {
-	s := MakeBuiltinSetOf("hello", "world")
+	s := setOf("hello", "world")
 	c := 0
 	s.ForEachIf(func(string) bool {
 		c++
 		return false
 	})
 	expectLt(t, c, 2)
+}
+
+func Test_BuiltinSet_Update(t *testing.T) {
+	s := setOf(1, 2, 3)
+	s.Update(setOf(3, 4))
+	expectEq(t, s.Len(), 4)
+	expectTrue(t, s.Has(4))
+}
+
+func Test_BuiltinSet_Union(t *testing.T) {
+	s := setOf(1, 2, 3)
+	s2 := s.Union(setOf(3, 4))
+	expectEq(t, s2.Len(), 4)
+	expectTrue(t, s2.Has(4))
+}
+
+func Test_BuiltinSet_Intersection(t *testing.T) {
+	s := setOf(1, 2, 3).Intersection(setOf(3, 4))
+	expectEq(t, s.Len(), 1)
+	expectTrue(t, s.Has(3))
+	s = setOf(3, 4).Intersection(setOf(1, 2, 3))
+	expectEq(t, s.Len(), 1)
+	expectTrue(t, s.Has(3))
+}
+
+func Test_BuiltinSet_Difference(t *testing.T) {
+	s := setOf(1, 2, 3).Difference(setOf(3, 4))
+	expectEq(t, s.Len(), 2)
+	expectTrue(t, s.Has(1))
+	expectTrue(t, s.Has(2))
+	s = setOf(1, 2).Difference(setOf(3, 4))
+	expectEq(t, s.Len(), 2)
+	expectTrue(t, s.Has(1))
+	expectTrue(t, s.Has(2))
+}
+
+func Test_BuiltinSet_IsDisjointOf(t *testing.T) {
+	s1 := setOf(1, 2, 3)
+	s2 := setOf(3, 4)
+	expectFalse(t, s1.IsDisjointOf(s2))
+	expectTrue(t, s1.IsDisjointOf(setOf(4, 5)))
+}
+
+func Test_BuiltinSet_IsSubsetOf(t *testing.T) {
+	expectTrue(t, setOf[int]().IsSubsetOf(setOf[int]()))
+	expectTrue(t, setOf[int]().IsSubsetOf(setOf(1)))
+	expectTrue(t, setOf(1, 2, 3).IsSubsetOf(setOf(1, 2, 3)))
+	expectTrue(t, setOf(1, 2).IsSubsetOf(setOf(1, 2, 3)))
+	expectFalse(t, setOf(1, 2, 3).IsSubsetOf(setOf(1, 2)))
+	expectFalse(t, setOf(1, 2).IsSubsetOf(setOf(2, 3)))
+}
+
+func Test_BuiltinSet_IsSupersetOf(t *testing.T) {
+	expectTrue(t, setOf[int]().IsSupersetOf(setOf[int]()))
+	expectTrue(t, setOf(1).IsSupersetOf(setOf[int]()))
+	expectTrue(t, setOf(1, 2, 3).IsSupersetOf(setOf(1, 2, 3)))
+	expectTrue(t, setOf(1, 2, 3).IsSupersetOf(setOf(1, 2)))
+	expectFalse(t, setOf(1, 2).IsSupersetOf(setOf(1, 2, 3)))
+	expectFalse(t, setOf(1, 2).IsSupersetOf(setOf(2, 3)))
 }

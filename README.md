@@ -44,7 +44,8 @@ so C++ users may feel familiar, and sometimes (maybe) feel more convenient.
 
 Currently implemented containers are:
 
-- [x] `BuiltinSet` provided a set funtionality based on Go's own `map`
+- [x] `BuiltinSet` provided a set funtionality based on Go's own `map`. It provides basic operations such as insert,
+      search and remove, as well as advanced functions such as union, intersection, difference, subset, superset, and disjoint.
 - [x] `Vector` is a thin encapsulation based on `slice`. It provides functions such as insertion and deletion in the middle, range deletion, etc.,
       and is still compatible with slices.
 - [x] `DList` is a doubly linked list.
