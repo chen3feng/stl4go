@@ -14,9 +14,14 @@ func MakeVectorCap[T any](c int) Vector[T] {
 	return (Vector[T])(v)
 }
 
-// MakeVectorOf creates an Vector object with initial values.
-func MakeVectorOf[T any](v ...T) Vector[T] {
+// VectorOf creates a Vector object with initial values.
+func VectorOf[T any](v ...T) Vector[T] {
 	return (Vector[T])(v)
+}
+
+// AsVector casts a slice as a Vector object.
+func AsVector[T any](s []T) Vector[T] {
+	return (Vector[T])(s)
 }
 
 // IsEmpty implements the Container interface.
