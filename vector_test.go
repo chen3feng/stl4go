@@ -103,6 +103,7 @@ func Test_Vector_PopBack(t *testing.T) {
 func Test_Vector_Back(t *testing.T) {
 	v := VectorOf(1)
 	expectEq(t, v.Back(), 1)
+	v.PopBack()
 	expectPanic(t, func() { v.Back() })
 }
 
