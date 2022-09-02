@@ -23,7 +23,7 @@ func Test_MakeBuiltinSet2(t *testing.T) {
 	expectEq(t, s.IsEmpty(), true)
 }
 
-func Test_MakeBuiltinSetOf(t *testing.T) {
+func Test_SetOf(t *testing.T) {
 	s := SetOf("hello", "world")
 	expectEq(t, s.Len(), 2)
 }

@@ -82,6 +82,30 @@ func Test_Vector_At_Set(t *testing.T) {
 	expectPanic(t, func() { v.Set(3, 2) })
 }
 
+func Test_Vector_PushBack(t *testing.T) {
+	v := VectorOf(1, 2, 3)
+	v.PushBack(4)
+	expectTrue(t, Equal(v, []int{1, 2, 3, 4}))
+}
+
+func Test_Vector_PopBack(t *testing.T) {
+	v := VectorOf(1, 2)
+	expectEq(t, v.PopBack(), 2)
+	n, ok := v.TryPopBack()
+	expectEq(t, n, 1)
+	expectTrue(t, ok)
+	n, ok = v.TryPopBack()
+	expectEq(t, n, 0)
+	expectFalse(t, ok)
+	expectPanic(t, func() { v.PopBack() })
+}
+
+func Test_Vector_Back(t *testing.T) {
+	v := VectorOf(1)
+	expectEq(t, v.Back(), 1)
+	expectPanic(t, func() { v.Back() })
+}
+
 func Test_Vector_Insert(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Insert(0, 1, 2, 3)

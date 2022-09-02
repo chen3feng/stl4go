@@ -95,7 +95,25 @@ func (l *DList[T]) PushBack(val T) {
 }
 
 // PopFront popups a element from the front of the list.
-func (l *DList[T]) PopFront() (T, bool) {
+func (l *DList[T]) PopFront() T {
+	r, ok := l.TryPopFront()
+	if !ok {
+		panic("DList.PopFront: empty list")
+	}
+	return r
+}
+
+// PopBack popups a element from the back of the list.
+func (l *DList[T]) PopBack() T {
+	r, ok := l.TryPopBack()
+	if !ok {
+		panic("DList.PopBack: empty list")
+	}
+	return r
+}
+
+// TryPopFront tries to popup a element from the front of the list.
+func (l *DList[T]) TryPopFront() (T, bool) {
 	var val T
 	if l.length == 0 {
 		return val, false
@@ -107,8 +125,8 @@ func (l *DList[T]) PopFront() (T, bool) {
 	return val, true
 }
 
-// PopBack popups a element from the back of the list.
-func (l *DList[T]) PopBack() (T, bool) {
+// TryPopBack tries to popup a element from the back of the list.
+func (l *DList[T]) TryPopBack() (T, bool) {
 	var val T
 	if l.length == 0 {
 		return val, false

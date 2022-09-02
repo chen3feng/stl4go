@@ -109,11 +109,13 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (l *DList[T]) IsEmpty() bool](<#func-dlistt-isempty>)
   - [func (l *DList[T]) Iterate() MutableIterator[T]](<#func-dlistt-iterate>)
   - [func (l *DList[T]) Len() int](<#func-dlistt-len>)
-  - [func (l *DList[T]) PopBack() (T, bool)](<#func-dlistt-popback>)
-  - [func (l *DList[T]) PopFront() (T, bool)](<#func-dlistt-popfront>)
+  - [func (l *DList[T]) PopBack() T](<#func-dlistt-popback>)
+  - [func (l *DList[T]) PopFront() T](<#func-dlistt-popfront>)
   - [func (l *DList[T]) PushBack(val T)](<#func-dlistt-pushback>)
   - [func (l *DList[T]) PushFront(val T)](<#func-dlistt-pushfront>)
   - [func (l *DList[T]) String() string](<#func-dlistt-string>)
+  - [func (l *DList[T]) TryPopBack() (T, bool)](<#func-dlistt-trypopback>)
+  - [func (l *DList[T]) TryPopFront() (T, bool)](<#func-dlistt-trypopfront>)
 - [type Float](<#type-float>)
 - [type HashFn](<#type-hashfn>)
 - [type Integer](<#type-integer>)
@@ -141,11 +143,13 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (q *Queue[T]) Clear()](<#func-queuet-clear>)
   - [func (q *Queue[T]) IsEmpty() bool](<#func-queuet-isempty>)
   - [func (q *Queue[T]) Len() int](<#func-queuet-len>)
-  - [func (q *Queue[T]) PopBack() (T, bool)](<#func-queuet-popback>)
-  - [func (q *Queue[T]) PopFront() (T, bool)](<#func-queuet-popfront>)
+  - [func (q *Queue[T]) PopBack() T](<#func-queuet-popback>)
+  - [func (q *Queue[T]) PopFront() T](<#func-queuet-popfront>)
   - [func (q *Queue[T]) PushBack(val T)](<#func-queuet-pushback>)
   - [func (q *Queue[T]) PushFront(val T)](<#func-queuet-pushfront>)
   - [func (q *Queue[T]) String() string](<#func-queuet-string>)
+  - [func (q *Queue[T]) TryPopBack() (T, bool)](<#func-queuet-trypopback>)
+  - [func (q *Queue[T]) TryPopFront() (T, bool)](<#func-queuet-trypopfront>)
 - [type Set](<#type-set>)
 - [type Signed](<#type-signed>)
 - [type SkipList](<#type-skiplist>)
@@ -174,9 +178,10 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (s *Stack[T]) Clear()](<#func-stackt-clear>)
   - [func (s *Stack[T]) IsEmpty() bool](<#func-stackt-isempty>)
   - [func (s *Stack[T]) Len() int](<#func-stackt-len>)
-  - [func (s *Stack[T]) MustPop() T](<#func-stackt-mustpop>)
-  - [func (s *Stack[T]) Pop() (val T, ok bool)](<#func-stackt-pop>)
+  - [func (s *Stack[T]) Pop() T](<#func-stackt-pop>)
   - [func (s *Stack[T]) Push(t T)](<#func-stackt-push>)
+  - [func (s *Stack[T]) Top() T](<#func-stackt-top>)
+  - [func (s *Stack[T]) TryPop() (val T, ok bool)](<#func-stackt-trypop>)
 - [type Unsigned](<#type-unsigned>)
 - [type Vector](<#type-vector>)
   - [func AsVector[T any](s []T) Vector[T]](<#func-asvector>)
@@ -185,6 +190,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func VectorOf[T any](v ...T) Vector[T]](<#func-vectorof>)
   - [func (v *Vector[T]) Append(x ...T)](<#func-vectort-append>)
   - [func (v *Vector[T]) At(i int) T](<#func-vectort-at>)
+  - [func (v Vector[T]) Back() T](<#func-vectort-back>)
   - [func (v *Vector[T]) Cap() int](<#func-vectort-cap>)
   - [func (v *Vector[T]) Clear()](<#func-vectort-clear>)
   - [func (v Vector[T]) ForEach(cb func(val T))](<#func-vectort-foreach>)
@@ -196,6 +202,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (v Vector[T]) Iterate() MutableIterator[T]](<#func-vectort-iterate>)
   - [func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]](<#func-vectort-iteraterange>)
   - [func (v *Vector[T]) Len() int](<#func-vectort-len>)
+  - [func (v *Vector[T]) PopBack() T](<#func-vectort-popback>)
   - [func (v *Vector[T]) PushBack(x T)](<#func-vectort-pushback>)
   - [func (v *Vector[T]) Remove(i int)](<#func-vectort-remove>)
   - [func (v *Vector[T]) RemoveLength(i int, len int)](<#func-vectort-removelength>)
@@ -203,6 +210,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (v *Vector[T]) Reserve(l int)](<#func-vectort-reserve>)
   - [func (v *Vector[T]) Set(i int, x T)](<#func-vectort-set>)
   - [func (v *Vector[T]) Shrink()](<#func-vectort-shrink>)
+  - [func (v *Vector[T]) TryPopBack() (T, bool)](<#func-vectort-trypopback>)
 
 
 ## func [AllOf](<https://github.com/chen3feng/stl4go/blob/master/lookup.go#L130>)
@@ -1045,7 +1053,7 @@ func (l *DList[T]) Clear()
 
 Clear cleanup the list
 
-### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L124>)
+### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L142>)
 
 ```go
 func (l *DList[T]) ForEach(cb func(val T))
@@ -1053,7 +1061,7 @@ func (l *DList[T]) ForEach(cb func(val T))
 
 ForEach iterate the list, apply each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L131>)
+### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L149>)
 
 ```go
 func (l *DList[T]) ForEachIf(cb func(val T) bool)
@@ -1061,7 +1069,7 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L140>)
+### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L158>)
 
 ```go
 func (l *DList[T]) ForEachMutable(cb func(val *T))
@@ -1069,7 +1077,7 @@ func (l *DList[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L147>)
+### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L165>)
 
 ```go
 func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)
@@ -1101,10 +1109,10 @@ func (l *DList[T]) Len() int
 
 Len return the length of the list
 
-### func \(\*DList\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L111>)
+### func \(\*DList\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L107>)
 
 ```go
-func (l *DList[T]) PopBack() (T, bool)
+func (l *DList[T]) PopBack() T
 ```
 
 PopBack popups a element from the back of the list.
@@ -1112,7 +1120,7 @@ PopBack popups a element from the back of the list.
 ### func \(\*DList\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L98>)
 
 ```go
-func (l *DList[T]) PopFront() (T, bool)
+func (l *DList[T]) PopFront() T
 ```
 
 PopFront popups a element from the front of the list.
@@ -1140,6 +1148,22 @@ func (l *DList[T]) String() string
 ```
 
 String convert the list to string
+
+### func \(\*DList\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L129>)
+
+```go
+func (l *DList[T]) TryPopBack() (T, bool)
+```
+
+TryPopBack tries to popup a element from the back of the list.
+
+### func \(\*DList\[T\]\) [TryPopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L116>)
+
+```go
+func (l *DList[T]) TryPopFront() (T, bool)
+```
+
+TryPopFront tries to popup a element from the front of the list.
 
 ## type [Float](<https://github.com/chen3feng/stl4go/blob/master/types.go#L27-L29>)
 
@@ -1426,7 +1450,7 @@ Len implements the Container interface.
 ### func \(\*Queue\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L55>)
 
 ```go
-func (q *Queue[T]) PopBack() (T, bool)
+func (q *Queue[T]) PopBack() T
 ```
 
 PopBack popups an element from the back of the queue.
@@ -1434,7 +1458,7 @@ PopBack popups an element from the back of the queue.
 ### func \(\*Queue\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L50>)
 
 ```go
-func (q *Queue[T]) PopFront() (T, bool)
+func (q *Queue[T]) PopFront() T
 ```
 
 PopFront popups an element from the front of the queue.
@@ -1462,6 +1486,22 @@ func (q *Queue[T]) String() string
 ```
 
 Len implements the fmt.Stringer interface.
+
+### func \(\*Queue\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L65>)
+
+```go
+func (q *Queue[T]) TryPopBack() (T, bool)
+```
+
+TryPopBack tries popuping an element from the back of the queue.
+
+### func \(\*Queue\[T\]\) [TryPopFront](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L60>)
+
+```go
+func (q *Queue[T]) TryPopFront() (T, bool)
+```
+
+TryPopFront tries popuping an element from the front of the queue.
 
 ## type [Set](<https://github.com/chen3feng/stl4go/blob/master/container.go#L24-L33>)
 
@@ -1704,21 +1744,13 @@ func (s *Stack[T]) Len() int
 
 Len implements the Container interface.
 
-### func \(\*Stack\[T\]\) [MustPop](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L58>)
+### func \(\*Stack\[T\]\) [Pop](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L58>)
 
 ```go
-func (s *Stack[T]) MustPop() T
+func (s *Stack[T]) Pop() T
 ```
 
-MustPop popups an element from the top of the stack. It must be called whtn IsEmpty\(\) returned false, otherwise it will panic.
-
-### func \(\*Stack\[T\]\) [Pop](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L45>)
-
-```go
-func (s *Stack[T]) Pop() (val T, ok bool)
-```
-
-Pop try popup an element from the top of the stack.
+Pop popups an element from the top of the stack. It must be called when IsEmpty\(\) returned false, otherwise it will panic.
 
 ### func \(\*Stack\[T\]\) [Push](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L40>)
 
@@ -1727,6 +1759,22 @@ func (s *Stack[T]) Push(t T)
 ```
 
 Push pushes the element to the top of the stack.
+
+### func \(\*Stack\[T\]\) [Top](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L67>)
+
+```go
+func (s *Stack[T]) Top() T
+```
+
+Top returns the top element in the stack. It must be called when s.IsEmpty\(\) returned false, otherwise it will panic.
+
+### func \(\*Stack\[T\]\) [TryPop](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L45>)
+
+```go
+func (s *Stack[T]) TryPop() (val T, ok bool)
+```
+
+TryPop tries to popup an element from the top of the stack.
 
 ## type [Unsigned](<https://github.com/chen3feng/stl4go/blob/master/types.go#L13-L15>)
 
@@ -1778,7 +1826,7 @@ func VectorOf[T any](v ...T) Vector[T]
 
 VectorOf creates a Vector object with initial values.
 
-### func \(\*Vector\[T\]\) [Append](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L87>)
+### func \(\*Vector\[T\]\) [Append](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L114>)
 
 ```go
 func (v *Vector[T]) Append(x ...T)
@@ -1793,6 +1841,14 @@ func (v *Vector[T]) At(i int) T
 ```
 
 At returns the element value at the index i. You can also use the \[\] operator, and it's better.
+
+### func \(Vector\[T\]\) [Back](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L109>)
+
+```go
+func (v Vector[T]) Back() T
+```
+
+Back returns the element at the end of the vector. It must be called when IsEmpty\(\) returned false, otherwise it will panic.
 
 ### func \(\*Vector\[T\]\) [Cap](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L38>)
 
@@ -1810,7 +1866,7 @@ func (v *Vector[T]) Clear()
 
 Clear erases all elements from the vector. After this call, Len\(\) returns zero. Leaves the Cap\(\) of the vector unchanged.
 
-### func \(Vector\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L131>)
+### func \(Vector\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L158>)
 
 ```go
 func (v Vector[T]) ForEach(cb func(val T))
@@ -1818,7 +1874,7 @@ func (v Vector[T]) ForEach(cb func(val T))
 
 ForEach iterate the list, apply each element to the cb callback function.
 
-### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L138>)
+### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L165>)
 
 ```go
 func (v Vector[T]) ForEachIf(cb func(val T) bool)
@@ -1826,7 +1882,7 @@ func (v Vector[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L147>)
+### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L174>)
 
 ```go
 func (v Vector[T]) ForEachMutable(cb func(val *T))
@@ -1834,7 +1890,7 @@ func (v Vector[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 
-### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L154>)
+### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L181>)
 
 ```go
 func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)
@@ -1842,7 +1898,7 @@ func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)
 
 ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
 
-### func \(\*Vector\[T\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L96>)
+### func \(\*Vector\[T\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L123>)
 
 ```go
 func (v *Vector[T]) Insert(i int, x ...T)
@@ -1860,7 +1916,7 @@ func (v *Vector[T]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L163>)
+### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L190>)
 
 ```go
 func (v Vector[T]) Iterate() MutableIterator[T]
@@ -1868,7 +1924,7 @@ func (v Vector[T]) Iterate() MutableIterator[T]
 
 Iterate returns an iterator to the whole vector.
 
-### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L168>)
+### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L195>)
 
 ```go
 func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]
@@ -1884,7 +1940,15 @@ func (v *Vector[T]) Len() int
 
 Len implements the Container interface.
 
-### func \(\*Vector\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L82>)
+### func \(\*Vector\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L91>)
+
+```go
+func (v *Vector[T]) PopBack() T
+```
+
+PopBack popups an element from the end of the vector. It must be called when IsEmpty\(\) returned false, otherwise it will panic.
+
+### func \(\*Vector\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L84>)
 
 ```go
 func (v *Vector[T]) PushBack(x T)
@@ -1892,7 +1956,9 @@ func (v *Vector[T]) PushBack(x T)
 
 PushBack pushs an element to the end of the vector.
 
-### func \(\*Vector\[T\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L116>)
+Complexity: O\(1\) if v.Len\(\) \< v.Cap\(\), therwise O\(len\(v\)\).
+
+### func \(\*Vector\[T\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L143>)
 
 ```go
 func (v *Vector[T]) Remove(i int)
@@ -1902,7 +1968,7 @@ Remove removes 1 element in the vector.
 
 Complexity: O\(len\(s\) \- i\).
 
-### func \(\*Vector\[T\]\) [RemoveLength](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L126>)
+### func \(\*Vector\[T\]\) [RemoveLength](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L153>)
 
 ```go
 func (v *Vector[T]) RemoveLength(i int, len int)
@@ -1910,7 +1976,7 @@ func (v *Vector[T]) RemoveLength(i int, len int)
 
 RemoveLength removes the elements in the range\[i, i\+len\) from the vector.
 
-### func \(\*Vector\[T\]\) [RemoveRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L121>)
+### func \(\*Vector\[T\]\) [RemoveRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L148>)
 
 ```go
 func (v *Vector[T]) RemoveRange(i, j int)
@@ -1943,6 +2009,14 @@ func (v *Vector[T]) Shrink()
 ```
 
 Shrink removes unused capacity from the vector.
+
+### func \(\*Vector\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L98>)
+
+```go
+func (v *Vector[T]) TryPopBack() (T, bool)
+```
+
+TryPopBack popups an element from the end of the vector.
 
 
 

@@ -41,8 +41,8 @@ func (s *Stack[T]) Push(t T) {
 	s.ele = append(s.ele, t)
 }
 
-// Pop try popup an element from the top of the stack.
-func (s *Stack[T]) Pop() (val T, ok bool) {
+// TryPop tries to popup an element from the top of the stack.
+func (s *Stack[T]) TryPop() (val T, ok bool) {
 	var t T
 	if len(s.ele) == 0 {
 		return t, false
@@ -52,11 +52,18 @@ func (s *Stack[T]) Pop() (val T, ok bool) {
 	return t, true
 }
 
-// MustPop popups an element from the top of the stack.
-// It must be called whtn IsEmpty() returned false,
+// Pop popups an element from the top of the stack.
+// It must be called when IsEmpty() returned false,
 // otherwise it will panic.
-func (s *Stack[T]) MustPop() T {
+func (s *Stack[T]) Pop() T {
 	t := s.ele[len(s.ele)-1]
 	s.ele = s.ele[:len(s.ele)-1]
 	return t
+}
+
+// Top returns the top element in the stack.
+// It must be called when s.IsEmpty() returned false,
+// otherwise it will panic.
+func (s *Stack[T]) Top() T {
+	return s.ele[len(s.ele)-1]
 }
