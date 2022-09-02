@@ -47,11 +47,21 @@ func (q *Queue[T]) PushBack(val T) {
 }
 
 // PopFront popups an element from the front of the queue.
-func (q *Queue[T]) PopFront() (T, bool) {
+func (q *Queue[T]) PopFront() T {
 	return q.list.PopFront()
 }
 
 // PopBack popups an element from the back of the queue.
-func (q *Queue[T]) PopBack() (T, bool) {
+func (q *Queue[T]) PopBack() T {
 	return q.list.PopBack()
+}
+
+// TryPopFront tries popuping an element from the front of the queue.
+func (q *Queue[T]) TryPopFront() (T, bool) {
+	return q.list.TryPopFront()
+}
+
+// TryPopBack tries popuping an element from the back of the queue.
+func (q *Queue[T]) TryPopBack() (T, bool) {
+	return q.list.TryPopBack()
 }

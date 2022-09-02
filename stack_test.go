@@ -44,20 +44,29 @@ func Test_Stack_Push(t *testing.T) {
 	expectEq(t, s.Len(), 2)
 }
 
-func Test_Stack_Pop(t *testing.T) {
+func Test_Stack_TryPop(t *testing.T) {
 	s := NewStack[int]()
-	_, ok := s.Pop()
+	_, ok := s.TryPop()
 	expectFalse(t, ok)
 	s.Push(1)
-	v, ok := s.Pop()
+	v, ok := s.TryPop()
 	expectTrue(t, ok)
 	expectEq(t, v, 1)
 }
 
-func Test_Stack_Must(t *testing.T) {
+func Test_Stack_Pop(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
-	v := s.MustPop()
+	v := s.Pop()
 	expectEq(t, v, 1)
-	expectPanic(t, func() { s.MustPop() })
+	expectPanic(t, func() { s.Pop() })
+}
+
+func Test_Stack_Top(t *testing.T) {
+	s := NewStack[int]()
+	s.Push(1)
+	v := s.Top()
+	expectEq(t, v, 1)
+	s.Pop()
+	expectPanic(t, func() { s.Top() })
 }

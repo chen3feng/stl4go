@@ -51,46 +51,52 @@ func Test_DList_PushBack(t *testing.T) {
 }
 
 func Test_DList_PopFront(t *testing.T) {
-	l := NewDList[int]()
-	_, ok := l.PopFront()
+	l := NewDListOf(1, 2)
+	expectEq(t, l.PopFront(), 1)
+	n, ok := l.TryPopFront()
+	expectEq(t, n, 2)
+	expectTrue(t, ok)
+	n, ok = l.TryPopFront()
 	expectFalse(t, ok)
+	expectPanic(t, func() { l.PopFront() })
 }
 
 func Test_DList_PopBack(t *testing.T) {
-	l := NewDList[int]()
-	_, ok := l.PopBack()
+	l := NewDListOf(1, 2)
+	expectEq(t, l.PopBack(), 2)
+	n, ok := l.TryPopBack()
+	expectTrue(t, ok)
+	expectEq(t, n, 1)
+	n, ok = l.TryPopBack()
 	expectFalse(t, ok)
+	expectPanic(t, func() { l.PopBack() })
 }
 
 func Test_DList_PushBack_PopFront(t *testing.T) {
 	l := NewDList[int]()
 	l.PushBack(1)
-	v, ok := l.PopFront()
-	expectTrue(t, ok)
+	v := l.PopFront()
 	expectEq(t, v, 1)
 }
 
 func Test_DList_PushBack_PopBack(t *testing.T) {
 	l := NewDList[int]()
 	l.PushBack(1)
-	v, ok := l.PopBack()
-	expectTrue(t, ok)
+	v := l.PopBack()
 	expectEq(t, v, 1)
 }
 
 func Test_DList_PushFront_PopBack(t *testing.T) {
 	l := NewDList[int]()
 	l.PushFront(1)
-	v, ok := l.PopBack()
-	expectTrue(t, ok)
+	v := l.PopBack()
 	expectEq(t, v, 1)
 }
 
 func Test_DList_PushFront_PopFront(t *testing.T) {
 	l := NewDList[int]()
 	l.PushFront(1)
-	v, ok := l.PopFront()
-	expectTrue(t, ok)
+	v := l.PopFront()
 	expectEq(t, v, 1)
 }
 

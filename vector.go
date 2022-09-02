@@ -79,8 +79,35 @@ func (v *Vector[T]) Set(i int, x T) {
 }
 
 // PushBack pushs an element to the end of the vector.
+//
+// Complexity: O(1) if v.Len() < v.Cap(), therwise O(len(v)).
 func (v *Vector[T]) PushBack(x T) {
 	*v = append(*v, x)
+}
+
+// PopBack popups an element from the end of the vector.
+// It must be called when IsEmpty() returned false,
+// otherwise it will panic.
+func (v *Vector[T]) PopBack() T {
+	e := (*v)[v.Len()-1]
+	*v = (*v)[0 : v.Len()-1]
+	return e
+}
+
+// TryPopBack popups an element from the end of the vector.
+func (v *Vector[T]) TryPopBack() (T, bool) {
+	if v.IsEmpty() {
+		var zero T
+		return zero, false
+	}
+	return v.PopBack(), true
+}
+
+// Back returns the element at the end of the vector.
+// It must be called when IsEmpty() returned false,
+// otherwise it will panic.
+func (v Vector[T]) Back() T {
+	return v[len(v)-1]
 }
 
 // Append appends the values x... to the tail of the vector.
