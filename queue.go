@@ -12,7 +12,6 @@ type Queue[T any] struct {
 // NewQueue create a new Queue object.
 func NewQueue[T any]() *Queue[T] {
 	q := Queue[T]{}
-	q.list.Clear()
 	return &q
 }
 
