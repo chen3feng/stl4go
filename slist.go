@@ -1,6 +1,6 @@
 package stl4go
 
-// SList is a single linked list.
+// SList is a singly linked list.
 type SList[T any] struct {
 	head   *sListNode[T]
 	tail   *sListNode[T] // To support Back and PushBack
