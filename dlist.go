@@ -118,9 +118,12 @@ func (l *DList[T]) TryPopFront() (T, bool) {
 	if l.length == 0 {
 		return val, false
 	}
-	val = l.head.next.value
-	l.head.next = l.head.next.next
+	node := l.head.next
+	val = node.value
+	l.head.next = node.next
 	l.head.prev = &l.head
+	node.prev = nil
+	node.next = nil
 	l.length--
 	return val, true
 }
@@ -131,9 +134,12 @@ func (l *DList[T]) TryPopBack() (T, bool) {
 	if l.length == 0 {
 		return val, false
 	}
-	val = l.head.prev.value
+	node := l.head.prev
+	val = node.value
 	l.head.prev = l.head.prev.prev
 	l.head.prev.next = &l.head
+	node.prev = nil
+	node.next = nil
 	l.length--
 	return val, true
 }
