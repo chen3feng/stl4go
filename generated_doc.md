@@ -150,6 +150,23 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (q *Queue[T]) String() string](<#func-queuet-string>)
   - [func (q *Queue[T]) TryPopBack() (T, bool)](<#func-queuet-trypopback>)
   - [func (q *Queue[T]) TryPopFront() (T, bool)](<#func-queuet-trypopfront>)
+- [type SList](<#type-slist>)
+  - [func SListOf[T any](values ...T) SList[T]](<#func-slistof>)
+  - [func (l *SList[T]) Back() T](<#func-slistt-back>)
+  - [func (l *SList[T]) Clear()](<#func-slistt-clear>)
+  - [func (l *SList[T]) ForEach(cb func(T))](<#func-slistt-foreach>)
+  - [func (l *SList[T]) ForEachIf(cb func(T) bool)](<#func-slistt-foreachif>)
+  - [func (l *SList[T]) ForEachMutable(cb func(*T))](<#func-slistt-foreachmutable>)
+  - [func (l *SList[T]) ForEachMutableIf(cb func(*T) bool)](<#func-slistt-foreachmutableif>)
+  - [func (l *SList[T]) Front() T](<#func-slistt-front>)
+  - [func (l *SList[T]) IsEmpty() bool](<#func-slistt-isempty>)
+  - [func (l *SList[T]) Iterate() MutableIterator[T]](<#func-slistt-iterate>)
+  - [func (l *SList[T]) Len() int](<#func-slistt-len>)
+  - [func (l *SList[T]) PopFront() T](<#func-slistt-popfront>)
+  - [func (l *SList[T]) PushBack(v T)](<#func-slistt-pushback>)
+  - [func (l *SList[T]) PushFront(v T)](<#func-slistt-pushfront>)
+  - [func (l *SList[T]) Reverse()](<#func-slistt-reverse>)
+  - [func (l *SList[T]) Values() []T](<#func-slistt-values>)
 - [type Set](<#type-set>)
 - [type Signed](<#type-signed>)
 - [type SkipList](<#type-skiplist>)
@@ -1053,7 +1070,7 @@ func (l *DList[T]) Clear()
 
 Clear cleanup the list
 
-### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L142>)
+### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L148>)
 
 ```go
 func (l *DList[T]) ForEach(cb func(val T))
@@ -1061,7 +1078,7 @@ func (l *DList[T]) ForEach(cb func(val T))
 
 ForEach iterate the list, apply each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L149>)
+### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L155>)
 
 ```go
 func (l *DList[T]) ForEachIf(cb func(val T) bool)
@@ -1069,7 +1086,7 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L158>)
+### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L164>)
 
 ```go
 func (l *DList[T]) ForEachMutable(cb func(val *T))
@@ -1077,7 +1094,7 @@ func (l *DList[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L165>)
+### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L171>)
 
 ```go
 func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)
@@ -1149,7 +1166,7 @@ func (l *DList[T]) String() string
 
 String convert the list to string
 
-### func \(\*DList\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L129>)
+### func \(\*DList\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L132>)
 
 ```go
 func (l *DList[T]) TryPopBack() (T, bool)
@@ -1502,6 +1519,144 @@ func (q *Queue[T]) TryPopFront() (T, bool)
 ```
 
 TryPopFront tries popuping an element from the front of the queue.
+
+## type [SList](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L4-L8>)
+
+SList is a single linked list.
+
+```go
+type SList[T any] struct {
+    // contains filtered or unexported fields
+}
+```
+
+### func [SListOf](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L16>)
+
+```go
+func SListOf[T any](values ...T) SList[T]
+```
+
+SListOf return a SList that contains values.
+
+### func \(\*SList\[T\]\) [Back](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L47>)
+
+```go
+func (l *SList[T]) Back() T
+```
+
+Back returns the last element in the list.
+
+### func \(\*SList\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L35>)
+
+```go
+func (l *SList[T]) Clear()
+```
+
+Clear erases all elements from the container. After this call, Len\(\) returns zero.
+
+### func \(\*SList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L126>)
+
+```go
+func (l *SList[T]) ForEach(cb func(T))
+```
+
+ForEach iterate the list, apply each element to the cb callback function.
+
+### func \(\*SList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L134>)
+
+```go
+func (l *SList[T]) ForEachIf(cb func(T) bool)
+```
+
+ForEachIf iterate the container, apply each element to the cb callback function, stop if cb returns false.
+
+### func \(\*SList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L143>)
+
+```go
+func (l *SList[T]) ForEachMutable(cb func(*T))
+```
+
+ForEachMutable iterate the container, apply pointer of each element to the cb callback function.
+
+### func \(\*SList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L151>)
+
+```go
+func (l *SList[T]) ForEachMutableIf(cb func(*T) bool)
+```
+
+ForEachMutableIf iterate the container, apply pointer of each element to the cb callback function, stop if cb returns false.
+
+### func \(\*SList\[T\]\) [Front](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L42>)
+
+```go
+func (l *SList[T]) Front() T
+```
+
+Front returns the first element in the list.
+
+### func \(\*SList\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L25>)
+
+```go
+func (l *SList[T]) IsEmpty() bool
+```
+
+IsEmpty checks if the container has no elements.
+
+### func \(\*SList\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L160>)
+
+```go
+func (l *SList[T]) Iterate() MutableIterator[T]
+```
+
+Iterate returns an iterator to the whole container.
+
+### func \(\*SList\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L30>)
+
+```go
+func (l *SList[T]) Len() int
+```
+
+Len returns the number of elements in the container.
+
+### func \(\*SList\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L76>)
+
+```go
+func (l *SList[T]) PopFront() T
+```
+
+PopFront popups an element from the front of the list. The list must be non\-empty\!
+
+### func \(\*SList\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L62>)
+
+```go
+func (l *SList[T]) PushBack(v T)
+```
+
+PushBack pushed an element to the tail of the list.
+
+### func \(\*SList\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L52>)
+
+```go
+func (l *SList[T]) PushFront(v T)
+```
+
+PushFront pushed an element to the front of the list.
+
+### func \(\*SList\[T\]\) [Reverse](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L89>)
+
+```go
+func (l *SList[T]) Reverse()
+```
+
+Reverse reverses the order of all elements in the container.
+
+### func \(\*SList\[T\]\) [Values](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L105>)
+
+```go
+func (l *SList[T]) Values() []T
+```
+
+Values copies all elements in the container to a slice and return it.
 
 ## type [Set](<https://github.com/chen3feng/stl4go/blob/master/container.go#L24-L33>)
 
@@ -1872,31 +2027,31 @@ Clear erases all elements from the vector. After this call, Len\(\) returns zero
 func (v Vector[T]) ForEach(cb func(val T))
 ```
 
-ForEach iterate the list, apply each element to the cb callback function.
+ForEach iterate the container, apply each element to the cb callback function.
 
-### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L165>)
+### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L166>)
 
 ```go
 func (v Vector[T]) ForEachIf(cb func(val T) bool)
 ```
 
-ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
+ForEachIf iterate the container, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L174>)
+### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L175>)
 
 ```go
 func (v Vector[T]) ForEachMutable(cb func(val *T))
 ```
 
-ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
+ForEachMutable iterate the container, apply pointer of each element to the cb callback function.
 
-### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L181>)
+### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L183>)
 
 ```go
 func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)
 ```
 
-ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
+ForEachMutableIf iterate the container, apply pointer of each element to the cb callback function, stop if cb returns false.
 
 ### func \(\*Vector\[T\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L123>)
 
@@ -1916,21 +2071,21 @@ func (v *Vector[T]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L190>)
+### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L192>)
 
 ```go
 func (v Vector[T]) Iterate() MutableIterator[T]
 ```
 
-Iterate returns an iterator to the whole vector.
+Iterate returns an iterator to the whole container.
 
-### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L195>)
+### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L197>)
 
 ```go
 func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]
 ```
 
-IterateRange returns an iterator to the range \[i, j\) of the vector.
+IterateRange returns an iterator to the range \[i, j\) of the container.
 
 ### func \(\*Vector\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L33>)
 

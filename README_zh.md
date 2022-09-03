@@ -34,7 +34,8 @@ import "github.com/chen3feng/stl4go"
 
 - [x] `Set` 集合。用 Go 自己的 map 封装了一个 `BuiltinSet`，提供了插入查找删除等基本操作，以及并集、交集、差集、子集、超集、不交集等高级功能。
 - [x] `Vector` 是基于 slice 封装的向量。提供了中间插入删除、区间删除等功能，依然与 slice 兼容。
-- [x] `DList` 是双链表
+- [x] `DList` 是双链表容器，支持两端插入删除。
+- [x] `SList` 是单链表容器，支持头部插入删除及尾部插入。
 - [x] [跳表（SkipList）](skiplist.md) 是一种有序的关联容器，可以填补 Go `map` 只支持无序的的空白。这是目前全 GitHub 最快的跳表，参见 [skiplist-survey](https://github.com/chen3feng/skiplist-survey)的性能比较
 - [x] `Stack`，栈基于 Slice 实现
 - [x] `Queue` 双向进出的队列，基于链表实现

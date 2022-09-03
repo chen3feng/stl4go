@@ -48,7 +48,8 @@ Currently implemented containers are:
       search and remove, as well as advanced functions such as union, intersection, difference, subset, superset, and disjoint.
 - [x] `Vector` is a thin encapsulation based on `slice`. It provides functions such as insertion and deletion in the middle, range deletion, etc.,
       and is still compatible with slices.
-- [x] `DList` is a doubly linked list.
+- [x] `DList` is a doubly linked list, supports push/popup at both ending.
+- [x] `SList` is a singly linked list, supports push/popup at the head and push at the tail.
 - [x] [SkipList](skiplist.md) is an ordered associative container that fills the gap where Go `map` only supports unordered.
       This is currently the fastest skip list I tested in GitHub, see [skiplist-survey](https://github.com/chen3feng/skiplist-survey) for performance comparison
 - [x] `Stack`, is a FILO container based on Slice implementation

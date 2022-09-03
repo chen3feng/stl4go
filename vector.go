@@ -154,14 +154,15 @@ func (v *Vector[T]) RemoveLength(i int, len int) {
 	v.RemoveRange(i, i+len)
 }
 
-// ForEach iterate the list, apply each element to the cb callback function.
+// ForEach iterate the container, apply each element to the cb callback function.
 func (v Vector[T]) ForEach(cb func(val T)) {
 	for _, e := range v {
 		cb(e)
 	}
 }
 
-// ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
+// ForEachIf iterate the container, apply each element to the cb callback function,
+// stop if cb returns false.
 func (v Vector[T]) ForEachIf(cb func(val T) bool) {
 	for _, e := range v {
 		if !cb(e) {
@@ -170,14 +171,15 @@ func (v Vector[T]) ForEachIf(cb func(val T) bool) {
 	}
 }
 
-// ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
+// ForEachMutable iterate the container, apply pointer of each element to the cb callback function.
 func (v Vector[T]) ForEachMutable(cb func(val *T)) {
 	for i := range v {
 		cb(&v[i])
 	}
 }
 
-// ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
+// ForEachMutableIf iterate the container, apply pointer of each element to the cb callback function,
+// stop if cb returns false.
 func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool) {
 	for i := range v {
 		if !cb(&v[i]) {
@@ -186,12 +188,12 @@ func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool) {
 	}
 }
 
-// Iterate returns an iterator to the whole vector.
+// Iterate returns an iterator to the whole container.
 func (v Vector[T]) Iterate() MutableIterator[T] {
 	return &vectorIterator[T]{v, 0}
 }
 
-// IterateRange returns an iterator to the range [i, j) of the vector.
+// IterateRange returns an iterator to the range [i, j) of the container.
 func (v Vector[T]) IterateRange(i, j int) MutableIterator[T] {
 	return &vectorIterator[T]{v[i:j], 0}
 }
