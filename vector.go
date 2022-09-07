@@ -5,7 +5,7 @@ type Vector[T any] []T
 
 // MakeVector creates an empty Vector object.
 func MakeVector[T any]() Vector[T] {
-	return (Vector[T])([]T{})
+	return []T{}
 }
 
 // MakeVectorCap creates an empty Vector object with specified capacity.
