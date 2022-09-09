@@ -155,44 +155,58 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 - Range 返回一个 [begin, end) 的整数构成的 Slice
 - Generate 用给定的函数生成一个序列填充到 Slice 中
 
+#### 数据操作
+
+- `Copy` 返回切片的拷贝
+- `Fill` 用指定的值重复填充一个切片
+- `FillPattern` 用指定的模式重复填充一个切片
+- `Transform` 把切片的每个位置的值传给指定的函数，用其返回值设置回去
+- `TransformTo` 把切片 a 的每个位置的值传给指定的函数，将其返回值设置到切片 b 中相应的位置，并返回 b 的相应长度的切片
+- `TransformCopy` 把切片的每个位置的值传给指定的函数，将其返回值设置到一个新的切片中相应的位置并返回
+- `Unique` 去除切片中相邻的重复元素，返回包含剩余元素的新长度的切片，`UniqueCopy` 则不修改原切片而是返回一个拷贝
+- `Remove` 去除切片中等于指定值的所有元素，`RemoveCopy` 则不修改原切片而是返回一个拷贝
+- `RemoveIf` 去除切片中等于让指定函数返回 `true` 的所有元素，`RemoveIfCopy` 则不修改原切片而是返回一个拷贝
+- `Shuffle` 随机洗牌
+- `Reverse` 反转一个切片，`ReverseCopy` 则不修改原切片而是返回一个拷贝
+
 #### 计算型
 
-- Sum 求和
-- SumAs 求和并以另一种类型的结果返回（比如 `int64` 返回 `[]int32` 的和）。
-- Average 求平均值。
-- AverageAs 求平均值并以另一种类型的结果返回（比如 `float64` 返回 `[]int` 的和）。
-- Count 返回和指定值相当的个数
-- CountIf 返回让指定函数返回 `true` 的元素的个数
+- `Sum` 求和
+- `SumAs` 求和并以另一种类型的结果返回（比如以 `int64` 类型返回 `[]int32` 的和）
+- `Average` 求平均值。
+- `AverageAs` 求平均值并以另一种类型的结果返回（比如 `float64` 返回 `[]int` 的和）
+- `Count` 返回和指定值相当的个数
+- `CountIf` 返回让指定函数返回 `true` 的元素的个数
 
 #### 比较
 
-- Equal 判断两个序列是否相等
-- Compare 比较两个序列，按字典序返回 -1、0、1 分别表示起大小关系
+- `Equal` 判断两个序列是否相等
+- `Compare` 比较两个序列，按字典序返回 -1、0、1 分别表示起大小关系
 
 #### 查找
 
-- Min, Max 求最大最小值
-- MinN、MaxN、MinMax 返回 slice 中的最大和最小值
-- Find 线性查找第一个指定的值，返回其下标
-- FindIf 线性查找指定函数返回 `true` 的值，返回其下标
-- AllOf、AnyOf、NoneOf 返回区间中是否全部、任何一个、没有一个元素能使传入的函数返回 `true`
-
-#### 排序
-
-- Sort 排序
-- DescSort 降序排序
-- StableSort 稳定排序
-- DescStableSort 降序稳定排序
-- IsSorted 是否是排序的
-- IsDescSorted 是否是降序排序的
+- `Min`, `Max` 求最大最小值
+- `MinN`、`MaxN`、`MinMax` 返回 slice 中的最大和最小值
+- `Find` 线性查找第一个指定的值，返回其下标
+- `FindIf` 线性查找指定函数返回 `true` 的值，返回其下标
+- `AllOf`、`AnyOf`、`NoneOf` 返回区间中是否全部、任何一个、没有一个元素能使传入的函数返回 `true`
 
 #### 二分查找
 
 参考 C++STL。
 
-- BinarySearch
-- LowerBound
-- UpperBound
+- `BinarySearch`
+- `LowerBound`
+- `UpperBound`
+
+#### 排序
+
+- `Sort` 升序排序
+- `DescSort` 降序排序
+- `StableSort` 升序稳定排序
+- `DescStableSort` 降序稳定排序
+- `IsSorted` 是否是升序排序的
+- `IsDescSorted` 是否是降序排序的
 
 #### 堆
 

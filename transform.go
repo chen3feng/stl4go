@@ -10,18 +10,53 @@ func Copy[T any](a []T) []T {
 	return b
 }
 
+// Fill fills each element in slice a with new value v.
+//
+// Complexity: O(len(a)).
+func Fill[T any](a []T, v T) {
+	if len(a) == 0 {
+		return
+	}
+	// Preload the first value into the array/slice.
+	a[0] = v
+
+	// Incrementally duplicate the value into the rest of the container.
+	// About 2~3 times faster than naive fill.
+	// https://gist.github.com/taylorza/df2f89d5f9ab3ffd06865062a4cf015d
+	for j := 1; j < len(a); j *= 2 {
+		copy(a[j:], a[:j])
+	}
+}
+
+// FillPattern fills elements in slice a with specified pattern.
+//
+// Complexity: O(len(a)).
+func FillPattern[T any](a []T, pattern []T) {
+	if len(pattern) == 0 {
+		panic("pattern can't be empty")
+	}
+	// Copy the pattern into the start of the container
+	copy(a, pattern)
+
+	// Incrementally duplicate the pattern throughout the container
+	for j := len(pattern); j < len(a); j *= 2 {
+		copy(a[j:], a[:j])
+	}
+}
+
 // TransformTo applies the function op to each element in slice a and fill it to slice b.
 //
 // The len(b) must not lesser than len(a).
 //
 // Complexity: O(len(a)).
-func TransformTo[R any, T any](a []T, op func(T) R, b []R) {
+func TransformTo[R any, T any](a []T, op func(T) R, b []R) []R {
 	if len(b) < len(a) {
 		panic("TransformTo: len(b) < len(a)")
 	}
 	for i, v := range a {
 		b[i] = op(v)
 	}
+	return b[:len(a)]
 }
 
 // Transform applies the function op to each element in slice a and set it back to the same place in a.
@@ -36,17 +71,16 @@ func Transform[T any](a []T, op func(T) T) {
 // TransformCopy applies the function op to each element in slice a and return all the result as a slice.
 //
 // Complexity: O(len(a)).
-//
 func TransformCopy[R any, T any](a []T, op func(T) R) []R {
-	r := make([]R, 0, len(a))
-	for _, v := range a {
-		r = append(r, op(v))
+	r := make([]R, len(a))
+	for i, v := range a {
+		r[i] = op(v)
 	}
 	return r
 }
 
 // Unique remove adjacent repeated elements from the input slice.
-// return the processed slice, and the content of the input slice is also changed.
+// return the processed slice with new length.
 //
 // Complexity: O(len(a)).
 func Unique[T comparable](a []T) []T {
@@ -86,7 +120,7 @@ func UniqueCopy[T comparable](a []T) []T {
 }
 
 // Remove remove the elements which equals to x from the input slice.
-// return the processed slice, and the content of the input slice is also changed.
+// return the processed slice with new length.
 //
 // Complexity: O(len(a)).
 func Remove[T comparable](a []T, x T) []T {
@@ -101,7 +135,7 @@ func Remove[T comparable](a []T, x T) []T {
 }
 
 // RemoveCopy remove all elements which equals to x from the input slice.
-// return the processed slice, and the content of the input slice is also changed.
+// return a new slice with processed results. The input slice is kept unchanged.
 //
 // Complexity: O(len(a)).
 func RemoveCopy[T comparable](a []T, x T) []T {
@@ -115,7 +149,7 @@ func RemoveCopy[T comparable](a []T, x T) []T {
 }
 
 // RemoveIf remove each element which make cond(x) returns true from the input slice,
-// copy other elements to a new slice and return it. The input slice is kept unchanged.
+// copy other elements to a new slice and return it.
 //
 // Complexity: O(len(a)).
 func RemoveIf[T any](a []T, cond func(T) bool) []T {

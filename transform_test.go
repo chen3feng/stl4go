@@ -15,6 +15,43 @@ func Test_Copy(t *testing.T) {
 	expectTrue(t, Equal(a, b))
 }
 
+func Test_Fill(t *testing.T) {
+	a := []int{1, 2, 3, 4}
+	Fill(a, 1)
+	expectTrue(t, Equal(a, []int{1, 1, 1, 1}))
+	b := a[:0]
+	Fill(b, 2)
+	expectTrue(t, Equal(a, []int{1, 1, 1, 1}))
+}
+
+func naiveFill[T any](a []T, v T) {
+	for i := range a {
+		a[i] = v
+	}
+}
+
+func BenchmarkFill(b *testing.B) {
+	a := make([]int, 10000)
+	b.Run("Fill", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			Fill(a, 1)
+		}
+	})
+	b.Run("naiveFill", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			naiveFill(a, 1)
+		}
+	})
+}
+
+func Test_FillPattern(t *testing.T) {
+	a := make([]int, 10)
+	p := []int{1, 2, 3}
+	FillPattern(a, p)
+	expectTrue(t, Equal(a, []int{1, 2, 3, 1, 2, 3, 1, 2, 3, 1}))
+	expectPanic(t, func() { FillPattern(a, []int{}) })
+}
+
 func Test_Transform(t *testing.T) {
 	a := Range(0, 100)
 	Transform(a, func(v int) int { return v * v })

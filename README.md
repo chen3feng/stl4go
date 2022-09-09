@@ -173,6 +173,24 @@ indicating that a custom comparison function can be passed.
 - `Range` returns a Slice of contains integers in the range of `[begin, end)`
 - `Generate` generates a sequence with the given function to fill the Slice
 
+#### Data manipulation
+
+- `Copy` return a copies of specified slice
+- `Fill` repeatedly fills a slice with the specified value
+- `FillPattern` repeatedly fills a slice with the specified pattern
+- `Transform` passes the value at each position of the slice to the specified function and sets it back with its return value
+- `TransformTo` passes the value at each position of slice `a` to the specified function,
+  sets its return value to the corresponding position in slice `b`, and returns a slice of corresponding length of slice `b`
+- `TransformCopy` passes the value at each position of the slice to the specified function,
+  sets its return value to the corresponding position in a new slice and returns
+- `Unique` removes adjacent duplicate elements from a slice and returns a slice with new length containing the remaining elements,
+  `UniqueCopy` returns a copy without modifying the original slice
+- `Remove` removes all elements in the slice equal to the specified value, `RemoveCopy` returns a copy without modifying the original slice
+- `RemoveIf` removes all elements in the slice that are equivalent to making the specified function return `true`,
+  `RemoveIfCopy` does not modify the original slice but returns a copy
+- `Shuffle` random shuffle elements in the slice
+- `Reverse` reverses a slice, `ReverseCopy` returns a copy without modifying the original slice
+
 #### Compute
 
 - `Sum` Sum
@@ -199,9 +217,9 @@ indicating that a custom comparison function can be passed.
 
 See C++ STL.
 
-- BinarySearch
-- LowerBound
-- UpperBound
+- `BinarySearch`
+- `LowerBound`
+- `UpperBound`
 
 #### Sort
 
