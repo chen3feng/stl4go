@@ -110,3 +110,27 @@ func Test_SList_Iterate(t *testing.T) {
 	}
 	expectEq(t, i, 3)
 }
+
+func Test_SList_Sort(t *testing.T) {
+	sl := SListOf(5, 6, 7, 8, 1, 2, 3, 4)
+	SListSort(&sl)
+	v := sl.Values()
+	expectEq(t, len(v), sl.Len())
+	expectTrue(t, IsSorted(v))
+}
+
+func Benchmark_SListSort(b *testing.B) {
+	a := Range(1, 1000000)
+	Shuffle(a)
+	sl := SListOf(a...)
+	b.Run("Slice", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			Sort(a)
+		}
+	})
+	b.Run("SList", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			SListSort(&sl)
+		}
+	})
+}

@@ -122,6 +122,64 @@ func (l *SList[T]) Values() []T {
 // 	return &sListIterator[T]{&newNode}
 // }
 
+func slistSort[T Ordered](head *sListNode[T]) (sortedHead, tail *sListNode[T]) {
+	if head == nil {
+		return nil, nil
+	}
+	if head.next == nil {
+		return head, head
+	}
+	mid := head
+	premid := mid
+	p := head
+	for p != nil {
+		p = p.next
+		if p != nil {
+			p = p.next
+			premid = mid
+			mid = mid.next
+		}
+	}
+	second, _ := slistSort(mid)
+	if premid != nil {
+		premid.next = nil
+	}
+	head, _ = slistSort(head)
+	return slistMerge(head, second)
+}
+
+func slistMerge[T Ordered](a, b *sListNode[T]) (head, tail *sListNode[T]) {
+	for a != nil && b != nil {
+		var node *sListNode[T]
+		if a.value < b.value {
+			node = a
+			a = a.next
+		} else {
+			node = b
+			b = b.next
+		}
+		if tail != nil {
+			tail.next = node
+		}
+		tail = node
+		if head == nil {
+			head = node
+		}
+	}
+	if a != nil {
+		tail.next = a
+	}
+	if b != nil {
+		tail.next = b
+	}
+	return head, tail
+}
+
+// SListSort sorts a singly linked list.
+func SListSort[T Ordered](l *SList[T]) {
+	l.head, l.tail = slistSort(l.head)
+}
+
 // ForEach iterate the list, apply each element to the cb callback function.
 func (l *SList[T]) ForEach(cb func(T)) {
 	for node := l.head; node != nil; node = node.next {
@@ -181,5 +239,3 @@ func (it sListIterator[T]) Value() T {
 func (it sListIterator[T]) Pointer() *T {
 	return &it.node.value
 }
-
-// TODO: Sort
