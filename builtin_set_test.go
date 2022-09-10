@@ -53,13 +53,6 @@ func Test_BuiltinSet_Has(t *testing.T) {
 	expectFalse(t, s.Has("!"))
 }
 
-func Test_BuiltinSet_Get(t *testing.T) {
-	s := SetOf("hello", "world")
-	expectTrue(t, s.Has("hello"))
-	expectTrue(t, s.Has("world"))
-	expectFalse(t, s.Has("!"))
-}
-
 func Test_BuiltinSet_Insert(t *testing.T) {
 	s := make(BuiltinSet[string])
 	s.Insert("hello")
@@ -78,11 +71,21 @@ func Test_BuiltinSet_InsertN(t *testing.T) {
 
 func Test_BuiltinSet_Remove(t *testing.T) {
 	s := SetOf("hello", "world")
-	s.Remove("hello")
+	expectTrue(t, s.Remove("hello"))
 	expectEq(t, s.Len(), 1)
-	s.Remove("hello")
+	expectFalse(t, s.Remove("hello"))
 	expectEq(t, s.Len(), 1)
-	s.Remove("world")
+	expectTrue(t, s.Remove("world"))
+	expectEq(t, s.Len(), 0)
+}
+
+func Test_BuiltinSet_Delete(t *testing.T) {
+	s := SetOf("hello", "world")
+	s.Delete("hello")
+	expectEq(t, s.Len(), 1)
+	s.Delete("hello")
+	expectEq(t, s.Len(), 1)
+	s.Delete("world")
 	expectEq(t, s.Len(), 0)
 }
 
