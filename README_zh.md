@@ -38,22 +38,24 @@ import "github.com/chen3feng/stl4go"
 - `Queue` 定义了先进先出的队列的接口
 - `Deque` 定义了双端队列的接口
 
+不同的容器接口支持的方法不同，下面是 `Container` 接口的方法：
+
+- `IsEmpty() bool` 返回容器是否为空
+- `Len() int` 返回容器中的元素个数
+- `Clear()` 清空容器
+
+具体请参考[源代码](container.go)。
+
 提供的具体容器实现有：
 
-- [x] `BuiltinSet` 集合。基于 Go 自己的 map 封装，提供了插入查找删除等基本操作，以及并集、交集、差集、子集、超集、不交集等高级功能。
-- [x] `Vector` 是基于 slice 封装的向量。提供了中间插入删除、区间删除等功能，依然与 slice 兼容。
+- [x] `BuiltinSet` 是基于 Go 自己的 map 封装的集合。提供了插入查找删除等基本操作，以及并集、交集、差集、子集、超集、不交集等高级功能。
+- [x] `Vector` 是基于切片封装的向量。提供了中间插入删除、区间删除等功能，依然与切片兼容。
 - [x] `DList` 是双链表容器，支持两端插入删除。
 - [x] `SList` 是单链表容器，支持头部插入删除及尾部插入。
 - [x] [跳表（SkipList）](skiplist.md) 是一种有序的关联容器，可以填补 Go `map` 只支持无序的的空白。这是目前全 GitHub 最快的跳表，参见 [skiplist-survey](https://github.com/chen3feng/skiplist-survey)的性能比较
 - [x] `Stack`，栈基于 Slice 实现
 - [x] `DListQueue` 双向进出的队列，基于双链表实现
 - [x] `PriorityQuque` 优先队列，基于堆实现，比 [container/heap](https://pkg.go.dev/container/heap) 更易用而且快不少。
-
-不同的容器支持的方法不同，下面是所有容器都支持的方法：
-
-- IsEmpty() bool 返回容器是否为空
-- Len() int 返回容器中的元素个数
-- Clear() 清空容器
 
 ### 迭代器
 
