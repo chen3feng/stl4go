@@ -48,7 +48,7 @@ func (pq *PriorityQueue[T]) IsEmpty() bool {
 	return len(pq.heap) == 0
 }
 
-// Clear checks whether priority queue has no elements.
+// Clear clear the priority queue.
 func (pq *PriorityQueue[T]) Clear() {
 	pq.heap = pq.heap[0:0]
 }

@@ -50,6 +50,14 @@ There are following container interfaces:
 - `Queue` is a FIFO Queue
 - `Deque` is a double ended queue
 
+Different interface has different methods. The `Container` interface has following methods:
+
+- `IsEmpty() bool` Returns whether the container is empty
+- `Len() int` returns the number of elements in the container
+- `Clear()` to clear the container
+
+Read [source code](container.go) for details.
+
 Currently container implementations are:
 
 - [x] `BuiltinSet` provided a set funtionality based on Go's own `map`. It provides basic operations such as insert,
@@ -63,12 +71,6 @@ Currently container implementations are:
 - [x] `Stack`, is a FILO container based on Slice implementation
 - [x] `DListQueue` is a bidirectional FIFO queue, implemented based on linked list.
 - [x] `PriorityQuque` is a priority queue based on heap. Much easier to use and faster than [container/heap](https://pkg.go.dev/container/heap).
-
-Different containers support different methods. The following are the methods supported by all containers:
-
-- `IsEmpty() bool` Returns whether the container is empty
-- `Len() int` returns the number of elements in the container
-- `Clear()` to clear the container
 
 ### Iterators
 
