@@ -1,6 +1,7 @@
 package stl4go
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -109,4 +110,44 @@ func Test_SList_Iterate(t *testing.T) {
 		expectEq(t, *it.Pointer(), i)
 	}
 	expectEq(t, i, 3)
+}
+
+func TestSList_Remove(t *testing.T) {
+	type fields struct {
+		head   *sListNode[int]
+		tail   *sListNode[int]
+		length int
+	}
+	type args struct {
+		index int
+	}
+	sl := SList[int]{}
+	sl.PushBack(1)
+	sl.PushBack(2)
+	sl.PushBack(3)
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name:   "test",
+			fields: fields{sl.head, sl.tail, sl.length},
+			args: args{
+				index: 2,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := sl.Remove(tt.args.index); (err != nil) != tt.wantErr {
+				t.Errorf("Remove() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+	sl.ForEach(func(v int) {
+		fmt.Println(v)
+	})
 }

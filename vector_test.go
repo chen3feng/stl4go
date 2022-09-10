@@ -1,6 +1,7 @@
 package stl4go
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -78,7 +79,8 @@ func Test_Vector_At_Set(t *testing.T) {
 	expectEq(t, v.At(0), 1)
 	expectEq(t, v[0], 1)
 	v[0] = 2
-	expectEq(t, v[0], 2)
+	v.Set(0, 100)
+	expectEq(t, v[0], 100)
 	expectPanic(t, func() { v.Set(3, 2) })
 }
 
@@ -143,7 +145,9 @@ func Test_Vector_Remove(t *testing.T) {
 
 func Test_Vector_RemoveRange(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
+	fmt.Println(v[2:])
 	v.RemoveRange(1, 3)
+	fmt.Println(v)
 	expectEq(t, v.Len(), 2)
 	expectEq(t, v.Cap(), 4)
 	expectEq(t, v[0], 1)
@@ -222,4 +226,28 @@ func Test_Vector_IterateRange(t *testing.T) {
 		i++
 	}
 	expectEq(t, i, 4)
+}
+
+func TestVector_Swap(t *testing.T) {
+	type args struct {
+		i int
+		j int
+	}
+	v := VectorOf(1, 2, 3, 4)
+	tests := []struct {
+		name string
+		v    Vector[int]
+		args args
+	}{
+		{
+			name: "test1",
+			v:    v,
+			args: args{i: 2, j: 3},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.v.Swap(tt.args.i, tt.args.j)
+		})
+	}
 }

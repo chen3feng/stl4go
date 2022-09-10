@@ -1,5 +1,7 @@
 package stl4go
 
+import "errors"
+
 // SList is a singly linked list.
 type SList[T any] struct {
 	head   *sListNode[T]
@@ -109,6 +111,22 @@ func (l *SList[T]) Values() []T {
 		i++
 	}
 	return s
+}
+
+func (l *SList[T]) Remove(index int) error {
+	if index < 0 || index >= l.length {
+		return errors.New("index out of range")
+	}
+	var i T
+	dummy := &sListNode[T]{l.head, i}
+	for i := 0; i < index; i++ {
+		dummy = dummy.next
+	}
+	//var retNode *sListNode[T]
+	retNode := dummy.next
+	dummy.next = retNode.next
+	l.length--
+	return nil
 }
 
 // InsertAfter inserts an element after the iterator into the list,

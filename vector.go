@@ -59,6 +59,10 @@ func (v *Vector[T]) Reserve(l int) {
 	}
 }
 
+func (v *Vector[T]) Swap(i, j int) {
+	(*v)[i], (*v)[j] = (*v)[j], (*v)[i]
+}
+
 // Shrink removes unused capacity from the vector.
 func (v *Vector[T]) Shrink() {
 	if cap(*v) > len(*v) {
@@ -70,6 +74,14 @@ func (v *Vector[T]) Shrink() {
 // You can also use the [] operator, and it's better.
 func (v *Vector[T]) At(i int) T {
 	return (*v)[i]
+}
+
+func (v *Vector[T]) First() T {
+	return (*v).At(0)
+}
+
+func (v *Vector[T]) Last() T {
+	return (*v).At(v.Len() - 1)
 }
 
 // Set sets the value of the element at the index i.
