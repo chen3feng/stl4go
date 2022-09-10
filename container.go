@@ -31,3 +31,26 @@ type Set[K any] interface {
 	ForEach(func(K))        // Iterate the container.
 	ForEachIf(func(K) bool) // Iterate the container, stops when the callback returns false.
 }
+
+// Queue is a container that can add elements to one end and remove elements from the other end.
+type Queue[T any] interface {
+	Container
+	Front()
+	Back()
+	Push(T)
+	Pop() T
+	TryPop() (T, bool)
+}
+
+// Deque is a container that can add and remove elements from both ends.
+type Deque[T any] interface {
+	Container
+	Front() T
+	Back() T
+	PushFront(T)
+	PushBack(T)
+	PopFront() T
+	PopBack() T
+	TryPopFront() (T, bool)
+	TryPopBack() (T, bool)
+}

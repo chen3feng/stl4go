@@ -26,6 +26,8 @@ Package stl4go is a generic container and algorithm library for go.
 - [func DescSort[T Ordered](a []T)](<#func-descsort>)
 - [func DescStableSort[T Ordered](a []T)](<#func-descstablesort>)
 - [func Equal[T comparable](a, b []T) bool](<#func-equal>)
+- [func Fill[T any](a []T, v T)](<#func-fill>)
+- [func FillPattern[T any](a []T, pattern []T)](<#func-fillpattern>)
 - [func Find[T comparable](a []T, x T) (index int, ok bool)](<#func-find>)
 - [func FindIf[T any](a []T, cond func(T) bool) (index int, ok bool)](<#func-findif>)
 - [func Generate[T any](a []T, gen func() T)](<#func-generate>)
@@ -59,6 +61,8 @@ Package stl4go is a generic container and algorithm library for go.
 - [func RemoveIf[T any](a []T, cond func(T) bool) []T](<#func-removeif>)
 - [func RemoveIfCopy[T any](a []T, cond func(T) bool) []T](<#func-removeifcopy>)
 - [func RemoveMinHeap[T Ordered](heap *[]T, i int) T](<#func-removeminheap>)
+- [func Replace[T comparable](a []T, old, new T)](<#func-replace>)
+- [func ReplaceIf[T any](a []T, pred func(v T) bool, new T)](<#func-replaceif>)
 - [func Reverse[T any](a []T)](<#func-reverse>)
 - [func ReverseCopy[T any](a []T) []T](<#func-reversecopy>)
 - [func Shuffle[T any](a []T)](<#func-shuffle>)
@@ -70,7 +74,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func SumAs[R, T Numeric](a []T) R](<#func-sumas>)
 - [func Transform[T any](a []T, op func(T) T)](<#func-transform>)
 - [func TransformCopy[R any, T any](a []T, op func(T) R) []R](<#func-transformcopy>)
-- [func TransformTo[R any, T any](a []T, op func(T) R, b []R)](<#func-transformto>)
+- [func TransformTo[R any, T any](a []T, op func(T) R, b []R) []R](<#func-transformto>)
 - [func Unique[T comparable](a []T) []T](<#func-unique>)
 - [func UniqueCopy[T comparable](a []T) []T](<#func-uniquecopy>)
 - [func UpperBound[T Ordered](a []T, value T) int](<#func-upperbound>)
@@ -78,6 +82,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [type BuiltinSet](<#type-builtinset>)
   - [func SetOf[K comparable](ks ...K) BuiltinSet[K]](<#func-setof>)
   - [func (s BuiltinSet[K]) Clear()](<#func-builtinsetk-clear>)
+  - [func (s BuiltinSet[K]) Delete(k K)](<#func-builtinsetk-delete>)
   - [func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]](<#func-builtinsetk-difference>)
   - [func (s BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
   - [func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
@@ -100,11 +105,13 @@ Package stl4go is a generic container and algorithm library for go.
 - [type Container](<#type-container>)
 - [type DList](<#type-dlist>)
   - [func DListOf[T any](vs ...T) DList[T]](<#func-dlistof>)
+  - [func (l *DList[T]) Back() T](<#func-dlistt-back>)
   - [func (l *DList[T]) Clear()](<#func-dlistt-clear>)
   - [func (l *DList[T]) ForEach(cb func(val T))](<#func-dlistt-foreach>)
   - [func (l *DList[T]) ForEachIf(cb func(val T) bool)](<#func-dlistt-foreachif>)
   - [func (l *DList[T]) ForEachMutable(cb func(val *T))](<#func-dlistt-foreachmutable>)
   - [func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)](<#func-dlistt-foreachmutableif>)
+  - [func (l *DList[T]) Front() T](<#func-dlistt-front>)
   - [func (l *DList[T]) IsEmpty() bool](<#func-dlistt-isempty>)
   - [func (l *DList[T]) Iterate() MutableIterator[T]](<#func-dlistt-iterate>)
   - [func (l *DList[T]) Len() int](<#func-dlistt-len>)
@@ -115,6 +122,21 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (l *DList[T]) String() string](<#func-dlistt-string>)
   - [func (l *DList[T]) TryPopBack() (T, bool)](<#func-dlistt-trypopback>)
   - [func (l *DList[T]) TryPopFront() (T, bool)](<#func-dlistt-trypopfront>)
+- [type DListQueue](<#type-dlistqueue>)
+  - [func NewDListQueue[T any]() *DListQueue[T]](<#func-newdlistqueue>)
+  - [func (q *DListQueue[T]) Back() T](<#func-dlistqueuet-back>)
+  - [func (q *DListQueue[T]) Clear()](<#func-dlistqueuet-clear>)
+  - [func (q *DListQueue[T]) Front() T](<#func-dlistqueuet-front>)
+  - [func (q *DListQueue[T]) IsEmpty() bool](<#func-dlistqueuet-isempty>)
+  - [func (q *DListQueue[T]) Len() int](<#func-dlistqueuet-len>)
+  - [func (q *DListQueue[T]) PopBack() T](<#func-dlistqueuet-popback>)
+  - [func (q *DListQueue[T]) PopFront() T](<#func-dlistqueuet-popfront>)
+  - [func (q *DListQueue[T]) PushBack(val T)](<#func-dlistqueuet-pushback>)
+  - [func (q *DListQueue[T]) PushFront(val T)](<#func-dlistqueuet-pushfront>)
+  - [func (q *DListQueue[T]) String() string](<#func-dlistqueuet-string>)
+  - [func (q *DListQueue[T]) TryPopBack() (T, bool)](<#func-dlistqueuet-trypopback>)
+  - [func (q *DListQueue[T]) TryPopFront() (T, bool)](<#func-dlistqueuet-trypopfront>)
+- [type Deque](<#type-deque>)
 - [type Float](<#type-float>)
 - [type HashFn](<#type-hashfn>)
 - [type Integer](<#type-integer>)
@@ -138,17 +160,6 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (pq *PriorityQueue[T]) Push(v T)](<#func-priorityqueuet-push>)
   - [func (pq *PriorityQueue[T]) Top() T](<#func-priorityqueuet-top>)
 - [type Queue](<#type-queue>)
-  - [func NewQueue[T any]() *Queue[T]](<#func-newqueue>)
-  - [func (q *Queue[T]) Clear()](<#func-queuet-clear>)
-  - [func (q *Queue[T]) IsEmpty() bool](<#func-queuet-isempty>)
-  - [func (q *Queue[T]) Len() int](<#func-queuet-len>)
-  - [func (q *Queue[T]) PopBack() T](<#func-queuet-popback>)
-  - [func (q *Queue[T]) PopFront() T](<#func-queuet-popfront>)
-  - [func (q *Queue[T]) PushBack(val T)](<#func-queuet-pushback>)
-  - [func (q *Queue[T]) PushFront(val T)](<#func-queuet-pushfront>)
-  - [func (q *Queue[T]) String() string](<#func-queuet-string>)
-  - [func (q *Queue[T]) TryPopBack() (T, bool)](<#func-queuet-trypopback>)
-  - [func (q *Queue[T]) TryPopFront() (T, bool)](<#func-queuet-trypopfront>)
 - [type SList](<#type-slist>)
   - [func SListOf[T any](values ...T) SList[T]](<#func-slistof>)
   - [func (l *SList[T]) Back() T](<#func-slistt-back>)
@@ -358,6 +369,26 @@ func Equal[T comparable](a, b []T) bool
 Equal returns whether two slices are equal. Return true if they are the same length and all elements are equal.
 
 Complexity: O\(min\(len\(a\), len\(b\)\)\).
+
+## func [Fill](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L16>)
+
+```go
+func Fill[T any](a []T, v T)
+```
+
+Fill fills each element in slice a with new value v.
+
+Complexity: O\(len\(a\)\).
+
+## func [FillPattern](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L34>)
+
+```go
+func FillPattern[T any](a []T, pattern []T)
+```
+
+FillPattern fills elements in slice a with specified pattern.
+
+Complexity: O\(len\(a\)\).
 
 ## func [Find](<https://github.com/chen3feng/stl4go/blob/master/lookup.go#L90>)
 
@@ -627,23 +658,23 @@ Range make a \[\]T filled with values in the \`\[first, last\)\` sequence. NOTE:
 
 Complexity: O\(last\-first\).
 
-## func [Remove](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L92>)
+## func [Remove](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L148>)
 
 ```go
 func Remove[T comparable](a []T, x T) []T
 ```
 
-Remove remove the elements which equals to x from the input slice. return the processed slice, and the content of the input slice is also changed.
+Remove remove the elements which equals to x from the input slice. return the processed slice with new length.
 
 Complexity: O\(len\(a\)\).
 
-## func [RemoveCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L107>)
+## func [RemoveCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L163>)
 
 ```go
 func RemoveCopy[T comparable](a []T, x T) []T
 ```
 
-RemoveCopy remove all elements which equals to x from the input slice. return the processed slice, and the content of the input slice is also changed.
+RemoveCopy remove all elements which equals to x from the input slice. return a new slice with processed results. The input slice is kept unchanged.
 
 Complexity: O\(len\(a\)\).
 
@@ -657,17 +688,17 @@ RemoveHeapFunc removes and returns the element at index i from the heap.
 
 Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
-## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L121>)
+## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L177>)
 
 ```go
 func RemoveIf[T any](a []T, cond func(T) bool) []T
 ```
 
-RemoveIf remove each element which make cond\(x\) returns true from the input slice, copy other elements to a new slice and return it. The input slice is kept unchanged.
+RemoveIf remove each element which make cond\(x\) returns true from the input slice, copy other elements to a new slice and return it.
 
 Complexity: O\(len\(a\)\).
 
-## func [RemoveIfCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L136>)
+## func [RemoveIfCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L192>)
 
 ```go
 func RemoveIfCopy[T any](a []T, cond func(T) bool) []T
@@ -687,7 +718,27 @@ RemoveMinHeap removes and returns the element at index i from the min heap.
 
 Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
-## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L158>)
+## func [Replace](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L85>)
+
+```go
+func Replace[T comparable](a []T, old, new T)
+```
+
+Replace replaces every element that equals to old with new.
+
+Complexity: O\(len\(a\)\).
+
+## func [ReplaceIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L96>)
+
+```go
+func ReplaceIf[T any](a []T, pred func(v T) bool, new T)
+```
+
+ReplaceIf replaces every element that make preq returns true with new.
+
+Complexity: O\(len\(a\)\).
+
+## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L214>)
 
 ```go
 func Reverse[T any](a []T)
@@ -697,7 +748,7 @@ Reverse reverses the order of the elements in the slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L167>)
+## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L223>)
 
 ```go
 func ReverseCopy[T any](a []T) []T
@@ -707,7 +758,7 @@ ReverseCopy returns a reversed copy of slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [Shuffle](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L149>)
+## func [Shuffle](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L205>)
 
 ```go
 func Shuffle[T any](a []T)
@@ -773,7 +824,7 @@ func SumAs[R, T Numeric](a []T) R
 
 SumAs summarize all elements in a. returns the result as type R, this is useful when T is too small to hold the result. Complexity: O\(len\(a\)\).
 
-## func [Transform](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L30>)
+## func [Transform](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L65>)
 
 ```go
 func Transform[T any](a []T, op func(T) T)
@@ -783,7 +834,7 @@ Transform applies the function op to each element in slice a and set it back to 
 
 Complexity: O\(len\(a\)\).
 
-## func [TransformCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L40>)
+## func [TransformCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L74>)
 
 ```go
 func TransformCopy[R any, T any](a []T, op func(T) R) []R
@@ -793,10 +844,10 @@ TransformCopy applies the function op to each element in slice a and return all 
 
 Complexity: O\(len\(a\)\).
 
-## func [TransformTo](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L18>)
+## func [TransformTo](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L52>)
 
 ```go
-func TransformTo[R any, T any](a []T, op func(T) R, b []R)
+func TransformTo[R any, T any](a []T, op func(T) R, b []R) []R
 ```
 
 TransformTo applies the function op to each element in slice a and fill it to slice b.
@@ -805,17 +856,17 @@ The len\(b\) must not lesser than len\(a\).
 
 Complexity: O\(len\(a\)\).
 
-## func [Unique](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L52>)
+## func [Unique](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L108>)
 
 ```go
 func Unique[T comparable](a []T) []T
 ```
 
-Unique remove adjacent repeated elements from the input slice. return the processed slice, and the content of the input slice is also changed.
+Unique remove adjacent repeated elements from the input slice. return the processed slice with new length.
 
 Complexity: O\(len\(a\)\).
 
-## func [UniqueCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L72>)
+## func [UniqueCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L128>)
 
 ```go
 func UniqueCopy[T comparable](a []T) []T
@@ -871,7 +922,15 @@ func (s BuiltinSet[K]) Clear()
 
 Clear implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L131>)
+### func \(BuiltinSet\[K\]\) [Delete](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L61>)
+
+```go
+func (s BuiltinSet[K]) Delete(k K)
+```
+
+Delete deletes a element in the set. It returns nothing, so it's faster than Remove.
+
+### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L137>)
 
 ```go
 func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]
@@ -879,7 +938,7 @@ func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]
 
 Difference returns a new set with elements in the set that are not in other.
 
-### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L76>)
+### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L82>)
 
 ```go
 func (s BuiltinSet[K]) ForEach(cb func(k K))
@@ -887,7 +946,7 @@ func (s BuiltinSet[K]) ForEach(cb func(k K))
 
 ForEach implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L83>)
+### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L89>)
 
 ```go
 func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)
@@ -919,7 +978,7 @@ func (s BuiltinSet[K]) InsertN(ks ...K)
 
 InsertN implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [Intersection](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L119>)
+### func \(BuiltinSet\[K\]\) [Intersection](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L125>)
 
 ```go
 func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]
@@ -927,7 +986,7 @@ func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]
 
 Intersection returns a new set with elements common to the set and other.
 
-### func \(BuiltinSet\[K\]\) [IsDisjointOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L143>)
+### func \(BuiltinSet\[K\]\) [IsDisjointOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L149>)
 
 ```go
 func (s BuiltinSet[K]) IsDisjointOf(other BuiltinSet[K]) bool
@@ -943,7 +1002,7 @@ func (s BuiltinSet[K]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [IsSubsetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L154>)
+### func \(BuiltinSet\[K\]\) [IsSubsetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L160>)
 
 ```go
 func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool
@@ -951,7 +1010,7 @@ func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool
 
 IsSubsetOf tests whether every element in the set is in other.
 
-### func \(BuiltinSet\[K\]\) [IsSupersetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L167>)
+### func \(BuiltinSet\[K\]\) [IsSupersetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L173>)
 
 ```go
 func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool
@@ -959,7 +1018,7 @@ func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool
 
 IsSupersetOf tests whether every element in other is in the set.
 
-### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L67>)
+### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L73>)
 
 ```go
 func (s BuiltinSet[K]) Keys() []K
@@ -983,7 +1042,7 @@ func (s BuiltinSet[K]) Remove(k K) bool
 
 Remove implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L60>)
+### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L66>)
 
 ```go
 func (s BuiltinSet[K]) RemoveN(ks ...K)
@@ -991,7 +1050,7 @@ func (s BuiltinSet[K]) RemoveN(ks ...K)
 
 RemoveN implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L92>)
+### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L98>)
 
 ```go
 func (s BuiltinSet[K]) String() string
@@ -999,7 +1058,7 @@ func (s BuiltinSet[K]) String() string
 
 String implements the fmt.Stringer interface.
 
-### func \(BuiltinSet\[K\]\) [Union](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L104>)
+### func \(BuiltinSet\[K\]\) [Union](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L110>)
 
 ```go
 func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]
@@ -1007,7 +1066,7 @@ func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]
 
 Union returns a new set with elements from the set and other.
 
-### func \(BuiltinSet\[K\]\) [Update](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L97>)
+### func \(BuiltinSet\[K\]\) [Update](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L103>)
 
 ```go
 func (s BuiltinSet[K]) Update(other BuiltinSet[K])
@@ -1053,6 +1112,14 @@ func DListOf[T any](vs ...T) DList[T]
 
 DListOf make a new DList from a serial of values.
 
+### func \(\*DList\[T\]\) [Back](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L88>)
+
+```go
+func (l *DList[T]) Back() T
+```
+
+Back returns the last element in the container.
+
 ### func \(\*DList\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L26>)
 
 ```go
@@ -1061,7 +1128,7 @@ func (l *DList[T]) Clear()
 
 Clear cleanup the list.
 
-### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L148>)
+### func \(\*DList\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L164>)
 
 ```go
 func (l *DList[T]) ForEach(cb func(val T))
@@ -1069,7 +1136,7 @@ func (l *DList[T]) ForEach(cb func(val T))
 
 ForEach iterate the list, apply each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L156>)
+### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L172>)
 
 ```go
 func (l *DList[T]) ForEachIf(cb func(val T) bool)
@@ -1077,7 +1144,7 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L168>)
+### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L184>)
 
 ```go
 func (l *DList[T]) ForEachMutable(cb func(val *T))
@@ -1085,13 +1152,21 @@ func (l *DList[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L179>)
+### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L195>)
 
 ```go
 func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)
 ```
 
 ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function, stop if cb returns false.
+
+### func \(\*DList\[T\]\) [Front](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L80>)
+
+```go
+func (l *DList[T]) Front() T
+```
+
+Front returns the first element in the container.
 
 ### func \(\*DList\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L40>)
 
@@ -1117,7 +1192,7 @@ func (l *DList[T]) Len() int
 
 Len return the length of the list.
 
-### func \(\*DList\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L107>)
+### func \(\*DList\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L123>)
 
 ```go
 func (l *DList[T]) PopBack() T
@@ -1125,7 +1200,7 @@ func (l *DList[T]) PopBack() T
 
 PopBack popups a element from the back of the list.
 
-### func \(\*DList\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L98>)
+### func \(\*DList\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L114>)
 
 ```go
 func (l *DList[T]) PopFront() T
@@ -1133,7 +1208,7 @@ func (l *DList[T]) PopFront() T
 
 PopFront popups a element from the front of the list.
 
-### func \(\*DList\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L89>)
+### func \(\*DList\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L105>)
 
 ```go
 func (l *DList[T]) PushBack(val T)
@@ -1141,7 +1216,7 @@ func (l *DList[T]) PushBack(val T)
 
 PushBack pushes an element at the back of the list.
 
-### func \(\*DList\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L80>)
+### func \(\*DList\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L96>)
 
 ```go
 func (l *DList[T]) PushFront(val T)
@@ -1157,7 +1232,7 @@ func (l *DList[T]) String() string
 
 String convert the list to string.
 
-### func \(\*DList\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L132>)
+### func \(\*DList\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L148>)
 
 ```go
 func (l *DList[T]) TryPopBack() (T, bool)
@@ -1165,13 +1240,145 @@ func (l *DList[T]) TryPopBack() (T, bool)
 
 TryPopBack tries to popup a element from the back of the list.
 
-### func \(\*DList\[T\]\) [TryPopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L116>)
+### func \(\*DList\[T\]\) [TryPopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L132>)
 
 ```go
 func (l *DList[T]) TryPopFront() (T, bool)
 ```
 
 TryPopFront tries to popup a element from the front of the list.
+
+## type [DListQueue](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L8-L10>)
+
+DListQueue is a FIFO container
+
+```go
+type DListQueue[T any] struct {
+    // contains filtered or unexported fields
+}
+```
+
+### func [NewDListQueue](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L13>)
+
+```go
+func NewDListQueue[T any]() *DListQueue[T]
+```
+
+NewDListQueue create a new Queue object.
+
+### func \(\*DListQueue\[T\]\) [Back](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L44>)
+
+```go
+func (q *DListQueue[T]) Back() T
+```
+
+Back returns the last element in the container.
+
+### func \(\*DListQueue\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L29>)
+
+```go
+func (q *DListQueue[T]) Clear()
+```
+
+Clear implements the Container interface.
+
+### func \(\*DListQueue\[T\]\) [Front](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L39>)
+
+```go
+func (q *DListQueue[T]) Front() T
+```
+
+Front returns the first element in the container.
+
+### func \(\*DListQueue\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L24>)
+
+```go
+func (q *DListQueue[T]) IsEmpty() bool
+```
+
+IsEmpty implements the Container interface.
+
+### func \(\*DListQueue\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L19>)
+
+```go
+func (q *DListQueue[T]) Len() int
+```
+
+Len implements the Container interface.
+
+### func \(\*DListQueue\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L64>)
+
+```go
+func (q *DListQueue[T]) PopBack() T
+```
+
+PopBack popups an element from the back of the queue.
+
+### func \(\*DListQueue\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L59>)
+
+```go
+func (q *DListQueue[T]) PopFront() T
+```
+
+PopFront popups an element from the front of the queue.
+
+### func \(\*DListQueue\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L54>)
+
+```go
+func (q *DListQueue[T]) PushBack(val T)
+```
+
+PushBack pushed an element to the back of the queue.
+
+### func \(\*DListQueue\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L49>)
+
+```go
+func (q *DListQueue[T]) PushFront(val T)
+```
+
+PushFront pushed an element to the front of the queue.
+
+### func \(\*DListQueue\[T\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L34>)
+
+```go
+func (q *DListQueue[T]) String() string
+```
+
+Len implements the fmt.Stringer interface.
+
+### func \(\*DListQueue\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L74>)
+
+```go
+func (q *DListQueue[T]) TryPopBack() (T, bool)
+```
+
+TryPopBack tries popuping an element from the back of the queue.
+
+### func \(\*DListQueue\[T\]\) [TryPopFront](<https://github.com/chen3feng/stl4go/blob/master/dlist_queue.go#L69>)
+
+```go
+func (q *DListQueue[T]) TryPopFront() (T, bool)
+```
+
+TryPopFront tries popuping an element from the front of the queue.
+
+## type [Deque](<https://github.com/chen3feng/stl4go/blob/master/container.go#L46-L56>)
+
+Deque is a container that can add and remove elements from both ends.
+
+```go
+type Deque[T any] interface {
+    Container
+    Front() T
+    Back() T
+    PushFront(T)
+    PushBack(T)
+    PopFront() T
+    PopBack() T
+    TryPopFront() (T, bool)
+    TryPopBack() (T, bool)
+}
+```
 
 ## type [Float](<https://github.com/chen3feng/stl4go/blob/master/types.go#L27-L29>)
 
@@ -1413,103 +1620,20 @@ func (pq *PriorityQueue[T]) Top() T
 
 Top returns the top element in the priority queue.
 
-## type [Queue](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L8-L10>)
+## type [Queue](<https://github.com/chen3feng/stl4go/blob/master/container.go#L36-L43>)
 
-Queue is a FIFO container
+Queue is a container that can add elements to one end and remove elements from the other end.
 
 ```go
-type Queue[T any] struct {
-    // contains filtered or unexported fields
+type Queue[T any] interface {
+    Container
+    Front()
+    Back()
+    Push(T)
+    Pop() T
+    TryPop() (T, bool)
 }
 ```
-
-### func [NewQueue](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L13>)
-
-```go
-func NewQueue[T any]() *Queue[T]
-```
-
-NewQueue create a new Queue object.
-
-### func \(\*Queue\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L29>)
-
-```go
-func (q *Queue[T]) Clear()
-```
-
-Clear implements the Container interface.
-
-### func \(\*Queue\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L24>)
-
-```go
-func (q *Queue[T]) IsEmpty() bool
-```
-
-IsEmpty implements the Container interface.
-
-### func \(\*Queue\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L19>)
-
-```go
-func (q *Queue[T]) Len() int
-```
-
-Len implements the Container interface.
-
-### func \(\*Queue\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L54>)
-
-```go
-func (q *Queue[T]) PopBack() T
-```
-
-PopBack popups an element from the back of the queue.
-
-### func \(\*Queue\[T\]\) [PopFront](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L49>)
-
-```go
-func (q *Queue[T]) PopFront() T
-```
-
-PopFront popups an element from the front of the queue.
-
-### func \(\*Queue\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L44>)
-
-```go
-func (q *Queue[T]) PushBack(val T)
-```
-
-PushBack pushed an element to the back of the queue.
-
-### func \(\*Queue\[T\]\) [PushFront](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L39>)
-
-```go
-func (q *Queue[T]) PushFront(val T)
-```
-
-PushFront pushed an element to the front of the queue.
-
-### func \(\*Queue\[T\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L34>)
-
-```go
-func (q *Queue[T]) String() string
-```
-
-Len implements the fmt.Stringer interface.
-
-### func \(\*Queue\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L64>)
-
-```go
-func (q *Queue[T]) TryPopBack() (T, bool)
-```
-
-TryPopBack tries popuping an element from the back of the queue.
-
-### func \(\*Queue\[T\]\) [TryPopFront](<https://github.com/chen3feng/stl4go/blob/master/queue.go#L59>)
-
-```go
-func (q *Queue[T]) TryPopFront() (T, bool)
-```
-
-TryPopFront tries popuping an element from the front of the queue.
 
 ## type [SList](<https://github.com/chen3feng/stl4go/blob/master/slist.go#L4-L8>)
 

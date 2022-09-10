@@ -42,7 +42,23 @@ so C++ users may feel familiar, and sometimes (maybe) feel more convenient.
 
 ### Containers
 
-Currently implemented containers are:
+There are following container interfaces:
+
+- `Container` is the base interface for all containers
+- `Map` is a key-value associative map
+- `Set` is set
+- `Queue` is a FIFO Queue
+- `Deque` is a double ended queue
+
+Different interface has different methods. The `Container` interface has following methods:
+
+- `IsEmpty() bool` Returns whether the container is empty
+- `Len() int` returns the number of elements in the container
+- `Clear()` to clear the container
+
+Read [source code](container.go) for details.
+
+Currently container implementations are:
 
 - [x] `BuiltinSet` provided a set funtionality based on Go's own `map`. It provides basic operations such as insert,
       search and remove, as well as advanced functions such as union, intersection, difference, subset, superset, and disjoint.
@@ -53,14 +69,8 @@ Currently implemented containers are:
 - [x] [SkipList](skiplist.md) is an ordered associative container that fills the gap where Go `map` only supports unordered.
       This is currently the fastest skip list I tested in GitHub, see [skiplist-survey](https://github.com/chen3feng/skiplist-survey) for performance comparison
 - [x] `Stack`, is a FILO container based on Slice implementation
-- [x] `Queue` is a bidirectional FIFO queue, implemented based on linked list.
+- [x] `DListQueue` is a bidirectional FIFO queue, implemented based on linked list.
 - [x] `PriorityQuque` is a priority queue based on heap. Much easier to use and faster than [container/heap](https://pkg.go.dev/container/heap).
-
-Different containers support different methods. The following are the methods supported by all containers:
-
-- `IsEmpty() bool` Returns whether the container is empty
-- `Len() int` returns the number of elements in the container
-- `Clear()` to clear the container
 
 ### Iterators
 
@@ -173,6 +183,26 @@ indicating that a custom comparison function can be passed.
 - `Range` returns a Slice of contains integers in the range of `[begin, end)`
 - `Generate` generates a sequence with the given function to fill the Slice
 
+#### Data manipulation
+
+- `Copy` return a copies of specified slice
+- `Fill` repeatedly fills a slice with the specified value
+- `FillPattern` repeatedly fills a slice with the specified pattern
+- `Replace` replaces every element that equals to old with new
+- `ReplaceIf` replaces every element that make preq returns true with new
+- `Transform` passes the value at each position of the slice to the specified function and sets it back with its return value
+- `TransformTo` passes the value at each position of slice `a` to the specified function,
+  sets its return value to the corresponding position in slice `b`, and returns a slice of corresponding length of slice `b`
+- `TransformCopy` passes the value at each position of the slice to the specified function,
+  sets its return value to the corresponding position in a new slice and returns
+- `Unique` removes adjacent duplicate elements from a slice and returns a slice with new length containing the remaining elements,
+  `UniqueCopy` returns a copy without modifying the original slice
+- `Remove` removes all elements in the slice equal to the specified value, `RemoveCopy` returns a copy without modifying the original slice
+- `RemoveIf` removes all elements in the slice that are equivalent to making the specified function return `true`,
+  `RemoveIfCopy` does not modify the original slice but returns a copy
+- `Shuffle` random shuffle elements in the slice
+- `Reverse` reverses a slice, `ReverseCopy` returns a copy without modifying the original slice
+
 #### Compute
 
 - `Sum` Sum
@@ -199,9 +229,9 @@ indicating that a custom comparison function can be passed.
 
 See C++ STL.
 
-- BinarySearch
-- LowerBound
-- UpperBound
+- `BinarySearch`
+- `LowerBound`
+- `UpperBound`
 
 #### Sort
 

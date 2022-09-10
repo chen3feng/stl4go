@@ -76,6 +76,22 @@ func (l *DList[T]) Iterate() MutableIterator[T] {
 	return &dlistIterator[T]{l, node}
 }
 
+// Front returns the first element in the container.
+func (l *DList[T]) Front() T {
+	if l.IsEmpty() {
+		panic("!IsEmpty")
+	}
+	return l.head.next.value
+}
+
+// Back returns the last element in the container.
+func (l *DList[T]) Back() T {
+	if l.IsEmpty() {
+		panic("!IsEmpty")
+	}
+	return l.head.prev.value
+}
+
 // PushFront pushes an element at the front of the list.
 func (l *DList[T]) PushFront(val T) {
 	l.ensureHead()
@@ -146,6 +162,9 @@ func (l *DList[T]) TryPopBack() (T, bool) {
 
 // ForEach iterate the list, apply each element to the cb callback function.
 func (l *DList[T]) ForEach(cb func(val T)) {
+	if l.head == nil {
+		return
+	}
 	for n := l.head.next; n != l.head; n = n.next {
 		cb(n.value)
 	}

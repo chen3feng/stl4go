@@ -56,6 +56,12 @@ func (s BuiltinSet[K]) Remove(k K) bool {
 	return ok
 }
 
+// Delete deletes an element from the set.
+// It returns nothing, so it's faster than Remove.
+func (s BuiltinSet[K]) Delete(k K) {
+	delete(s, k)
+}
+
 // RemoveN implements the Set interface.
 func (s BuiltinSet[K]) RemoveN(ks ...K) {
 	for _, k := range ks {

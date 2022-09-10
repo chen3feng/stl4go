@@ -30,22 +30,32 @@ import "github.com/chen3feng/stl4go"
 
 ### 容器
 
-目前实现的容器有：
+定义了如下容器接口：
 
-- [x] `Set` 集合。用 Go 自己的 map 封装了一个 `BuiltinSet`，提供了插入查找删除等基本操作，以及并集、交集、差集、子集、超集、不交集等高级功能。
-- [x] `Vector` 是基于 slice 封装的向量。提供了中间插入删除、区间删除等功能，依然与 slice 兼容。
+- `Container` 是所有容器的基础接口
+- `Map` 定义了 key-value 关联容器
+- `Set` 定义了集合容器的接口
+- `Queue` 定义了先进先出的队列的接口
+- `Deque` 定义了双端队列的接口
+
+不同的容器接口支持的方法不同，下面是 `Container` 接口的方法：
+
+- `IsEmpty() bool` 返回容器是否为空
+- `Len() int` 返回容器中的元素个数
+- `Clear()` 清空容器
+
+具体请参考[源代码](container.go)。
+
+提供的具体容器实现有：
+
+- [x] `BuiltinSet` 是基于 Go 自己的 map 封装的集合。提供了插入查找删除等基本操作，以及并集、交集、差集、子集、超集、不交集等高级功能。
+- [x] `Vector` 是基于切片封装的向量。提供了中间插入删除、区间删除等功能，依然与切片兼容。
 - [x] `DList` 是双链表容器，支持两端插入删除。
 - [x] `SList` 是单链表容器，支持头部插入删除及尾部插入。
 - [x] [跳表（SkipList）](skiplist.md) 是一种有序的关联容器，可以填补 Go `map` 只支持无序的的空白。这是目前全 GitHub 最快的跳表，参见 [skiplist-survey](https://github.com/chen3feng/skiplist-survey)的性能比较
 - [x] `Stack`，栈基于 Slice 实现
-- [x] `Queue` 双向进出的队列，基于链表实现
+- [x] `DListQueue` 双向进出的队列，基于双链表实现
 - [x] `PriorityQuque` 优先队列，基于堆实现，比 [container/heap](https://pkg.go.dev/container/heap) 更易用而且快不少。
-
-不同的容器支持的方法不同，下面是所有容器都支持的方法：
-
-- IsEmpty() bool 返回容器是否为空
-- Len() int 返回容器中的元素个数
-- Clear() 清空容器
 
 ### 迭代器
 
@@ -155,44 +165,60 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 - Range 返回一个 [begin, end) 的整数构成的 Slice
 - Generate 用给定的函数生成一个序列填充到 Slice 中
 
+#### 数据操作
+
+- `Copy` 返回切片的拷贝
+- `Fill` 用指定的值重复填充一个切片
+- `FillPattern` 用指定的模式重复填充一个切片
+- `Replace` 替换所有等于指定值的元素为新值
+- `ReplaceIf` 替换所有让函数返回 `true` 的元素为新值
+- `Transform` 把切片的每个位置的值传给指定的函数，用其返回值设置回去
+- `TransformTo` 把切片 a 的每个位置的值传给指定的函数，将其返回值设置到切片 b 中相应的位置，并返回 b 的相应长度的切片
+- `TransformCopy` 把切片的每个位置的值传给指定的函数，将其返回值设置到一个新的切片中相应的位置并返回
+- `Unique` 去除切片中相邻的重复元素，返回包含剩余元素的新长度的切片，`UniqueCopy` 则不修改原切片而是返回一个拷贝
+- `Remove` 去除切片中等于指定值的所有元素，`RemoveCopy` 则不修改原切片而是返回一个拷贝
+- `RemoveIf` 去除切片中等于让指定函数返回 `true` 的所有元素，`RemoveIfCopy` 则不修改原切片而是返回一个拷贝
+- `Shuffle` 随机洗牌
+- `Reverse` 反转一个切片，`ReverseCopy` 则不修改原切片而是返回一个拷贝
+
 #### 计算型
 
-- Sum 求和
-- SumAs 求和并以另一种类型的结果返回（比如 `int64` 返回 `[]int32` 的和）。
-- Average 求平均值。
-- AverageAs 求平均值并以另一种类型的结果返回（比如 `float64` 返回 `[]int` 的和）。
-- Count 返回和指定值相当的个数
-- CountIf 返回让指定函数返回 `true` 的元素的个数
+- `Sum` 求和
+- `SumAs` 求和并以另一种类型的结果返回（比如以 `int64` 类型返回 `[]int32` 的和）
+- `Average` 求平均值。
+- `AverageAs` 求平均值并以另一种类型的结果返回（比如 `float64` 返回 `[]int` 的和）
+- `Count` 返回和指定值相当的个数
+- `CountIf` 返回让指定函数返回 `true` 的元素的个数
 
 #### 比较
 
-- Equal 判断两个序列是否相等
-- Compare 比较两个序列，按字典序返回 -1、0、1 分别表示起大小关系
+- `Equal` 判断两个序列是否相等
+- `Compare` 比较两个序列，按字典序返回 -1、0、1 分别表示起大小关系
 
 #### 查找
 
-- Min, Max 求最大最小值
-- MinN、MaxN、MinMax 返回 slice 中的最大和最小值
-- Find 线性查找第一个指定的值，返回其下标
-- FindIf 线性查找指定函数返回 `true` 的值，返回其下标
-- AllOf、AnyOf、NoneOf 返回区间中是否全部、任何一个、没有一个元素能使传入的函数返回 `true`
-
-#### 排序
-
-- Sort 排序
-- DescSort 降序排序
-- StableSort 稳定排序
-- DescStableSort 降序稳定排序
-- IsSorted 是否是排序的
-- IsDescSorted 是否是降序排序的
+- `Min`, `Max` 求最大最小值
+- `MinN`、`MaxN`、`MinMax` 返回 slice 中的最大和最小值
+- `Find` 线性查找第一个指定的值，返回其下标
+- `FindIf` 线性查找指定函数返回 `true` 的值，返回其下标
+- `AllOf`、`AnyOf`、`NoneOf` 返回区间中是否全部、任何一个、没有一个元素能使传入的函数返回 `true`
 
 #### 二分查找
 
 参考 C++STL。
 
-- BinarySearch
-- LowerBound
-- UpperBound
+- `BinarySearch`
+- `LowerBound`
+- `UpperBound`
+
+#### 排序
+
+- `Sort` 升序排序
+- `DescSort` 降序排序
+- `StableSort` 升序稳定排序
+- `DescStableSort` 降序稳定排序
+- `IsSorted` 是否是升序排序的
+- `IsDescSorted` 是否是降序排序的
 
 #### 堆
 
