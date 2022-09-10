@@ -11,10 +11,6 @@ func TestSkipList_Interface(t *testing.T) {
 	_ = MapIterator[int, int](sl.Iterate())
 }
 
-func TestNewSkipList(t *testing.T) {
-	NewSkipList[int, int]()
-}
-
 func TestNewSkipListString(t *testing.T) {
 	sl := NewSkipList[string, int]()
 	sl.Insert("hello", 1)

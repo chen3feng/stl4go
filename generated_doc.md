@@ -82,6 +82,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [type BuiltinSet](<#type-builtinset>)
   - [func SetOf[K comparable](ks ...K) BuiltinSet[K]](<#func-setof>)
   - [func (s BuiltinSet[K]) Clear()](<#func-builtinsetk-clear>)
+  - [func (s BuiltinSet[K]) Delete(k K)](<#func-builtinsetk-delete>)
   - [func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]](<#func-builtinsetk-difference>)
   - [func (s BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
   - [func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
@@ -915,7 +916,15 @@ func (s BuiltinSet[K]) Clear()
 
 Clear implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L131>)
+### func \(BuiltinSet\[K\]\) [Delete](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L61>)
+
+```go
+func (s BuiltinSet[K]) Delete(k K)
+```
+
+Delete deletes a element in the set. It returns nothing, so it's faster than Remove.
+
+### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L137>)
 
 ```go
 func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]
@@ -923,7 +932,7 @@ func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]
 
 Difference returns a new set with elements in the set that are not in other.
 
-### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L76>)
+### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L82>)
 
 ```go
 func (s BuiltinSet[K]) ForEach(cb func(k K))
@@ -931,7 +940,7 @@ func (s BuiltinSet[K]) ForEach(cb func(k K))
 
 ForEach implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L83>)
+### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L89>)
 
 ```go
 func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)
@@ -963,7 +972,7 @@ func (s BuiltinSet[K]) InsertN(ks ...K)
 
 InsertN implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [Intersection](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L119>)
+### func \(BuiltinSet\[K\]\) [Intersection](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L125>)
 
 ```go
 func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]
@@ -971,7 +980,7 @@ func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]
 
 Intersection returns a new set with elements common to the set and other.
 
-### func \(BuiltinSet\[K\]\) [IsDisjointOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L143>)
+### func \(BuiltinSet\[K\]\) [IsDisjointOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L149>)
 
 ```go
 func (s BuiltinSet[K]) IsDisjointOf(other BuiltinSet[K]) bool
@@ -987,7 +996,7 @@ func (s BuiltinSet[K]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [IsSubsetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L154>)
+### func \(BuiltinSet\[K\]\) [IsSubsetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L160>)
 
 ```go
 func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool
@@ -995,7 +1004,7 @@ func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool
 
 IsSubsetOf tests whether every element in the set is in other.
 
-### func \(BuiltinSet\[K\]\) [IsSupersetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L167>)
+### func \(BuiltinSet\[K\]\) [IsSupersetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L173>)
 
 ```go
 func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool
@@ -1003,7 +1012,7 @@ func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool
 
 IsSupersetOf tests whether every element in other is in the set.
 
-### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L67>)
+### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L73>)
 
 ```go
 func (s BuiltinSet[K]) Keys() []K
@@ -1027,7 +1036,7 @@ func (s BuiltinSet[K]) Remove(k K) bool
 
 Remove implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L60>)
+### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L66>)
 
 ```go
 func (s BuiltinSet[K]) RemoveN(ks ...K)
@@ -1035,7 +1044,7 @@ func (s BuiltinSet[K]) RemoveN(ks ...K)
 
 RemoveN implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L92>)
+### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L98>)
 
 ```go
 func (s BuiltinSet[K]) String() string
@@ -1043,7 +1052,7 @@ func (s BuiltinSet[K]) String() string
 
 String implements the fmt.Stringer interface.
 
-### func \(BuiltinSet\[K\]\) [Union](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L104>)
+### func \(BuiltinSet\[K\]\) [Union](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L110>)
 
 ```go
 func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]
@@ -1051,7 +1060,7 @@ func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]
 
 Union returns a new set with elements from the set and other.
 
-### func \(BuiltinSet\[K\]\) [Update](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L97>)
+### func \(BuiltinSet\[K\]\) [Update](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L103>)
 
 ```go
 func (s BuiltinSet[K]) Update(other BuiltinSet[K])
