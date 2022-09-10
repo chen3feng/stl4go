@@ -61,6 +61,8 @@ Package stl4go is a generic container and algorithm library for go.
 - [func RemoveIf[T any](a []T, cond func(T) bool) []T](<#func-removeif>)
 - [func RemoveIfCopy[T any](a []T, cond func(T) bool) []T](<#func-removeifcopy>)
 - [func RemoveMinHeap[T Ordered](heap *[]T, i int) T](<#func-removeminheap>)
+- [func Replace[T comparable](a []T, old, new T)](<#func-replace>)
+- [func ReplaceIf[T any](a []T, pred func(v T) bool, new T)](<#func-replaceif>)
 - [func Reverse[T any](a []T)](<#func-reverse>)
 - [func ReverseCopy[T any](a []T) []T](<#func-reversecopy>)
 - [func Shuffle[T any](a []T)](<#func-shuffle>)
@@ -649,7 +651,7 @@ Range make a \[\]T filled with values in the \`\[first, last\)\` sequence. NOTE:
 
 Complexity: O\(last\-first\).
 
-## func [Remove](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L126>)
+## func [Remove](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L148>)
 
 ```go
 func Remove[T comparable](a []T, x T) []T
@@ -659,7 +661,7 @@ Remove remove the elements which equals to x from the input slice. return the pr
 
 Complexity: O\(len\(a\)\).
 
-## func [RemoveCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L141>)
+## func [RemoveCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L163>)
 
 ```go
 func RemoveCopy[T comparable](a []T, x T) []T
@@ -679,7 +681,7 @@ RemoveHeapFunc removes and returns the element at index i from the heap.
 
 Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
-## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L155>)
+## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L177>)
 
 ```go
 func RemoveIf[T any](a []T, cond func(T) bool) []T
@@ -689,7 +691,7 @@ RemoveIf remove each element which make cond\(x\) returns true from the input sl
 
 Complexity: O\(len\(a\)\).
 
-## func [RemoveIfCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L170>)
+## func [RemoveIfCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L192>)
 
 ```go
 func RemoveIfCopy[T any](a []T, cond func(T) bool) []T
@@ -709,7 +711,27 @@ RemoveMinHeap removes and returns the element at index i from the min heap.
 
 Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
-## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L192>)
+## func [Replace](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L85>)
+
+```go
+func Replace[T comparable](a []T, old, new T)
+```
+
+Replace replaces every element that equals to old with new.
+
+Complexity: O\(len\(a\)\).
+
+## func [ReplaceIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L96>)
+
+```go
+func ReplaceIf[T any](a []T, pred func(v T) bool, new T)
+```
+
+ReplaceIf replaces every element that make preq returns true with new.
+
+Complexity: O\(len\(a\)\).
+
+## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L214>)
 
 ```go
 func Reverse[T any](a []T)
@@ -719,7 +741,7 @@ Reverse reverses the order of the elements in the slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L201>)
+## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L223>)
 
 ```go
 func ReverseCopy[T any](a []T) []T
@@ -729,7 +751,7 @@ ReverseCopy returns a reversed copy of slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [Shuffle](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L183>)
+## func [Shuffle](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L205>)
 
 ```go
 func Shuffle[T any](a []T)
@@ -827,7 +849,7 @@ The len\(b\) must not lesser than len\(a\).
 
 Complexity: O\(len\(a\)\).
 
-## func [Unique](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L86>)
+## func [Unique](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L108>)
 
 ```go
 func Unique[T comparable](a []T) []T
@@ -837,7 +859,7 @@ Unique remove adjacent repeated elements from the input slice. return the proces
 
 Complexity: O\(len\(a\)\).
 
-## func [UniqueCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L106>)
+## func [UniqueCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L128>)
 
 ```go
 func UniqueCopy[T comparable](a []T) []T

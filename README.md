@@ -178,6 +178,8 @@ indicating that a custom comparison function can be passed.
 - `Copy` return a copies of specified slice
 - `Fill` repeatedly fills a slice with the specified value
 - `FillPattern` repeatedly fills a slice with the specified pattern
+- `Replace` replaces every element that equals to old with new
+- `ReplaceIf` replaces every element that make preq returns true with new
 - `Transform` passes the value at each position of the slice to the specified function and sets it back with its return value
 - `TransformTo` passes the value at each position of slice `a` to the specified function,
   sets its return value to the corresponding position in slice `b`, and returns a slice of corresponding length of slice `b`

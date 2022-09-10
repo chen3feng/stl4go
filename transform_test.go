@@ -81,6 +81,18 @@ func Test_TransformCopy(t *testing.T) {
 	}
 }
 
+func Test_Replace(t *testing.T) {
+	a := []int{1, 2, 2, 4}
+	Replace(a, 2, 3)
+	expectTrue(t, Equal(a, []int{1, 3, 3, 4}))
+}
+
+func Test_ReplaceIf(t *testing.T) {
+	a := []int{1, 2, 2, 4}
+	ReplaceIf(a, func(n int) bool { return n == 2 }, 3)
+	expectTrue(t, Equal(a, []int{1, 3, 3, 4}))
+}
+
 func Test_Unique(t *testing.T) {
 	expectTrue(t, Equal(Unique(emptyInts), emptyInts))
 	a := []int{1, 2, 2, 3, 2, 4}

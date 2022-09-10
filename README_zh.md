@@ -160,6 +160,8 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 - `Copy` 返回切片的拷贝
 - `Fill` 用指定的值重复填充一个切片
 - `FillPattern` 用指定的模式重复填充一个切片
+- `Replace` 替换所有等于指定值的元素为新值
+- `ReplaceIf` 替换所有让函数返回 `true` 的元素为新值
 - `Transform` 把切片的每个位置的值传给指定的函数，用其返回值设置回去
 - `TransformTo` 把切片 a 的每个位置的值传给指定的函数，将其返回值设置到切片 b 中相应的位置，并返回 b 的相应长度的切片
 - `TransformCopy` 把切片的每个位置的值传给指定的函数，将其返回值设置到一个新的切片中相应的位置并返回

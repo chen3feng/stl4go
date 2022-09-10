@@ -79,6 +79,28 @@ func TransformCopy[R any, T any](a []T, op func(T) R) []R {
 	return r
 }
 
+// Replace replaces every element that equals to old with new.
+//
+// Complexity: O(len(a)).
+func Replace[T comparable](a []T, old, new T) {
+	for i := range a {
+		if a[i] == old {
+			a[i] = new
+		}
+	}
+}
+
+// ReplaceIf replaces every element that make preq returns true with new.
+//
+// Complexity: O(len(a)).
+func ReplaceIf[T any](a []T, pred func(v T) bool, new T) {
+	for i := range a {
+		if pred(a[i]) {
+			a[i] = new
+		}
+	}
+}
+
 // Unique remove adjacent repeated elements from the input slice.
 // return the processed slice with new length.
 //
