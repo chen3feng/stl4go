@@ -14,7 +14,7 @@ func Test_DList_New(t *testing.T) {
 	expectEq(t, l.Len(), 0)
 }
 
-func Test_DList_NewOf(t *testing.T) {
+func Test_DListOf(t *testing.T) {
 	l := DListOf(1, 2, 3)
 	expectFalse(t, l.IsEmpty())
 	expectEq(t, l.Len(), 3)
@@ -43,6 +43,12 @@ func Test_DList_Iterate_Empty(t *testing.T) {
 		i++
 	}
 	expectEq(t, i, 0)
+}
+
+func Test_DList_FrontBack(t *testing.T) {
+	l := DListOf(1, 2, 3)
+	expectEq(t, l.Front(), 1)
+	expectEq(t, l.Back(), 3)
 }
 
 func Test_DList_PushFront(t *testing.T) {
@@ -154,6 +160,14 @@ func Test_DList_ForEachMutableIf(t *testing.T) {
 		return *n != 2
 	})
 	expectEq(t, c, 2)
+}
+
+func Test_DList_ForEach_EmptyOK(t *testing.T) {
+	l := DList[int]{}
+	l.ForEach(func(n int) {})
+	l.ForEachIf(func(n int) bool { return true })
+	l.ForEachMutable(func(n *int) {})
+	l.ForEachMutableIf(func(n *int) bool { return true })
 }
 
 func Benchmark_DList_Iterate(b *testing.B) {
