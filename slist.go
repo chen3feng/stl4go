@@ -1,6 +1,8 @@
 package stl4go
 
-import "errors"
+import (
+	"errors"
+)
 
 // SList is a singly linked list.
 type SList[T any] struct {

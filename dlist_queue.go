@@ -2,16 +2,42 @@ package stl4go
 
 import (
 	"fmt"
+	"sync"
+)
+
+var (
+	defaultLocker FakeLocker
 )
 
 // DListQueue is a FIFO container
 type DListQueue[T any] struct {
-	list DList[T]
+	list   DList[T]
+	locker sync.Locker
+}
+
+type Options struct {
+	locker sync.Locker
+}
+
+type Option func(option *Options)
+
+// WithGoroutineSafe is used to set a Queue goroutine-safe
+func WithGoroutineSafe() Option {
+	return func(option *Options) {
+		option.locker = &sync.RWMutex{}
+	}
 }
 
 // NewDListQueue create a new Queue object.
-func NewDListQueue[T any]() *DListQueue[T] {
+func NewDListQueue[T any](opts ...Option) *DListQueue[T] {
 	q := DListQueue[T]{}
+	option := Options{
+		locker: defaultLocker,
+	}
+	for _, opt := range opts {
+		opt(&option)
+	}
+	q.locker = option.locker
 	return &q
 }
 
