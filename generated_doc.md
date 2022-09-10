@@ -21,6 +21,7 @@ Package stl4go is a generic container and algorithm library for go.
 - [func BinarySearchFunc[T any](a []T, value T, less LessFn[T]) (index int, ok bool)](<#func-binarysearchfunc>)
 - [func Compare[E Ordered](a, b []E) int](<#func-compare>)
 - [func Copy[T any](a []T) []T](<#func-copy>)
+- [func CopyTo[T any](a []T, to []T) []T](<#func-copyto>)
 - [func Count[T comparable](a []T, x T) int](<#func-count>)
 - [func CountIf[T comparable](a []T, pred func(T) bool) int](<#func-countif>)
 - [func DescSort[T Ordered](a []T)](<#func-descsort>)
@@ -201,13 +202,13 @@ Package stl4go is a generic container and algorithm library for go.
 - [type Stack](<#type-stack>)
   - [func NewStack[T any]() *Stack[T]](<#func-newstack>)
   - [func NewStackCap[T any](capicity int) *Stack[T]](<#func-newstackcap>)
-  - [func (s *Stack[T]) Cap() int](<#func-stackt-cap>)
+  - [func (s Stack[T]) Cap() int](<#func-stackt-cap>)
   - [func (s *Stack[T]) Clear()](<#func-stackt-clear>)
-  - [func (s *Stack[T]) IsEmpty() bool](<#func-stackt-isempty>)
-  - [func (s *Stack[T]) Len() int](<#func-stackt-len>)
+  - [func (s Stack[T]) IsEmpty() bool](<#func-stackt-isempty>)
+  - [func (s Stack[T]) Len() int](<#func-stackt-len>)
   - [func (s *Stack[T]) Pop() T](<#func-stackt-pop>)
   - [func (s *Stack[T]) Push(t T)](<#func-stackt-push>)
-  - [func (s *Stack[T]) Top() T](<#func-stackt-top>)
+  - [func (s Stack[T]) Top() T](<#func-stackt-top>)
   - [func (s *Stack[T]) TryPop() (val T, ok bool)](<#func-stackt-trypop>)
 - [type Unsigned](<#type-unsigned>)
 - [type Vector](<#type-vector>)
@@ -320,6 +321,16 @@ Copy make a copy of slice a.
 
 Complexity: O\(len\(a\)\).
 
+## func [CopyTo](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L16>)
+
+```go
+func CopyTo[T any](a []T, to []T) []T
+```
+
+CopyTo copies all elements in slice a to slice to, return the copied slice. if slice to is large enough, no memory allocation occurs.
+
+Complexity: O\(len\(a\)\).
+
 ## func [Count](<https://github.com/chen3feng/stl4go/blob/master/compute.go#L44>)
 
 ```go
@@ -370,7 +381,7 @@ Equal returns whether two slices are equal. Return true if they are the same len
 
 Complexity: O\(min\(len\(a\), len\(b\)\)\).
 
-## func [Fill](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L16>)
+## func [Fill](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L24>)
 
 ```go
 func Fill[T any](a []T, v T)
@@ -380,7 +391,7 @@ Fill fills each element in slice a with new value v.
 
 Complexity: O\(len\(a\)\).
 
-## func [FillPattern](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L34>)
+## func [FillPattern](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L42>)
 
 ```go
 func FillPattern[T any](a []T, pattern []T)
@@ -658,7 +669,7 @@ Range make a \[\]T filled with values in the \`\[first, last\)\` sequence. NOTE:
 
 Complexity: O\(last\-first\).
 
-## func [Remove](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L148>)
+## func [Remove](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L154>)
 
 ```go
 func Remove[T comparable](a []T, x T) []T
@@ -668,7 +679,7 @@ Remove remove the elements which equals to x from the input slice. return the pr
 
 Complexity: O\(len\(a\)\).
 
-## func [RemoveCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L163>)
+## func [RemoveCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L169>)
 
 ```go
 func RemoveCopy[T comparable](a []T, x T) []T
@@ -688,7 +699,7 @@ RemoveHeapFunc removes and returns the element at index i from the heap.
 
 Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
-## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L177>)
+## func [RemoveIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L183>)
 
 ```go
 func RemoveIf[T any](a []T, cond func(T) bool) []T
@@ -698,7 +709,7 @@ RemoveIf remove each element which make cond\(x\) returns true from the input sl
 
 Complexity: O\(len\(a\)\).
 
-## func [RemoveIfCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L192>)
+## func [RemoveIfCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L198>)
 
 ```go
 func RemoveIfCopy[T any](a []T, cond func(T) bool) []T
@@ -718,7 +729,7 @@ RemoveMinHeap removes and returns the element at index i from the min heap.
 
 Complexity: is O\(log\(n\)\) where n = len\(\*heap\).
 
-## func [Replace](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L85>)
+## func [Replace](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L91>)
 
 ```go
 func Replace[T comparable](a []T, old, new T)
@@ -728,7 +739,7 @@ Replace replaces every element that equals to old with new.
 
 Complexity: O\(len\(a\)\).
 
-## func [ReplaceIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L96>)
+## func [ReplaceIf](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L102>)
 
 ```go
 func ReplaceIf[T any](a []T, pred func(v T) bool, new T)
@@ -738,7 +749,7 @@ ReplaceIf replaces every element that make preq returns true with new.
 
 Complexity: O\(len\(a\)\).
 
-## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L214>)
+## func [Reverse](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L220>)
 
 ```go
 func Reverse[T any](a []T)
@@ -748,7 +759,7 @@ Reverse reverses the order of the elements in the slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L223>)
+## func [ReverseCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L229>)
 
 ```go
 func ReverseCopy[T any](a []T) []T
@@ -758,7 +769,7 @@ ReverseCopy returns a reversed copy of slice a.
 
 Complexity: O\(len\(a\)\).
 
-## func [Shuffle](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L205>)
+## func [Shuffle](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L211>)
 
 ```go
 func Shuffle[T any](a []T)
@@ -824,7 +835,7 @@ func SumAs[R, T Numeric](a []T) R
 
 SumAs summarize all elements in a. returns the result as type R, this is useful when T is too small to hold the result. Complexity: O\(len\(a\)\).
 
-## func [Transform](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L65>)
+## func [Transform](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L71>)
 
 ```go
 func Transform[T any](a []T, op func(T) T)
@@ -834,7 +845,7 @@ Transform applies the function op to each element in slice a and set it back to 
 
 Complexity: O\(len\(a\)\).
 
-## func [TransformCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L74>)
+## func [TransformCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L80>)
 
 ```go
 func TransformCopy[R any, T any](a []T, op func(T) R) []R
@@ -844,19 +855,17 @@ TransformCopy applies the function op to each element in slice a and return all 
 
 Complexity: O\(len\(a\)\).
 
-## func [TransformTo](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L52>)
+## func [TransformTo](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L60>)
 
 ```go
 func TransformTo[R any, T any](a []T, op func(T) R, b []R) []R
 ```
 
-TransformTo applies the function op to each element in slice a and fill it to slice b.
-
-The len\(b\) must not lesser than len\(a\).
+TransformTo applies the function op to each element in slice a and fill it to slice b, return the transformed slice. If cap\(b\) \>= len\(a\), no memory allocation.
 
 Complexity: O\(len\(a\)\).
 
-## func [Unique](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L108>)
+## func [Unique](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L114>)
 
 ```go
 func Unique[T comparable](a []T) []T
@@ -866,7 +875,7 @@ Unique remove adjacent repeated elements from the input slice. return the proces
 
 Complexity: O\(len\(a\)\).
 
-## func [UniqueCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L128>)
+## func [UniqueCopy](<https://github.com/chen3feng/stl4go/blob/master/transform.go#L134>)
 
 ```go
 func UniqueCopy[T comparable](a []T) []T
@@ -928,7 +937,7 @@ Clear implements the Container interface.
 func (s BuiltinSet[K]) Delete(k K)
 ```
 
-Delete deletes a element in the set. It returns nothing, so it's faster than Remove.
+Delete deletes an element from the set. It returns nothing, so it's faster than Remove.
 
 ### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L137>)
 
@@ -1136,7 +1145,7 @@ func (l *DList[T]) ForEach(cb func(val T))
 
 ForEach iterate the list, apply each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L172>)
+### func \(\*DList\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L175>)
 
 ```go
 func (l *DList[T]) ForEachIf(cb func(val T) bool)
@@ -1144,7 +1153,7 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the list, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L184>)
+### func \(\*DList\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L187>)
 
 ```go
 func (l *DList[T]) ForEachMutable(cb func(val *T))
@@ -1152,7 +1161,7 @@ func (l *DList[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 
-### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L195>)
+### func \(\*DList\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/dlist.go#L198>)
 
 ```go
 func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool)
@@ -1578,7 +1587,7 @@ NewPriorityQueueOn creates a new priority object on the specified slices. The sl
 func (pq *PriorityQueue[T]) Clear()
 ```
 
-Clear checks whether priority queue has no elements.
+Clear clear the priority queue.
 
 ### func \(\*PriorityQueue\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L47>)
 
@@ -1982,10 +1991,10 @@ func NewStackCap[T any](capicity int) *Stack[T]
 
 NewStackCap creates a new Stack object with the specified capicity.
 
-### func \(\*Stack\[T\]\) [Cap](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L30>)
+### func \(Stack\[T\]\) [Cap](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L30>)
 
 ```go
-func (s *Stack[T]) Cap() int
+func (s Stack[T]) Cap() int
 ```
 
 Cap returns the capacity of the stack.
@@ -1998,18 +2007,18 @@ func (s *Stack[T]) Clear()
 
 Clear implements the Container interface.
 
-### func \(\*Stack\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L20>)
+### func \(Stack\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L20>)
 
 ```go
-func (s *Stack[T]) IsEmpty() bool
+func (s Stack[T]) IsEmpty() bool
 ```
 
 IsEmpty implements the Container interface.
 
-### func \(\*Stack\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L25>)
+### func \(Stack\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L25>)
 
 ```go
-func (s *Stack[T]) Len() int
+func (s Stack[T]) Len() int
 ```
 
 Len implements the Container interface.
@@ -2030,10 +2039,10 @@ func (s *Stack[T]) Push(t T)
 
 Push pushes the element to the top of the stack.
 
-### func \(\*Stack\[T\]\) [Top](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L67>)
+### func \(Stack\[T\]\) [Top](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L67>)
 
 ```go
-func (s *Stack[T]) Top() T
+func (s Stack[T]) Top() T
 ```
 
 Top returns the top element in the stack. It must be called when s.IsEmpty\(\) returned false, otherwise it will panic.
@@ -2056,7 +2065,7 @@ type Unsigned interface {
 }
 ```
 
-## type [Vector](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L4>)
+## type [Vector](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L7>)
 
 Vector is a sequence container representing array that can change in size.
 
@@ -2064,7 +2073,7 @@ Vector is a sequence container representing array that can change in size.
 type Vector[T any] []T
 ```
 
-### func [AsVector](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L23>)
+### func [AsVector](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L26>)
 
 ```go
 func AsVector[T any](s []T) Vector[T]
@@ -2072,7 +2081,7 @@ func AsVector[T any](s []T) Vector[T]
 
 AsVector casts a slice as a Vector object.
 
-### func [MakeVector](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L7>)
+### func [MakeVector](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L10>)
 
 ```go
 func MakeVector[T any]() Vector[T]
@@ -2080,7 +2089,7 @@ func MakeVector[T any]() Vector[T]
 
 MakeVector creates an empty Vector object.
 
-### func [MakeVectorCap](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L12>)
+### func [MakeVectorCap](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L15>)
 
 ```go
 func MakeVectorCap[T any](c int) Vector[T]
@@ -2088,7 +2097,7 @@ func MakeVectorCap[T any](c int) Vector[T]
 
 MakeVectorCap creates an empty Vector object with specified capacity.
 
-### func [VectorOf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L18>)
+### func [VectorOf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L21>)
 
 ```go
 func VectorOf[T any](v ...T) Vector[T]
@@ -2096,7 +2105,7 @@ func VectorOf[T any](v ...T) Vector[T]
 
 VectorOf creates a Vector object with initial values.
 
-### func \(\*Vector\[T\]\) [Append](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L114>)
+### func \(\*Vector\[T\]\) [Append](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L117>)
 
 ```go
 func (v *Vector[T]) Append(x ...T)
@@ -2104,7 +2113,7 @@ func (v *Vector[T]) Append(x ...T)
 
 Append appends the values x... to the tail of the vector.
 
-### func \(\*Vector\[T\]\) [At](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L71>)
+### func \(\*Vector\[T\]\) [At](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L74>)
 
 ```go
 func (v *Vector[T]) At(i int) T
@@ -2112,7 +2121,7 @@ func (v *Vector[T]) At(i int) T
 
 At returns the element value at the index i. You can also use the \[\] operator, and it's better.
 
-### func \(Vector\[T\]\) [Back](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L109>)
+### func \(Vector\[T\]\) [Back](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L112>)
 
 ```go
 func (v Vector[T]) Back() T
@@ -2120,7 +2129,7 @@ func (v Vector[T]) Back() T
 
 Back returns the element at the end of the vector. It must be called when IsEmpty\(\) returned false, otherwise it will panic.
 
-### func \(\*Vector\[T\]\) [Cap](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L38>)
+### func \(\*Vector\[T\]\) [Cap](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L41>)
 
 ```go
 func (v *Vector[T]) Cap() int
@@ -2128,7 +2137,7 @@ func (v *Vector[T]) Cap() int
 
 Cap returns the capacity of the vector.
 
-### func \(\*Vector\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L44>)
+### func \(\*Vector\[T\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L47>)
 
 ```go
 func (v *Vector[T]) Clear()
@@ -2136,7 +2145,7 @@ func (v *Vector[T]) Clear()
 
 Clear erases all elements from the vector. After this call, Len\(\) returns zero. Leaves the Cap\(\) of the vector unchanged.
 
-### func \(Vector\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L158>)
+### func \(Vector\[T\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L161>)
 
 ```go
 func (v Vector[T]) ForEach(cb func(val T))
@@ -2144,7 +2153,7 @@ func (v Vector[T]) ForEach(cb func(val T))
 
 ForEach iterate the container, apply each element to the cb callback function.
 
-### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L166>)
+### func \(Vector\[T\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L169>)
 
 ```go
 func (v Vector[T]) ForEachIf(cb func(val T) bool)
@@ -2152,7 +2161,7 @@ func (v Vector[T]) ForEachIf(cb func(val T) bool)
 
 ForEachIf iterate the container, apply each element to the cb callback function, stop if cb returns false.
 
-### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L175>)
+### func \(Vector\[T\]\) [ForEachMutable](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L178>)
 
 ```go
 func (v Vector[T]) ForEachMutable(cb func(val *T))
@@ -2160,7 +2169,7 @@ func (v Vector[T]) ForEachMutable(cb func(val *T))
 
 ForEachMutable iterate the container, apply pointer of each element to the cb callback function.
 
-### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L183>)
+### func \(Vector\[T\]\) [ForEachMutableIf](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L186>)
 
 ```go
 func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)
@@ -2168,7 +2177,7 @@ func (v Vector[T]) ForEachMutableIf(cb func(val *T) bool)
 
 ForEachMutableIf iterate the container, apply pointer of each element to the cb callback function, stop if cb returns false.
 
-### func \(\*Vector\[T\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L123>)
+### func \(\*Vector\[T\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L126>)
 
 ```go
 func (v *Vector[T]) Insert(i int, x ...T)
@@ -2178,7 +2187,7 @@ Insert inserts the values x... into the vector at index i. After the insertion, 
 
 Complexity: O\(len\(s\) \+ len\(v\)\).
 
-### func \(\*Vector\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L28>)
+### func \(\*Vector\[T\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L31>)
 
 ```go
 func (v *Vector[T]) IsEmpty() bool
@@ -2186,7 +2195,7 @@ func (v *Vector[T]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L192>)
+### func \(Vector\[T\]\) [Iterate](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L195>)
 
 ```go
 func (v Vector[T]) Iterate() MutableIterator[T]
@@ -2194,7 +2203,7 @@ func (v Vector[T]) Iterate() MutableIterator[T]
 
 Iterate returns an iterator to the whole container.
 
-### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L197>)
+### func \(Vector\[T\]\) [IterateRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L200>)
 
 ```go
 func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]
@@ -2202,7 +2211,7 @@ func (v Vector[T]) IterateRange(i, j int) MutableIterator[T]
 
 IterateRange returns an iterator to the range \[i, j\) of the container.
 
-### func \(\*Vector\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L33>)
+### func \(\*Vector\[T\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L36>)
 
 ```go
 func (v *Vector[T]) Len() int
@@ -2210,7 +2219,7 @@ func (v *Vector[T]) Len() int
 
 Len implements the Container interface.
 
-### func \(\*Vector\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L91>)
+### func \(\*Vector\[T\]\) [PopBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L94>)
 
 ```go
 func (v *Vector[T]) PopBack() T
@@ -2218,7 +2227,7 @@ func (v *Vector[T]) PopBack() T
 
 PopBack popups an element from the end of the vector. It must be called when IsEmpty\(\) returned false, otherwise it will panic.
 
-### func \(\*Vector\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L84>)
+### func \(\*Vector\[T\]\) [PushBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L87>)
 
 ```go
 func (v *Vector[T]) PushBack(x T)
@@ -2228,7 +2237,7 @@ PushBack pushs an element to the end of the vector.
 
 Complexity: O\(1\) if v.Len\(\) \< v.Cap\(\), therwise O\(len\(v\)\).
 
-### func \(\*Vector\[T\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L143>)
+### func \(\*Vector\[T\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L146>)
 
 ```go
 func (v *Vector[T]) Remove(i int)
@@ -2238,7 +2247,7 @@ Remove removes 1 element in the vector.
 
 Complexity: O\(len\(s\) \- i\).
 
-### func \(\*Vector\[T\]\) [RemoveLength](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L153>)
+### func \(\*Vector\[T\]\) [RemoveLength](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L156>)
 
 ```go
 func (v *Vector[T]) RemoveLength(i int, len int)
@@ -2246,7 +2255,7 @@ func (v *Vector[T]) RemoveLength(i int, len int)
 
 RemoveLength removes the elements in the range\[i, i\+len\) from the vector.
 
-### func \(\*Vector\[T\]\) [RemoveRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L148>)
+### func \(\*Vector\[T\]\) [RemoveRange](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L151>)
 
 ```go
 func (v *Vector[T]) RemoveRange(i, j int)
@@ -2254,7 +2263,7 @@ func (v *Vector[T]) RemoveRange(i, j int)
 
 RemoveRange removes the elements in the range\[i, j\) from the vector.
 
-### func \(\*Vector\[T\]\) [Reserve](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L54>)
+### func \(\*Vector\[T\]\) [Reserve](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L57>)
 
 ```go
 func (v *Vector[T]) Reserve(l int)
@@ -2264,7 +2273,7 @@ Reserve increases the capacity of the vector \(the total number of elements that
 
 Reserve\(\) does not change the size of the vector.
 
-### func \(\*Vector\[T\]\) [Set](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L77>)
+### func \(\*Vector\[T\]\) [Set](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L80>)
 
 ```go
 func (v *Vector[T]) Set(i int, x T)
@@ -2272,7 +2281,7 @@ func (v *Vector[T]) Set(i int, x T)
 
 Set sets the value of the element at the index i. You can also use the \[\] operator, and it's better.
 
-### func \(\*Vector\[T\]\) [Shrink](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L63>)
+### func \(\*Vector\[T\]\) [Shrink](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L66>)
 
 ```go
 func (v *Vector[T]) Shrink()
@@ -2280,7 +2289,7 @@ func (v *Vector[T]) Shrink()
 
 Shrink removes unused capacity from the vector.
 
-### func \(\*Vector\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L98>)
+### func \(\*Vector\[T\]\) [TryPopBack](<https://github.com/chen3feng/stl4go/blob/master/vector.go#L101>)
 
 ```go
 func (v *Vector[T]) TryPopBack() (T, bool)

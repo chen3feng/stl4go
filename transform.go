@@ -6,7 +6,15 @@ import "math/rand"
 //
 // Complexity: O(len(a)).
 func Copy[T any](a []T) []T {
-	b := append([]T{}, a...)
+	return append([]T{}, a...)
+}
+
+// CopyTo copies all elements in slice a to slice to, return the copied slice.
+// if slice to is large enough, no memory allocation occurs.
+//
+// Complexity: O(len(a)).
+func CopyTo[T any](a []T, to []T) []T {
+	b := append(to[0:0], a...)
 	return b
 }
 
@@ -44,19 +52,17 @@ func FillPattern[T any](a []T, pattern []T) {
 	}
 }
 
-// TransformTo applies the function op to each element in slice a and fill it to slice b.
-//
-// The len(b) must not lesser than len(a).
+// TransformTo applies the function op to each element in slice a and fill it to slice b,
+// return the transformed slice.
+// If cap(b) >= len(a), no memory allocation.
 //
 // Complexity: O(len(a)).
 func TransformTo[R any, T any](a []T, op func(T) R, b []R) []R {
-	if len(b) < len(a) {
-		panic("TransformTo: len(b) < len(a)")
+	b = b[0:0]
+	for i := range a {
+		b = append(b, op(a[i]))
 	}
-	for i, v := range a {
-		b[i] = op(v)
-	}
-	return b[:len(a)]
+	return b
 }
 
 // Transform applies the function op to each element in slice a and set it back to the same place in a.

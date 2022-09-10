@@ -1,5 +1,8 @@
 package stl4go
 
+// Many tricks are from:
+// https://github.com/golang/go/wiki/SliceTricks#in-place-deduplicate-comparable
+
 // Vector is a sequence container representing array that can change in size.
 type Vector[T any] []T
 

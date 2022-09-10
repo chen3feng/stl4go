@@ -15,6 +15,15 @@ func Test_Copy(t *testing.T) {
 	expectTrue(t, Equal(a, b))
 }
 
+func Test_CopyTo(t *testing.T) {
+	a := []int{1, 2, 3, 4}
+	tos := [][]int{nil, make([]int, 0), make([]int, 10)}
+	for _, to := range tos {
+		b := CopyTo(a, to)
+		expectTrue(t, Equal(a, b))
+	}
+}
+
 func Test_Fill(t *testing.T) {
 	a := []int{1, 2, 3, 4}
 	Fill(a, 1)
@@ -63,14 +72,15 @@ func Test_Transform(t *testing.T) {
 func Test_TransformTo(t *testing.T) {
 	a := Range(0, 100)
 	b := make([]string, len(a))
-	TransformTo(a, func(v int) string { return strconv.Itoa(v) }, b)
+	r1 := TransformTo(a, func(v int) string { return strconv.Itoa(v) }, b)
 	for i, v := range a {
 		expectEq(t, b[i], strconv.Itoa(v))
 	}
-	expectPanic(t, func() {
-		c := make([]string, len(a)-1)
-		TransformTo(a, func(v int) string { return strconv.Itoa(v) }, c)
-	})
+	expectEq(t, &r1[0], &b[0])
+	c := make([]string, len(a)-1)
+	r2 := TransformTo(a, func(v int) string { return strconv.Itoa(v) }, c)
+	expectEq(t, len(a), len(r2))
+	expectNe(t, &r2[0], &c[0])
 }
 
 func Test_TransformCopy(t *testing.T) {

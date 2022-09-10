@@ -52,7 +52,7 @@ There are following container interfaces:
 
 Different interface has different methods. The `Container` interface has following methods:
 
-- `IsEmpty() bool` Returns whether the container is empty
+- `IsEmpty() bool` returns whether the container is empty
 - `Len() int` returns the number of elements in the container
 - `Clear()` to clear the container
 
@@ -186,6 +186,7 @@ indicating that a custom comparison function can be passed.
 #### Data manipulation
 
 - `Copy` return a copies of specified slice
+- `CopyTo` copies all elements in slice a to slice to, return the copied slice.
 - `Fill` repeatedly fills a slice with the specified value
 - `FillPattern` repeatedly fills a slice with the specified pattern
 - `Replace` replaces every element that equals to old with new
