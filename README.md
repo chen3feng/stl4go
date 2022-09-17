@@ -45,8 +45,10 @@ so C++ users may feel familiar, and sometimes (maybe) feel more convenient.
 There are following container interfaces:
 
 - `Container` is the base interface for all containers
-- `Map` is a key-value associative map
-- `Set` is set
+- `Map` is a key-value associative container
+- `Set` is set container
+- `SortedMap` is a ordered key-value associative container
+- `SortedSet` is a ordered set container
 - `Queue` is a FIFO Queue
 - `Deque` is a double ended queue
 
@@ -68,6 +70,7 @@ Currently container implementations are:
 - [x] `SList` is a singly linked list, supports push/popup at the head and push at the tail.
 - [x] [SkipList](skiplist.md) is an ordered associative container that fills the gap where Go `map` only supports unordered.
       This is currently the fastest skip list I tested in GitHub, see [skiplist-survey](https://github.com/chen3feng/skiplist-survey) for performance comparison
+- [x] `SkipList` is a `SortedSet` container based on the skiplist.
 - [x] `Stack`, is a FILO container based on Slice implementation
 - [x] `DListQueue` is a bidirectional FIFO queue, implemented based on linked list.
 - [x] `PriorityQuque` is a priority queue based on heap. Much easier to use and faster than [container/heap](https://pkg.go.dev/container/heap).

@@ -8,7 +8,9 @@ import (
 func TestSkipList_Interface(t *testing.T) {
 	sl := NewSkipList[int, int]()
 	_ = Map[int, int](sl)
+	_ = SortedMap[int, int](sl)
 	_ = MapIterator[int, int](sl.Iterate())
+	_ = MutableMapIterator[int, int](sl.Iterate())
 }
 
 func TestNewSkipListString(t *testing.T) {
@@ -91,7 +93,7 @@ func TestNewSkipListFromMap(t *testing.T) {
 	}
 }
 
-func TestNewSkipList_Iterate(t *testing.T) {
+func TestSkipList_Iterate(t *testing.T) {
 	sl := newSkipListN(10)
 	i := 0
 	for it := sl.Iterate(); it.IsNotEnd(); it.MoveToNext() {
@@ -102,7 +104,7 @@ func TestNewSkipList_Iterate(t *testing.T) {
 	}
 }
 
-func testNewSkipListIterater(t *testing.T, sl *SkipList[int, int]) {
+func testSkipListIterater(t *testing.T, sl *SkipList[int, int]) {
 	t.Run("LowerBound", func(t *testing.T) {
 		expectEq(t, sl.LowerBound(1).Key(), 1)
 		expectEq(t, sl.LowerBound(3).Key(), 4)
@@ -126,18 +128,18 @@ func testNewSkipListIterater(t *testing.T, sl *SkipList[int, int]) {
 	})
 }
 
-func TestNewSkipList_Iterater(t *testing.T) {
+func TestSkipList_Iterater(t *testing.T) {
 	sl := NewSkipListFromMap(map[int]int{1: 1, 2: 2, 4: 4})
-	testNewSkipListIterater(t, sl)
+	testSkipListIterater(t, sl)
 }
 
-func TestNewSkipList_Func_Iterater(t *testing.T) {
+func TestSkipList_Func_Iterater(t *testing.T) {
 	sl := NewSkipListFunc[int, int](OrderedCompare[int])
 	m := map[int]int{1: 1, 2: 2, 4: 4}
 	for k, v := range m {
 		sl.Insert(k, v)
 	}
-	testNewSkipListIterater(t, sl)
+	testSkipListIterater(t, sl)
 }
 func TestSkipList_Insert(t *testing.T) {
 	sl := NewSkipList[int, int]()

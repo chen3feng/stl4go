@@ -33,8 +33,10 @@ import "github.com/chen3feng/stl4go"
 定义了如下容器接口：
 
 - `Container` 是所有容器的基础接口
-- `Map` 定义了 key-value 关联容器
+- `Map` 定义了 key-value 关联容器的接口
 - `Set` 定义了集合容器的接口
+- `SortedMap` 定义了有序 key-value 关联容器的接口
+- `SortedSet` 定义了有序集合容器的接口
 - `Queue` 定义了先进先出的队列的接口
 - `Deque` 定义了双端队列的接口
 
@@ -53,6 +55,7 @@ import "github.com/chen3feng/stl4go"
 - [x] `DList` 是双链表容器，支持两端插入删除。
 - [x] `SList` 是单链表容器，支持头部插入删除及尾部插入。
 - [x] [跳表（SkipList）](skiplist.md) 是一种有序的关联容器，可以填补 Go `map` 只支持无序的的空白。这是目前全 GitHub 最快的跳表，参见 [skiplist-survey](https://github.com/chen3feng/skiplist-survey)的性能比较
+- [x] `SkipListSet` 是基于跳表实现的有序集合容器
 - [x] `Stack`，栈基于 Slice 实现
 - [x] `DListQueue` 双向进出的队列，基于双链表实现
 - [x] `PriorityQuque` 优先队列，基于堆实现，比 [container/heap](https://pkg.go.dev/container/heap) 更易用而且快不少。
