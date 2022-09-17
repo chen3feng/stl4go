@@ -88,8 +88,8 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (s BuiltinSet[K]) ForEach(cb func(k K))](<#func-builtinsetk-foreach>)
   - [func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)](<#func-builtinsetk-foreachif>)
   - [func (s BuiltinSet[K]) Has(k K) bool](<#func-builtinsetk-has>)
-  - [func (s BuiltinSet[K]) Insert(k K)](<#func-builtinsetk-insert>)
-  - [func (s BuiltinSet[K]) InsertN(ks ...K)](<#func-builtinsetk-insertn>)
+  - [func (s BuiltinSet[K]) Insert(k K) bool](<#func-builtinsetk-insert>)
+  - [func (s BuiltinSet[K]) InsertN(ks ...K) int](<#func-builtinsetk-insertn>)
   - [func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]](<#func-builtinsetk-intersection>)
   - [func (s BuiltinSet[K]) IsDisjointOf(other BuiltinSet[K]) bool](<#func-builtinsetk-isdisjointof>)
   - [func (s BuiltinSet[K]) IsEmpty() bool](<#func-builtinsetk-isempty>)
@@ -98,7 +98,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (s BuiltinSet[K]) Keys() []K](<#func-builtinsetk-keys>)
   - [func (s BuiltinSet[K]) Len() int](<#func-builtinsetk-len>)
   - [func (s BuiltinSet[K]) Remove(k K) bool](<#func-builtinsetk-remove>)
-  - [func (s BuiltinSet[K]) RemoveN(ks ...K)](<#func-builtinsetk-removen>)
+  - [func (s BuiltinSet[K]) RemoveN(ks ...K) int](<#func-builtinsetk-removen>)
   - [func (s BuiltinSet[K]) String() string](<#func-builtinsetk-string>)
   - [func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]](<#func-builtinsetk-union>)
   - [func (s BuiltinSet[K]) Update(other BuiltinSet[K])](<#func-builtinsetk-update>)
@@ -199,6 +199,26 @@ Package stl4go is a generic container and algorithm library for go.
   - [func (sl *SkipList[K, V]) LowerBound(key K) MutableMapIterator[K, V]](<#func-skiplistk-v-lowerbound>)
   - [func (sl *SkipList[K, V]) Remove(key K) bool](<#func-skiplistk-v-remove>)
   - [func (sl *SkipList[K, V]) UpperBound(key K) MutableMapIterator[K, V]](<#func-skiplistk-v-upperbound>)
+- [type SkipListSet](<#type-skiplistset>)
+  - [func NewSkipListSet[K Ordered]() *SkipListSet[K]](<#func-newskiplistset>)
+  - [func NewSkipListSetFunc[K any](cmp CompareFn[K]) *SkipListSet[K]](<#func-newskiplistsetfunc>)
+  - [func NewSkipListSetOf[K Ordered](elements ...K) *SkipListSet[K]](<#func-newskiplistsetof>)
+  - [func (s *SkipListSet[K]) Clear()](<#func-skiplistsetk-clear>)
+  - [func (s *SkipListSet[K]) FindRange(first, last K) Iterator[K]](<#func-skiplistsetk-findrange>)
+  - [func (s *SkipListSet[K]) ForEach(f func(K))](<#func-skiplistsetk-foreach>)
+  - [func (s *SkipListSet[K]) ForEachIf(f func(K) bool)](<#func-skiplistsetk-foreachif>)
+  - [func (s *SkipListSet[K]) Has(key K) bool](<#func-skiplistsetk-has>)
+  - [func (s *SkipListSet[K]) Insert(key K) bool](<#func-skiplistsetk-insert>)
+  - [func (s *SkipListSet[K]) InsertN(keys ...K) int](<#func-skiplistsetk-insertn>)
+  - [func (s *SkipListSet[K]) IsEmpty() bool](<#func-skiplistsetk-isempty>)
+  - [func (s *SkipListSet[K]) Keys() []K](<#func-skiplistsetk-keys>)
+  - [func (s *SkipListSet[K]) Len() int](<#func-skiplistsetk-len>)
+  - [func (s *SkipListSet[K]) LowerBound(key K) Iterator[K]](<#func-skiplistsetk-lowerbound>)
+  - [func (s *SkipListSet[K]) Remove(key K) bool](<#func-skiplistsetk-remove>)
+  - [func (s *SkipListSet[K]) RemoveN(keys ...K) int](<#func-skiplistsetk-removen>)
+  - [func (s *SkipListSet[K]) UpperBound(key K) Iterator[K]](<#func-skiplistsetk-upperbound>)
+- [type SortedMap](<#type-sortedmap>)
+- [type SortedSet](<#type-sortedset>)
 - [type Stack](<#type-stack>)
   - [func NewStack[T any]() *Stack[T]](<#func-newstack>)
   - [func NewStackCap[T any](capicity int) *Stack[T]](<#func-newstackcap>)
@@ -931,7 +951,7 @@ func (s BuiltinSet[K]) Clear()
 
 Clear implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [Delete](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L61>)
+### func \(BuiltinSet\[K\]\) [Delete](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L65>)
 
 ```go
 func (s BuiltinSet[K]) Delete(k K)
@@ -939,7 +959,7 @@ func (s BuiltinSet[K]) Delete(k K)
 
 Delete deletes an element from the set. It returns nothing, so it's faster than Remove.
 
-### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L137>)
+### func \(BuiltinSet\[K\]\) [Difference](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L143>)
 
 ```go
 func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]
@@ -947,7 +967,7 @@ func (s BuiltinSet[K]) Difference(other BuiltinSet[K]) BuiltinSet[K]
 
 Difference returns a new set with elements in the set that are not in other.
 
-### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L82>)
+### func \(BuiltinSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L88>)
 
 ```go
 func (s BuiltinSet[K]) ForEach(cb func(k K))
@@ -955,7 +975,7 @@ func (s BuiltinSet[K]) ForEach(cb func(k K))
 
 ForEach implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L89>)
+### func \(BuiltinSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L95>)
 
 ```go
 func (s BuiltinSet[K]) ForEachIf(cb func(k K) bool)
@@ -974,20 +994,20 @@ Has implements the Set interface.
 ### func \(BuiltinSet\[K\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L41>)
 
 ```go
-func (s BuiltinSet[K]) Insert(k K)
+func (s BuiltinSet[K]) Insert(k K) bool
 ```
 
 Insert implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [InsertN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L46>)
+### func \(BuiltinSet\[K\]\) [InsertN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L48>)
 
 ```go
-func (s BuiltinSet[K]) InsertN(ks ...K)
+func (s BuiltinSet[K]) InsertN(ks ...K) int
 ```
 
 InsertN implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [Intersection](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L125>)
+### func \(BuiltinSet\[K\]\) [Intersection](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L131>)
 
 ```go
 func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]
@@ -995,7 +1015,7 @@ func (s BuiltinSet[K]) Intersection(other BuiltinSet[K]) BuiltinSet[K]
 
 Intersection returns a new set with elements common to the set and other.
 
-### func \(BuiltinSet\[K\]\) [IsDisjointOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L149>)
+### func \(BuiltinSet\[K\]\) [IsDisjointOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L155>)
 
 ```go
 func (s BuiltinSet[K]) IsDisjointOf(other BuiltinSet[K]) bool
@@ -1011,7 +1031,7 @@ func (s BuiltinSet[K]) IsEmpty() bool
 
 IsEmpty implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [IsSubsetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L160>)
+### func \(BuiltinSet\[K\]\) [IsSubsetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L166>)
 
 ```go
 func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool
@@ -1019,7 +1039,7 @@ func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool
 
 IsSubsetOf tests whether every element in the set is in other.
 
-### func \(BuiltinSet\[K\]\) [IsSupersetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L173>)
+### func \(BuiltinSet\[K\]\) [IsSupersetOf](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L179>)
 
 ```go
 func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool
@@ -1027,7 +1047,7 @@ func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool
 
 IsSupersetOf tests whether every element in other is in the set.
 
-### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L73>)
+### func \(BuiltinSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L79>)
 
 ```go
 func (s BuiltinSet[K]) Keys() []K
@@ -1043,7 +1063,7 @@ func (s BuiltinSet[K]) Len() int
 
 Len implements the Container interface.
 
-### func \(BuiltinSet\[K\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L53>)
+### func \(BuiltinSet\[K\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L57>)
 
 ```go
 func (s BuiltinSet[K]) Remove(k K) bool
@@ -1051,15 +1071,15 @@ func (s BuiltinSet[K]) Remove(k K) bool
 
 Remove implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L66>)
+### func \(BuiltinSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L70>)
 
 ```go
-func (s BuiltinSet[K]) RemoveN(ks ...K)
+func (s BuiltinSet[K]) RemoveN(ks ...K) int
 ```
 
 RemoveN implements the Set interface.
 
-### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L98>)
+### func \(BuiltinSet\[K\]\) [String](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L104>)
 
 ```go
 func (s BuiltinSet[K]) String() string
@@ -1067,7 +1087,7 @@ func (s BuiltinSet[K]) String() string
 
 String implements the fmt.Stringer interface.
 
-### func \(BuiltinSet\[K\]\) [Union](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L110>)
+### func \(BuiltinSet\[K\]\) [Union](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L116>)
 
 ```go
 func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]
@@ -1075,7 +1095,7 @@ func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K]
 
 Union returns a new set with elements from the set and other.
 
-### func \(BuiltinSet\[K\]\) [Update](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L103>)
+### func \(BuiltinSet\[K\]\) [Update](<https://github.com/chen3feng/stl4go/blob/master/builtin_set.go#L109>)
 
 ```go
 func (s BuiltinSet[K]) Update(other BuiltinSet[K])
@@ -1371,21 +1391,21 @@ func (q *DListQueue[T]) TryPopFront() (T, bool)
 
 TryPopFront tries popuping an element from the front of the queue.
 
-## type [Deque](<https://github.com/chen3feng/stl4go/blob/master/container.go#L46-L56>)
+## type [Deque](<https://github.com/chen3feng/stl4go/blob/master/container.go#L81-L91>)
 
 Deque is a container that can add and remove elements from both ends.
 
 ```go
 type Deque[T any] interface {
     Container
-    Front() T
-    Back() T
-    PushFront(T)
-    PushBack(T)
-    PopFront() T
-    PopBack() T
-    TryPopFront() (T, bool)
-    TryPopBack() (T, bool)
+    Front() T               // Front returns the first element in the container.
+    Back() T                // Back returns the last element in the container.
+    PushFront(T)            // PushBack pushes an element at the front of the container.
+    PushBack(T)             // PushBack pushes an element at the back of the container.
+    PopFront() T            // PopBack popups a front from the back of the container.
+    PopBack() T             // PopBack popups a element from the back of the container.
+    TryPopFront() (T, bool) // TryPopFront tries to popup a element from the front of the container.
+    TryPopBack() (T, bool)  // TryPopBack tries to popup a element from the back of the container.
 }
 ```
 
@@ -1629,18 +1649,18 @@ func (pq *PriorityQueue[T]) Top() T
 
 Top returns the top element in the priority queue.
 
-## type [Queue](<https://github.com/chen3feng/stl4go/blob/master/container.go#L36-L43>)
+## type [Queue](<https://github.com/chen3feng/stl4go/blob/master/container.go#L71-L78>)
 
 Queue is a container that can add elements to one end and remove elements from the other end.
 
 ```go
 type Queue[T any] interface {
     Container
-    Front()
-    Back()
-    Push(T)
-    Pop() T
-    TryPop() (T, bool)
+    Front()            // Front returns the first element in the container.
+    Back()             // Back returns the last element in the container.
+    Push(T)            // Push pushes an element at the back of the container.
+    Pop() T            // Pop popups a front from the back of the container.
+    TryPop() (T, bool) // TryPop tries to popup a element from the front of the container.
 }
 ```
 
@@ -1790,10 +1810,10 @@ Set is a containers that store unique elements.
 type Set[K any] interface {
     Container
     Has(K) bool             // Checks whether the container contains element with specific key.
-    Insert(K)               // Inserts a key-value pair in to the container or replace existing value.
-    InsertN(...K)           // Inserts multiple key-value pairs in to the container or replace existing value.
-    Remove(K) bool          // Remove element with specific key.
-    RemoveN(...K)           // Remove multiple elements with specific keys.
+    Insert(K) bool          // Inserts a element in to the container or replace existing value.
+    InsertN(...K) int       // Inserts multiple elements in to the container or replace existing value.
+    Remove(K) bool          // Remove specific element, return true if element was in the container.
+    RemoveN(...K) int       // Remove multiple elements, return the number of removed elements.
     ForEach(func(K))        // Iterate the container.
     ForEachIf(func(K) bool) // Iterate the container, stops when the callback returns false.
 }
@@ -1964,6 +1984,196 @@ func (sl *SkipList[K, V]) UpperBound(key K) MutableMapIterator[K, V]
 ```
 
 UpperBound returns an iterator to the first element in the skiplist that does not satisfy value \< element \(i.e. strictly greater\), or a end iterator if no such element is found.
+
+## type [SkipListSet](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L4>)
+
+SkipListSet is a SortedSet implemented with skiplist.
+
+```go
+type SkipListSet[K any] SkipList[K, struct{}]
+```
+
+### func [NewSkipListSet](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L7>)
+
+```go
+func NewSkipListSet[K Ordered]() *SkipListSet[K]
+```
+
+NewSkipListSet creates a new SkipListSet object.
+
+### func [NewSkipListSetFunc](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L12>)
+
+```go
+func NewSkipListSetFunc[K any](cmp CompareFn[K]) *SkipListSet[K]
+```
+
+NewSkipListSetFunc creates a new SkipListSet object with specified compare function.
+
+### func [NewSkipListSetOf](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L17>)
+
+```go
+func NewSkipListSetOf[K Ordered](elements ...K) *SkipListSet[K]
+```
+
+NewSkipListSetOf creates a new SkipListSet object with specified elements.
+
+### func \(\*SkipListSet\[K\]\) [Clear](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L36>)
+
+```go
+func (s *SkipListSet[K]) Clear()
+```
+
+Clear implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [FindRange](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L103>)
+
+```go
+func (s *SkipListSet[K]) FindRange(first, last K) Iterator[K]
+```
+
+FindRange implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [ForEach](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L83>)
+
+```go
+func (s *SkipListSet[K]) ForEach(f func(K))
+```
+
+ForEach implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [ForEachIf](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L88>)
+
+```go
+func (s *SkipListSet[K]) ForEachIf(f func(K) bool)
+```
+
+ForEachIf implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [Has](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L41>)
+
+```go
+func (s *SkipListSet[K]) Has(key K) bool
+```
+
+Has implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [Insert](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L46>)
+
+```go
+func (s *SkipListSet[K]) Insert(key K) bool
+```
+
+Insert implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [InsertN](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L53>)
+
+```go
+func (s *SkipListSet[K]) InsertN(keys ...K) int
+```
+
+InsertN implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [IsEmpty](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L26>)
+
+```go
+func (s *SkipListSet[K]) IsEmpty() bool
+```
+
+IsEmpty implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [Keys](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L76>)
+
+```go
+func (s *SkipListSet[K]) Keys() []K
+```
+
+Keys return a copy of sorted keys as slice.
+
+### func \(\*SkipListSet\[K\]\) [Len](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L31>)
+
+```go
+func (s *SkipListSet[K]) Len() int
+```
+
+Len implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [LowerBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L93>)
+
+```go
+func (s *SkipListSet[K]) LowerBound(key K) Iterator[K]
+```
+
+LowerBound implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [Remove](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L62>)
+
+```go
+func (s *SkipListSet[K]) Remove(key K) bool
+```
+
+Remove implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [RemoveN](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L67>)
+
+```go
+func (s *SkipListSet[K]) RemoveN(keys ...K) int
+```
+
+RemoveN implements the SortedSet interface.
+
+### func \(\*SkipListSet\[K\]\) [UpperBound](<https://github.com/chen3feng/stl4go/blob/master/skiplist_set.go#L98>)
+
+```go
+func (s *SkipListSet[K]) UpperBound(key K) Iterator[K]
+```
+
+UpperBound implements the SortedSet interface.
+
+## type [SortedMap](<https://github.com/chen3feng/stl4go/blob/master/container.go#L36-L50>)
+
+SortedMap is a Map that provides a total ordering on its keys.
+
+```go
+type SortedMap[K any, V any] interface {
+
+    // LowerBound returns an iterator to the first element in the container that
+    // does not satisfy element.key < value (i.e. greater or equal to),
+    // or a end iterator if no such element is found.
+    LowerBound(K) MutableMapIterator[K, V]
+
+    // UpperBound returns an iterator to the first element in the container that
+    // does not satisfy value < element.key (i.e. strictly greater),
+    // or a end iterator if no such element is found.
+    UpperBound(K) MutableMapIterator[K, V]
+
+    // FindRange returns an iterator in range [first, last) (last is not included).
+    FindRange(K, K) MutableMapIterator[K, V]
+    // contains filtered or unexported methods
+}
+```
+
+## type [SortedSet](<https://github.com/chen3feng/stl4go/blob/master/container.go#L53-L68>)
+
+SortedSet is a Set that provides a total ordering on its elements.
+
+```go
+type SortedSet[K any] interface {
+
+    // LowerBound returns an iterator to the first element in the container that
+    // does not satisfy element < value (i.e. greater or equal to),
+    // or a end iterator if no such element is found.
+    LowerBound(K) Iterator[K]
+
+    // UpperBound returns an iterator to the first element in the container that
+    // does not satisfy value < element (i.e. strictly greater),
+    // or a end iterator if no such element is found.
+    UpperBound(K) Iterator[K]
+
+    // FindRange returns an iterator in range [first, last) (last is not included).
+    FindRange(K, K) Iterator[K]
+    // contains filtered or unexported methods
+}
+```
 
 ## type [Stack](<https://github.com/chen3feng/stl4go/blob/master/stack.go#L5-L7>)
 

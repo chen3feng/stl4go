@@ -38,15 +38,19 @@ func (s BuiltinSet[K]) Has(k K) bool {
 }
 
 // Insert implements the Set interface.
-func (s BuiltinSet[K]) Insert(k K) {
+func (s BuiltinSet[K]) Insert(k K) bool {
+	oldLen := len(s)
 	s[k] = struct{}{}
+	return len(s) > oldLen
 }
 
 // InsertN implements the Set interface.
-func (s BuiltinSet[K]) InsertN(ks ...K) {
+func (s BuiltinSet[K]) InsertN(ks ...K) int {
+	oldLen := len(s)
 	for _, key := range ks {
 		s[key] = struct{}{}
 	}
+	return len(s) - oldLen
 }
 
 // Remove implements the Set interface.
@@ -63,10 +67,12 @@ func (s BuiltinSet[K]) Delete(k K) {
 }
 
 // RemoveN implements the Set interface.
-func (s BuiltinSet[K]) RemoveN(ks ...K) {
+func (s BuiltinSet[K]) RemoveN(ks ...K) int {
+	oldLen := len(s)
 	for _, k := range ks {
 		delete(s, k)
 	}
+	return oldLen - len(s)
 }
 
 // Keys return a copy of all keys as a slice.
