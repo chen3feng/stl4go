@@ -147,7 +147,7 @@ func TestSkipList_ForEach(t *testing.T) {
 `ForEachIf` is used for scenarios that you want to end early during the iteration:
 
  ```go
-func Test_DList_ForEachIf(t *testing.T) {
+func TestDList_ForEachIf(t *testing.T) {
     l := NewDListOf(1, 2, 3)
     c := 0
     l.ForEachIf(func(n int) bool {

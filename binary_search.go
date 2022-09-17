@@ -58,7 +58,7 @@ func UpperBound[T Ordered](a []T, value T) int {
 		i := loc
 		step := count / 2
 		i += step
-		if !(value < a[i]) {
+		if value >= a[i] {
 			i++
 			loc = i
 			count -= step + 1

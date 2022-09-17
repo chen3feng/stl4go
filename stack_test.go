@@ -4,30 +4,30 @@ import (
 	"testing"
 )
 
-func Test_Stack_Interface(t *testing.T) {
+func TestStack_Interface(t *testing.T) {
 	_ = Container(NewStack[int]())
 }
-func Test_NewStack(t *testing.T) {
+func TestNewStack(t *testing.T) {
 	si := NewStack[int]()
 	ss := NewStack[string]()
 	expectEq(t, si.Len(), 0)
 	expectEq(t, ss.Len(), 0)
 }
 
-func Test_NewStackCap(t *testing.T) {
+func TestNewStackCap(t *testing.T) {
 	s := NewStackCap[int](10)
 	expectEq(t, s.Len(), 0)
 	expectEq(t, s.Cap(), 10)
 }
 
-func Test_StackCap(t *testing.T) {
+func TestStackCap(t *testing.T) {
 	s := NewStackCap[int](10)
 	s.Push(1)
 	expectEq(t, s.Len(), 1)
 	expectEq(t, s.Cap(), 10)
 }
 
-func Test_Stack_Clear(t *testing.T) {
+func TestStack_Clear(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
 	s.Push(2)
@@ -36,7 +36,7 @@ func Test_Stack_Clear(t *testing.T) {
 	expectTrue(t, s.IsEmpty())
 }
 
-func Test_Stack_Push(t *testing.T) {
+func TestStack_Push(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
 	expectEq(t, s.Len(), 1)
@@ -44,7 +44,7 @@ func Test_Stack_Push(t *testing.T) {
 	expectEq(t, s.Len(), 2)
 }
 
-func Test_Stack_TryPop(t *testing.T) {
+func TestStack_TryPop(t *testing.T) {
 	s := NewStack[int]()
 	_, ok := s.TryPop()
 	expectFalse(t, ok)
@@ -54,7 +54,7 @@ func Test_Stack_TryPop(t *testing.T) {
 	expectEq(t, v, 1)
 }
 
-func Test_Stack_Pop(t *testing.T) {
+func TestStack_Pop(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
 	v := s.Pop()
@@ -62,7 +62,7 @@ func Test_Stack_Pop(t *testing.T) {
 	expectPanic(t, func() { s.Pop() })
 }
 
-func Test_Stack_Top(t *testing.T) {
+func TestStack_Top(t *testing.T) {
 	s := NewStack[int]()
 	s.Push(1)
 	v := s.Top()

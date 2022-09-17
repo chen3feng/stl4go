@@ -131,7 +131,7 @@ func TestSkipList_ForEach(t *testing.T) {
  `ForEachIf` 用于遍历时候提前结束的场景：
 
  ```go
-func Test_DList_ForEachIf(t *testing.T) {
+func TestDList_ForEachIf(t *testing.T) {
     l := NewDListOf(1, 2, 3)
     c := 0
     l.ForEachIf(func(n int) bool {

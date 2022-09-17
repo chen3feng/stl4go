@@ -4,12 +4,12 @@ import (
 	"testing"
 )
 
-func Test_Vector_Interface(t *testing.T) {
+func TestVector_Interface(t *testing.T) {
 	v := MakeVector[int]()
 	_ = Container(&v)
 }
 
-func Test_MakeVector(t *testing.T) {
+func TestMakeVector(t *testing.T) {
 	MakeVector[int]()
 	_ = make(Vector[int], 1)
 	_ = make(Vector[int], 1, 2)
@@ -18,13 +18,13 @@ func Test_MakeVector(t *testing.T) {
 	v = Vector[int]{1, 2, 3}
 }
 
-func Test_MakeVectorCap(t *testing.T) {
+func TestMakeVectorCap(t *testing.T) {
 	v := MakeVectorCap[int](10)
 	expectEq(t, v.Len(), 0)
 	expectEq(t, v.Cap(), 10)
 }
 
-func Test_VectorOf(t *testing.T) {
+func TestVectorOf(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	expectEq(t, v.Len(), 3)
 	expectEq(t, v.Cap(), 3)
@@ -33,14 +33,14 @@ func Test_VectorOf(t *testing.T) {
 	expectEq(t, v[2], 3)
 }
 
-func Test_AsVector(t *testing.T) {
+func TestAsVector(t *testing.T) {
 	s := []int{1, 2, 3}
 	v := AsVector(s)
 	expectTrue(t, Equal(s, v))
 	expectEq(t, &s[0], &v[0])
 }
 
-func Test_VectorCap(t *testing.T) {
+func TestVectorCap(t *testing.T) {
 	v := MakeVectorCap[int](10)
 	v.PushBack(1)
 	expectEq(t, v.Len(), 1)
@@ -48,7 +48,7 @@ func Test_VectorCap(t *testing.T) {
 	expectEq(t, v.Cap(), 10)
 }
 
-func Test_Vector_Clear(t *testing.T) {
+func TestVector_Clear(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Clear()
 	expectEq(t, v.Len(), 0)
@@ -56,7 +56,7 @@ func Test_Vector_Clear(t *testing.T) {
 	expectGt(t, v.Cap(), 0)
 }
 
-func Test_Vector_Reserve(t *testing.T) {
+func TestVector_Reserve(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Reserve(1)
 	expectEq(t, v.Cap(), 3)
@@ -65,7 +65,7 @@ func Test_Vector_Reserve(t *testing.T) {
 	expectEq(t, v.Len(), 3)
 }
 
-func Test_Vector_Shrink(t *testing.T) {
+func TestVector_Shrink(t *testing.T) {
 	v := MakeVectorCap[int](10)
 	v.Append(1, 2, 3)
 	expectEq(t, v.Cap(), 10)
@@ -73,7 +73,7 @@ func Test_Vector_Shrink(t *testing.T) {
 	expectEq(t, v.Len(), v.Cap())
 }
 
-func Test_Vector_At_Set(t *testing.T) {
+func TestVector_At_Set(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	expectEq(t, v.At(0), 1)
 	expectEq(t, v[0], 1)
@@ -82,13 +82,13 @@ func Test_Vector_At_Set(t *testing.T) {
 	expectPanic(t, func() { v.Set(3, 2) })
 }
 
-func Test_Vector_PushBack(t *testing.T) {
+func TestVector_PushBack(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.PushBack(4)
 	expectTrue(t, Equal(v, []int{1, 2, 3, 4}))
 }
 
-func Test_Vector_PopBack(t *testing.T) {
+func TestVector_PopBack(t *testing.T) {
 	v := VectorOf(1, 2)
 	expectEq(t, v.PopBack(), 2)
 	n, ok := v.TryPopBack()
@@ -100,39 +100,39 @@ func Test_Vector_PopBack(t *testing.T) {
 	expectPanic(t, func() { v.PopBack() })
 }
 
-func Test_Vector_Back(t *testing.T) {
+func TestVector_Back(t *testing.T) {
 	v := VectorOf(1)
 	expectEq(t, v.Back(), 1)
 	v.PopBack()
 	expectPanic(t, func() { v.Back() })
 }
 
-func Test_Vector_Insert(t *testing.T) {
+func TestVector_Insert(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Insert(0, 1, 2, 3)
 	expectTrue(t, Equal(v, []int{1, 2, 3, 1, 2, 3}))
 }
 
-func Test_Vector_Insert_Tail(t *testing.T) {
+func TestVector_Insert_Tail(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Insert(3, 1, 2, 3)
 	expectTrue(t, Equal(v, []int{1, 2, 3, 1, 2, 3}))
 }
 
-func Test_Vector_Insert_Mid(t *testing.T) {
+func TestVector_Insert_Mid(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Insert(2, 1, 2)
 	expectTrue(t, Equal(v, []int{1, 2, 1, 2, 3}))
 }
 
-func Test_Vector_Insert_Cap(t *testing.T) {
+func TestVector_Insert_Cap(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Reserve(8)
 	v.Insert(2, 1, 2)
 	expectTrue(t, Equal(v, []int{1, 2, 1, 2, 3}))
 }
 
-func Test_Vector_Remove(t *testing.T) {
+func TestVector_Remove(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	v.Remove(1)
 	expectEq(t, v.Len(), 2)
@@ -141,7 +141,7 @@ func Test_Vector_Remove(t *testing.T) {
 	expectEq(t, v[1], 3)
 }
 
-func Test_Vector_RemoveRange(t *testing.T) {
+func TestVector_RemoveRange(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
 	v.RemoveRange(1, 3)
 	expectEq(t, v.Len(), 2)
@@ -150,7 +150,7 @@ func Test_Vector_RemoveRange(t *testing.T) {
 	expectEq(t, v[1], 4)
 }
 
-func Test_Vector_RemoveLength(t *testing.T) {
+func TestVector_RemoveLength(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
 	v.RemoveLength(1, 2)
 	expectEq(t, v.Len(), 2)
@@ -159,7 +159,7 @@ func Test_Vector_RemoveLength(t *testing.T) {
 	expectEq(t, v[1], 4)
 }
 
-func Test_Vector_ForEach(t *testing.T) {
+func TestVector_ForEach(t *testing.T) {
 	a := []int{1, 2, 3}
 	v := VectorOf(a...)
 	var b []int
@@ -170,7 +170,7 @@ func Test_Vector_ForEach(t *testing.T) {
 	expectTrue(t, Equal(a, b))
 }
 
-func Test_Vector_ForEachIf(t *testing.T) {
+func TestVector_ForEachIf(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	c := 0
 	v.ForEachIf(func(n int) bool {
@@ -180,7 +180,7 @@ func Test_Vector_ForEachIf(t *testing.T) {
 	expectEq(t, c, 2)
 }
 
-func Test_Vector_ForEachMutable(t *testing.T) {
+func TestVector_ForEachMutable(t *testing.T) {
 	a := []int{1, 2, 3}
 	v := VectorOf(1, 2, 3)
 	v.ForEachMutable(func(n *int) {
@@ -192,7 +192,7 @@ func Test_Vector_ForEachMutable(t *testing.T) {
 	}
 }
 
-func Test_Vector_ForEachMutableIf(t *testing.T) {
+func TestVector_ForEachMutableIf(t *testing.T) {
 	v := VectorOf(1, 2, 3)
 	c := 0
 	v.ForEachMutableIf(func(n *int) bool {
@@ -202,7 +202,7 @@ func Test_Vector_ForEachMutableIf(t *testing.T) {
 	expectEq(t, c, 2)
 }
 
-func Test_Vector_Iterate(t *testing.T) {
+func TestVector_Iterate(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
 	i := 1
 	for it := v.Iterate(); it.IsNotEnd(); it.MoveToNext() {
@@ -213,7 +213,7 @@ func Test_Vector_Iterate(t *testing.T) {
 	expectEq(t, i, 5)
 }
 
-func Test_Vector_IterateRange(t *testing.T) {
+func TestVector_IterateRange(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
 	i := 2
 	for it := v.IterateRange(1, 3); it.IsNotEnd(); it.MoveToNext() {

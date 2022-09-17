@@ -4,12 +4,12 @@ import (
 	"testing"
 )
 
-func Test_DList_Interface(t *testing.T) {
+func TestDList_Interface(t *testing.T) {
 	sl := SList[int]{}
 	_ = Container(&sl)
 }
 
-func Test_SList_Clean(t *testing.T) {
+func TestSList_Clean(t *testing.T) {
 	sl := SList[int]{}
 	sl.PushFront(1)
 	sl.Clear()
@@ -17,7 +17,7 @@ func Test_SList_Clean(t *testing.T) {
 	expectEq(t, sl.Len(), 0)
 }
 
-func Test_SList_PushFront(t *testing.T) {
+func TestSList_PushFront(t *testing.T) {
 	sl := SList[int]{}
 	for i := 1; i < 10; i++ {
 		sl.PushFront(i)
@@ -26,7 +26,7 @@ func Test_SList_PushFront(t *testing.T) {
 	}
 }
 
-func Test_SList_PushBack(t *testing.T) {
+func TestSList_PushBack(t *testing.T) {
 	sl := SList[int]{}
 	for i := 1; i < 10; i++ {
 		sl.PushBack(i)
@@ -36,7 +36,7 @@ func Test_SList_PushBack(t *testing.T) {
 	}
 }
 
-func Test_SList_PopFront(t *testing.T) {
+func TestSList_PopFront(t *testing.T) {
 	sl := SList[int]{}
 	sl.PushFront(1)
 	sl.PushFront(2)
@@ -45,13 +45,13 @@ func Test_SList_PopFront(t *testing.T) {
 	expectPanic(t, func() { sl.PopFront() })
 }
 
-func Test_SList_Reverse(t *testing.T) {
+func TestSList_Reverse(t *testing.T) {
 	sl := SListOf(1, 2, 3, 4)
 	sl.Reverse()
 	expectTrue(t, Equal(sl.Values(), []int{4, 3, 2, 1}))
 }
 
-func Test_SList_ForEach(t *testing.T) {
+func TestSList_ForEach(t *testing.T) {
 	sl := SListOf(1, 2, 3, 4)
 	i := 0
 	sl.ForEach(func(v int) {
@@ -61,7 +61,7 @@ func Test_SList_ForEach(t *testing.T) {
 	expectEq(t, i, sl.Len())
 }
 
-func Test_SList_ForEachIf(t *testing.T) {
+func TestSList_ForEachIf(t *testing.T) {
 	sl := SListOf(1, 2, 3, 4)
 	i := 0
 	sl.ForEachIf(func(v int) bool {
@@ -72,7 +72,7 @@ func Test_SList_ForEachIf(t *testing.T) {
 	expectEq(t, i, 3)
 }
 
-func Test_SList_ForEachMutable(t *testing.T) {
+func TestSList_ForEachMutable(t *testing.T) {
 	sl := SListOf(1, 2, 3, 4)
 	i := 0
 	sl.ForEachMutable(func(v *int) {
@@ -86,7 +86,7 @@ func Test_SList_ForEachMutable(t *testing.T) {
 	})
 }
 
-func Test_SList_ForEachMutableIf(t *testing.T) {
+func TestSList_ForEachMutableIf(t *testing.T) {
 	sl := SListOf(1, 2, 3, 4)
 	i := 0
 	sl.ForEachMutableIf(func(v *int) bool {
@@ -97,7 +97,7 @@ func Test_SList_ForEachMutableIf(t *testing.T) {
 	expectEq(t, i, 3)
 }
 
-func Test_SList_Iterate(t *testing.T) {
+func TestSList_Iterate(t *testing.T) {
 	sl := SList[int]{}
 	sl.PushBack(1)
 	sl.PushBack(2)
