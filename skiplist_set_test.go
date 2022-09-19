@@ -93,10 +93,6 @@ func TestNewSkipList_Iterate(t *testing.T) {
 	}
 }
 
-func testSkipListSetIterater(t *testing.T, sl *SkipListSet[int]) {
-
-}
-
 func TestSkipListSet_Iterater(t *testing.T) {
 	s := NewSkipListSetOf(1, 2, 4)
 	t.Run("LowerBound", func(t *testing.T) {
