@@ -75,6 +75,10 @@ Currently container implementations are:
 - [x] `DListQueue` is a bidirectional FIFO queue, implemented based on linked list.
 - [x] `PriorityQuque` is a priority queue based on heap. Much easier to use and faster than [container/heap](https://pkg.go.dev/container/heap).
 
+### Non-Container Components
+
+- [x] `Pool` A type safe Pool, is implemented based on `sync.Pool`.
+
 ### Iterators
 
 Vector, DList and SkipList support iterators.
