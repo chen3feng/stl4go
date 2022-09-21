@@ -149,6 +149,11 @@ Package stl4go is a generic container and algorithm library for go.
 - [type MutableMapIterator](<#type-mutablemapiterator>)
 - [type Numeric](<#type-numeric>)
 - [type Ordered](<#type-ordered>)
+- [type Pool](<#type-pool>)
+  - [func MakePool[T any]() Pool[T]](<#func-makepool>)
+  - [func MakePoolWithNew[T any](new func() *T) Pool[T]](<#func-makepoolwithnew>)
+  - [func (pool *Pool[T]) Get() *T](<#func-poolt-get>)
+  - [func (pool *Pool[T]) Put(x *T)](<#func-poolt-put>)
 - [type PriorityQueue](<#type-priorityqueue>)
   - [func NewPriorityQueue[T Ordered]() *PriorityQueue[T]](<#func-newpriorityqueue>)
   - [func NewPriorityQueueFunc[T any](less LessFn[T]) *PriorityQueue[T]](<#func-newpriorityqueuefunc>)
@@ -1527,6 +1532,46 @@ type Ordered interface {
     // contains filtered or unexported methods
 }
 ```
+
+## type [Pool](<https://github.com/chen3feng/stl4go/blob/master/pool.go#L6>)
+
+Pool is a type safed sync.Pool.
+
+```go
+type Pool[T any] sync.Pool
+```
+
+### func [MakePool](<https://github.com/chen3feng/stl4go/blob/master/pool.go#L9>)
+
+```go
+func MakePool[T any]() Pool[T]
+```
+
+MakePool returns a Pool object
+
+### func [MakePoolWithNew](<https://github.com/chen3feng/stl4go/blob/master/pool.go#L14>)
+
+```go
+func MakePoolWithNew[T any](new func() *T) Pool[T]
+```
+
+MakePoolWithNew returns a Pool object with specified new function.
+
+### func \(\*Pool\[T\]\) [Get](<https://github.com/chen3feng/stl4go/blob/master/pool.go#L22>)
+
+```go
+func (pool *Pool[T]) Get() *T
+```
+
+Get selects an arbitrary item from the Pool, removes it from the Pool, and returns it to the caller.
+
+### func \(\*Pool\[T\]\) [Put](<https://github.com/chen3feng/stl4go/blob/master/pool.go#L31>)
+
+```go
+func (pool *Pool[T]) Put(x *T)
+```
+
+Put puts x to the pool.
 
 ## type [PriorityQueue](<https://github.com/chen3feng/stl4go/blob/master/priority_queue.go#L6-L9>)
 

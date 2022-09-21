@@ -60,6 +60,10 @@ import "github.com/chen3feng/stl4go"
 - [x] `DListQueue` 双向进出的队列，基于双链表实现
 - [x] `PriorityQuque` 优先队列，基于堆实现，比 [container/heap](https://pkg.go.dev/container/heap) 更易用而且快不少。
 
+### 非容器组件
+
+- [x] `Pool` 类型安全的 Pool，基于对 `sync.Pool` 的封装而实现。
+
 ### 迭代器
 
 Vector、DList 和 SkipList 支持迭代器。
