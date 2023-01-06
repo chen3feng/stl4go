@@ -4,11 +4,26 @@ package stl4go
 // returns the result as type R, this is useful when T is too small to hold the result.
 // Complexity: O(len(a)).
 func SumAs[R, T Numeric](a []T) R {
-	var total R
-	for _, v := range a {
-		total += R(v)
+	switch zero := T(0); any(zero).(type) {
+	case int8, int16, int32, int, int64:
+		var total int64
+		for _, v := range a {
+			total += int64(v)
+		}
+		return R(total)
+	case uint8, uint16, uint32, uint, uint64, uintptr:
+		var total uint64
+		for _, v := range a {
+			total += uint64(v)
+		}
+		return R(total)
+	default:
+		var total float64
+		for _, v := range a {
+			total += float64(v)
+		}
+		return R(total)
 	}
-	return total
 }
 
 // Sum summarize all elements in a.
