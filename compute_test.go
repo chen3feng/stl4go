@@ -1,10 +1,29 @@
 package stl4go
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_SumAs(t *testing.T) {
-	a := Range[uint8](1, 101)
-	expectEq(t, SumAs[int](a), 5050)
+	t.Run("sum uint8 to int", func(t *testing.T) {
+		a := Range[uint8](1, 101)
+		expectEq(t, SumAs[int](a), 5050)
+	})
+
+	t.Run("sum int to uint8", func(t *testing.T) {
+		a := Range[int](1, 101)
+		expectEq(t, SumAs[uint8](a), uint8(5050%256))
+	})
+
+	t.Run("sum int64 to float64", func(t *testing.T) {
+		a := Range[int64](1, 101)
+		expectEq(t, SumAs[float64](a), 5050.)
+	})
+
+	t.Run("sum float64 to int64", func(t *testing.T) {
+		a := Range[float64](1.1, 101.1)
+		expectEq(t, SumAs[int](a), 101.2*50) // 5060
+	})
 }
 
 func Test_Sum(t *testing.T) {
