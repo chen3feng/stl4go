@@ -110,7 +110,7 @@ func (l *DList[T]) PushBack(val T) {
 	l.length++
 }
 
-// PopFront popups a element from the front of the list.
+// PopFront popups an element from the front of the list.
 func (l *DList[T]) PopFront() T {
 	r, ok := l.TryPopFront()
 	if !ok {
@@ -119,7 +119,7 @@ func (l *DList[T]) PopFront() T {
 	return r
 }
 
-// PopBack popups a element from the back of the list.
+// PopBack popups an element from the back of the list.
 func (l *DList[T]) PopBack() T {
 	r, ok := l.TryPopBack()
 	if !ok {
@@ -128,26 +128,26 @@ func (l *DList[T]) PopBack() T {
 	return r
 }
 
-// TryPopFront tries to popup a element from the front of the list.
+// TryPopFront tries to pop up an element from the front of the list.
 func (l *DList[T]) TryPopFront() (T, bool) {
 	var val T
-	if l.length == 0 {
+	if l.IsEmpty() {
 		return val, false
 	}
 	node := l.head.next
 	val = node.value
 	l.head.next = node.next
-	l.head.prev = l.head
+	l.head.next.prev = l.head
 	node.prev = nil
 	node.next = nil
 	l.length--
 	return val, true
 }
 
-// TryPopBack tries to popup a element from the back of the list.
+// TryPopBack tries to pop up an element from the back of the list.
 func (l *DList[T]) TryPopBack() (T, bool) {
 	var val T
-	if l.length == 0 {
+	if l.IsEmpty() {
 		return val, false
 	}
 	node := l.head.prev
@@ -162,7 +162,7 @@ func (l *DList[T]) TryPopBack() (T, bool) {
 
 // ForEach iterate the list, apply each element to the cb callback function.
 func (l *DList[T]) ForEach(cb func(val T)) {
-	if l.head == nil {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -173,7 +173,7 @@ func (l *DList[T]) ForEach(cb func(val T)) {
 // ForEachIf iterate the list, apply each element to the cb callback function,
 // stop if cb returns false.
 func (l *DList[T]) ForEachIf(cb func(val T) bool) {
-	if l.head == nil {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -185,7 +185,7 @@ func (l *DList[T]) ForEachIf(cb func(val T) bool) {
 
 // ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
 func (l *DList[T]) ForEachMutable(cb func(val *T)) {
-	if l.head == nil {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -196,7 +196,7 @@ func (l *DList[T]) ForEachMutable(cb func(val *T)) {
 // ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function,
 // stop if cb returns false.
 func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool) {
-	if l.head == nil {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
