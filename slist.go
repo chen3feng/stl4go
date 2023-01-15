@@ -40,11 +40,17 @@ func (l *SList[T]) Clear() {
 
 // Front returns the first element in the list.
 func (l *SList[T]) Front() T {
+	if l.IsEmpty() {
+		panic("!IsEmpty")
+	}
 	return l.head.value
 }
 
 // Back returns the last element in the list.
 func (l *SList[T]) Back() T {
+	if l.IsEmpty() {
+		panic("!IsEmpty")
+	}
 	return l.tail.value
 }
 
@@ -74,14 +80,16 @@ func (l *SList[T]) PushBack(v T) {
 // PopFront popups an element from the front of the list.
 // The list must be non-empty!
 func (l *SList[T]) PopFront() T {
-	node := l.head
-	if node != nil {
-		l.head = node.next
-		if l.head == nil {
-			l.tail = nil
-		}
-		l.length--
+	if l.IsEmpty() {
+		panic("!IsEmpty")
 	}
+
+	node := l.head
+	l.head = node.next
+	if l.head == nil {
+		l.tail = nil
+	}
+	l.length--
 	return node.value
 }
 
@@ -166,7 +174,7 @@ type sListIterator[T any] struct {
 	node *sListNode[T]
 }
 
-func (it sListIterator[T]) IsNotEnd() bool {
+func (it *sListIterator[T]) IsNotEnd() bool {
 	return it.node != nil
 }
 
@@ -174,11 +182,11 @@ func (it *sListIterator[T]) MoveToNext() {
 	it.node = it.node.next
 }
 
-func (it sListIterator[T]) Value() T {
+func (it *sListIterator[T]) Value() T {
 	return it.node.value
 }
 
-func (it sListIterator[T]) Pointer() *T {
+func (it *sListIterator[T]) Pointer() *T {
 	return &it.node.value
 }
 

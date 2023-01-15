@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_DList_Interface(t *testing.T) {
+func Test_SList_Interface(t *testing.T) {
 	sl := SList[int]{}
 	_ = Container(&sl)
 }
@@ -15,6 +15,44 @@ func Test_SList_Clean(t *testing.T) {
 	sl.Clear()
 	expectTrue(t, sl.IsEmpty())
 	expectEq(t, sl.Len(), 0)
+}
+
+func Test_SList_Front(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		sl := SList[int]{}
+		expectPanic(t, func() { sl.Front() })
+	})
+
+	t.Run("normal", func(t *testing.T) {
+		sl := SList[int]{}
+		sl.PushFront(1)
+		expectEq(t, sl.Front(), 1)
+
+		sl.PushBack(2)
+		expectEq(t, sl.Front(), 1)
+
+		sl.PushFront(3)
+		expectEq(t, sl.Front(), 3)
+	})
+}
+
+func Test_SList_Back(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		sl := SList[int]{}
+		expectPanic(t, func() { sl.Back() })
+	})
+
+	t.Run("normal", func(t *testing.T) {
+		sl := SList[int]{}
+		sl.PushBack(1)
+		expectEq(t, sl.Back(), 1)
+
+		sl.PushFront(2)
+		expectEq(t, sl.Back(), 1)
+
+		sl.PushBack(3)
+		expectEq(t, sl.Back(), 3)
+	})
 }
 
 func Test_SList_PushFront(t *testing.T) {
@@ -38,6 +76,8 @@ func Test_SList_PushBack(t *testing.T) {
 
 func Test_SList_PopFront(t *testing.T) {
 	sl := SList[int]{}
+	expectPanic(t, func() { sl.PopFront() })
+
 	sl.PushFront(1)
 	sl.PushFront(2)
 	expectEq(t, sl.PopFront(), 2)
