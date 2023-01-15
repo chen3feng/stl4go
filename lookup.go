@@ -28,7 +28,7 @@ func MaxN[T Ordered](a ...T) T {
 		panic("can't call MaxN() with empty arguments list")
 	}
 	v := a[0]
-	for i := 0; i < len(a); i++ {
+	for i := 1; i < len(a); i++ {
 		if a[i] > v {
 			v = a[i]
 		}
@@ -44,7 +44,7 @@ func MinN[T Ordered](a ...T) T {
 		panic("can't call MaxN() with empty arguments list")
 	}
 	v := a[0]
-	for i := 0; i < len(a); i++ {
+	for i := 1; i < len(a); i++ {
 		if a[i] < v {
 			v = a[i]
 		}
@@ -71,7 +71,7 @@ func MinMaxN[T Ordered](a ...T) (min, max T) {
 	}
 	min = a[0]
 	max = a[0]
-	for i := 0; i < len(a); i++ {
+	for i := 1; i < len(a); i++ {
 		if a[i] < min {
 			min = a[i]
 		}
@@ -124,7 +124,7 @@ func Index[T comparable](a []T, x T) int {
 	return -1
 }
 
-// AllOf return true if pred(e) returns true for all emements e in a.
+// AllOf return true if pred(e) returns true for all elements e in a.
 //
 // Complexity: O(len(a)).
 func AllOf[T any](a []T, pred func(T) bool) bool {
@@ -136,7 +136,7 @@ func AllOf[T any](a []T, pred func(T) bool) bool {
 	return true
 }
 
-// AnyOf return true if pred(e) returns true for any emements e in a.
+// AnyOf return true if pred(e) returns true for any elements e in a.
 //
 // Complexity: O(len(a)).
 func AnyOf[T any](a []T, pred func(T) bool) bool {
@@ -148,7 +148,7 @@ func AnyOf[T any](a []T, pred func(T) bool) bool {
 	return false
 }
 
-// NoneOf return true pred(e) returns true for none emements e in a.
+// NoneOf return true pred(e) returns true for none elements e in a.
 //
 // Complexity: O(len(a)).
 func NoneOf[T any](a []T, pred func(T) bool) bool {
