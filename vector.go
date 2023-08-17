@@ -45,6 +45,7 @@ func (v *Vector[T]) Cap() int {
 // Clear erases all elements from the vector. After this call, Len() returns zero.
 // Leaves the Cap() of the vector unchanged.
 func (v *Vector[T]) Clear() {
+	FillZero(*v)
 	*v = (*v)[0:0]
 }
 
@@ -92,7 +93,9 @@ func (v *Vector[T]) PushBack(x T) {
 // It must be called when IsEmpty() returned false,
 // otherwise it will panic.
 func (v *Vector[T]) PopBack() T {
+	var zero T
 	e := (*v)[v.Len()-1]
+	(*v)[len(*v)-1] = zero
 	*v = (*v)[0 : v.Len()-1]
 	return e
 }
@@ -149,7 +152,9 @@ func (v *Vector[T]) Remove(i int) {
 
 // RemoveRange removes the elements in the range[i, j) from the vector.
 func (v *Vector[T]) RemoveRange(i, j int) {
+	oldV := *v
 	*v = append((*v)[:i], (*v)[j:]...)
+	FillZero(oldV[v.Len():])
 }
 
 // RemoveLength removes the elements in the range[i, i+len) from the vector.
