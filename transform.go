@@ -36,7 +36,7 @@ func Fill[T any](a []T, v T) {
 	}
 }
 
-// Fill fills each element in slice a with zero value.
+// FillZero fills each element in slice a with zero value.
 //
 // Complexity: O(len(a)).
 func FillZero[T any](a []T) {

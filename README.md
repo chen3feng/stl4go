@@ -195,6 +195,7 @@ indicating that a custom comparison function can be passed.
 - `Copy` return a copies of specified slice
 - `CopyTo` copies all elements in slice a to slice to, return the copied slice.
 - `Fill` repeatedly fills a slice with the specified value
+- `FillZero` fills each element in slice a with zero value.
 - `FillPattern` repeatedly fills a slice with the specified pattern
 - `Replace` replaces every element that equals to old with new
 - `ReplaceIf` replaces every element that make preq returns true with new
