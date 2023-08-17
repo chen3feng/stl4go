@@ -33,6 +33,12 @@ func Test_Fill(t *testing.T) {
 	expectTrue(t, Equal(a, []int{1, 1, 1, 1}))
 }
 
+func Test_FillZero(t *testing.T) {
+	a := []int{1, 2, 3, 4}
+	FillZero(a)
+	expectTrue(t, Equal(a, []int{0, 0, 0, 0}))
+}
+
 func naiveFill[T any](a []T, v T) {
 	for i := range a {
 		a[i] = v

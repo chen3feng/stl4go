@@ -100,6 +100,13 @@ func Test_Vector_PopBack(t *testing.T) {
 	expectPanic(t, func() { v.PopBack() })
 }
 
+func Test_Vector_PopBack_Clear(t *testing.T) {
+	v := VectorOf(1, 2)
+	oldV := v
+	v.PopBack()
+	expectEq(t, oldV[1], 0)
+}
+
 func Test_Vector_Back(t *testing.T) {
 	v := VectorOf(1)
 	expectEq(t, v.Back(), 1)
@@ -134,29 +141,37 @@ func Test_Vector_Insert_Cap(t *testing.T) {
 
 func Test_Vector_Remove(t *testing.T) {
 	v := VectorOf(1, 2, 3)
+	oldV := v
 	v.Remove(1)
 	expectEq(t, v.Len(), 2)
 	expectEq(t, v.Cap(), 3)
 	expectEq(t, v[0], 1)
 	expectEq(t, v[1], 3)
+	expectEq(t, oldV[2], 0)
 }
 
 func Test_Vector_RemoveRange(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
+	oldV := v
 	v.RemoveRange(1, 3)
 	expectEq(t, v.Len(), 2)
 	expectEq(t, v.Cap(), 4)
 	expectEq(t, v[0], 1)
 	expectEq(t, v[1], 4)
+	expectEq(t, oldV[2], 0)
+	expectEq(t, oldV[3], 0)
 }
 
 func Test_Vector_RemoveLength(t *testing.T) {
 	v := VectorOf(1, 2, 3, 4)
+	oldV := v
 	v.RemoveLength(1, 2)
 	expectEq(t, v.Len(), 2)
 	expectEq(t, v.Cap(), 4)
 	expectEq(t, v[0], 1)
 	expectEq(t, v[1], 4)
+	expectEq(t, oldV[2], 0)
+	expectEq(t, oldV[3], 0)
 }
 
 func Test_Vector_ForEach(t *testing.T) {

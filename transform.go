@@ -36,6 +36,14 @@ func Fill[T any](a []T, v T) {
 	}
 }
 
+// Fill fills each element in slice a with zero value.
+//
+// Complexity: O(len(a)).
+func FillZero[T any](a []T) {
+	var zero T
+	Fill(a, zero)
+}
+
 // FillPattern fills elements in slice a with specified pattern.
 //
 // Complexity: O(len(a)).
