@@ -2,7 +2,7 @@
 
 [English](README.md) | 简体中文
 
-本库包含 Go 语言实现的范型容器和算法库，就像 C++ 中的 STL。
+本库包含 Go 语言实现的泛型容器和算法库，就像 C++ 中的 STL。
 
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-red.svg)](COPYING)
 [![Golang](https://img.shields.io/badge/Language-go1.18+-blue.svg)](https://go.dev/)
@@ -17,7 +17,7 @@ import "github.com/chen3feng/stl4go"
 
 ## 简介
 
-本库是在 Go 1.18 开始支持范型后，尝试借鉴 C++ STL 实现的一个通用容器和算法库。（我个人完全无法接受没有范型的语言，因此直到 go 1.18 才开始尝试用它）
+本库是在 Go 1.18 开始支持泛型后，尝试借鉴 C++ STL 实现的一个通用容器和算法库。（我个人完全无法接受没有泛型的语言，因此直到 go 1.18 才开始尝试用它）
 
 本库代码质量高，遵循了业界最新的最佳实践。测试覆盖率接近 💯%，✅，设置了 CI、 [gosec](https://securego.io/) 检查，
 [![GoReport](https://goreportcard.com/badge/github.com/securego/gosec)](https://goreportcard.com/report/github.com/chen3feng/stl4go) 评分。
@@ -253,7 +253,7 @@ func TestSkipList_ForEachMutable(t *testing.T) {
 
 ### 接口设计和命名
 
-较多地参考了 C++ STL。T 表示模板。是的，Go 的范型不是模板，但是谁让 C++ 那么影响力，而 STL 又那么有名呢。
+较多地参考了 C++ STL。T 表示模板。是的，Go 的泛型不是模板，但是谁让 C++ 那么影响力，而 STL 又那么有名呢。
 
 很多库的设计采用小的代码仓库或者一个仓库中拆分成多个子包。
 
