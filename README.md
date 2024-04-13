@@ -21,8 +21,7 @@ This library depends on go generics, which is introduced in 1.18+.
 import "github.com/chen3feng/stl4go"
 ```
 
-Package stl4go is a generic container and algo
-rithm library for go.
+Package stl4go is a generic container and algorithm library for go.
 
 ## Introduce
 
