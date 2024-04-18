@@ -174,6 +174,18 @@ func Test_Vector_RemoveLength(t *testing.T) {
 	expectEq(t, oldV[3], 0)
 }
 
+func Test_Vector_RemoveIf(t *testing.T) {
+	v := VectorOf(1, 2, 3, 4)
+	oldV := v
+	v.RemoveIf(func(i int) bool { return i%2 == 0 })
+	expectEq(t, v.Len(), 2)
+	expectEq(t, v.Cap(), 4)
+	expectEq(t, v[0], 1)
+	expectEq(t, v[1], 3)
+	expectEq(t, oldV[2], 0)
+	expectEq(t, oldV[3], 0)
+}
+
 func Test_Vector_ForEach(t *testing.T) {
 	a := []int{1, 2, 3}
 	v := VectorOf(a...)

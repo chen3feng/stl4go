@@ -162,6 +162,13 @@ func (v *Vector[T]) RemoveLength(i int, len int) {
 	v.RemoveRange(i, i+len)
 }
 
+// RemoveIf removes the elements which make cond(x) returns true from the vector.
+func (v *Vector[T]) RemoveIf(cond func(T) bool) {
+	oldV := *v
+	*v = RemoveIf(*v, cond)
+	FillZero(oldV[v.Len():])
+}
+
 // ForEach iterate the container, apply each element to the cb callback function.
 func (v Vector[T]) ForEach(cb func(val T)) {
 	for _, e := range v {
