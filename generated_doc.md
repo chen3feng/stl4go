@@ -259,6 +259,7 @@ Package stl4go is a generic container and algorithm library for go.
   - [func \(v \*Vector\[T\]\) PopBack\(\) T](<#Vector[T].PopBack>)
   - [func \(v \*Vector\[T\]\) PushBack\(x T\)](<#Vector[T].PushBack>)
   - [func \(v \*Vector\[T\]\) Remove\(i int\)](<#Vector[T].Remove>)
+  - [func \(v \*Vector\[T\]\) RemoveIf\(cond func\(T\) bool\)](<#Vector[T].RemoveIf>)
   - [func \(v \*Vector\[T\]\) RemoveLength\(i int, len int\)](<#Vector[T].RemoveLength>)
   - [func \(v \*Vector\[T\]\) RemoveRange\(i, j int\)](<#Vector[T].RemoveRange>)
   - [func \(v \*Vector\[T\]\) Reserve\(l int\)](<#Vector[T].Reserve>)
