@@ -267,6 +267,9 @@ func (sl *SkipList[K, V]) randomLevel() int {
 	for level > 3 && 1<<(level-3) > sl.len {
 		level--
 	}
+	if (level > skipListMaxLevel) {
+		level = skipListMaxLevel
+	}
 
 	return level
 }
