@@ -3,6 +3,8 @@ package stl4go
 // SkipListSet is a SortedSet implemented with skiplist.
 type SkipListSet[K any] SkipList[K, struct{}]
 
+var _ SortedSet[int] = (*SkipListSet[int])(nil)
+
 // NewSkipListSet creates a new SkipListSet object.
 func NewSkipListSet[K Ordered]() *SkipListSet[K] {
 	return (*SkipListSet[K])(NewSkipList[K, struct{}]())

@@ -9,6 +9,8 @@ type DListQueue[T any] struct {
 	list DList[T]
 }
 
+var _ Deque[int] = (*DListQueue[int])(nil)
+
 // NewDListQueue create a new Queue object.
 func NewDListQueue[T any]() *DListQueue[T] {
 	q := DListQueue[T]{}

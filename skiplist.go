@@ -36,6 +36,8 @@ type SkipList[K any, V any] struct {
 	impl       skipListImpl[K, V]
 }
 
+var _ SortedMap[int, int] = (*SkipList[int, int])(nil)
+
 // NewSkipList creates a new SkipList for Ordered key type.
 func NewSkipList[K Ordered, V any]() *SkipList[K, V] {
 	sl := skipListOrdered[K, V]{}
@@ -267,7 +269,7 @@ func (sl *SkipList[K, V]) randomLevel() int {
 	for level > 3 && 1<<(level-3) > sl.len {
 		level--
 	}
-	if (level > skipListMaxLevel) {
+	if level > skipListMaxLevel {
 		level = skipListMaxLevel
 	}
 

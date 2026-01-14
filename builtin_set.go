@@ -7,6 +7,8 @@ import (
 // BuiltinSet is an associative container that contains an unordered set of unique objects of type K.
 type BuiltinSet[K comparable] map[K]struct{}
 
+var _ Set[int] = (*BuiltinSet[int])(nil)
+
 // SetOf creates a new BuiltinSet object with the initial content from ks.
 func SetOf[K comparable](ks ...K) BuiltinSet[K] {
 	s := make(BuiltinSet[K])

@@ -70,8 +70,8 @@ type SortedSet[K any] interface {
 // Queue is a container that can add elements to one end and remove elements from the other end.
 type Queue[T any] interface {
 	Container
-	Front()            // Front returns the first element in the container.
-	Back()             // Back returns the last element in the container.
+	Front() T          // Front returns the first element in the container.
+	Back() T           // Back returns the last element in the container.
 	Push(T)            // Push pushes an element at the back of the container.
 	Pop() T            // Pop popups a front from the back of the container.
 	TryPop() (T, bool) // TryPop tries to popup a element from the front of the container.

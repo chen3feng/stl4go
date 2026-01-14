@@ -7,6 +7,8 @@ type SList[T any] struct {
 	length int
 }
 
+var _ Container = (*SList[int])(nil)
+
 type sListNode[T any] struct {
 	next  *sListNode[T]
 	value T
